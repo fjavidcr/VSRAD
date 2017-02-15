@@ -25,3 +25,30 @@ Route::get('crearusuario', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+/*Route::get('/proyectos/{id?}', function ($id = null) {
+    if (isset($id)) {
+        $proyecto = App\Proyecto::findOrFail($id);
+
+        return $proyecto;
+//        $proyectos = \Auth::getUser()->proyectos;
+//
+//        foreach ($proyectos as $proyecto)
+//            echo $proyecto->isValidado();
+    }
+    else
+        return App\Proyecto::all();
+});*/
+
+
+Route::get('/perfil', function () {
+    $user = Auth::user();
+
+    echo $user->name;
+
+    foreach ($user->proyectos as $proyecto) {
+        echo '<li>' . $proyecto->nombre . '</li>';
+    }
+});
+
+Route::resource('/proyectos', 'ProyectosController');
