@@ -14,10 +14,15 @@ class ProyectosController extends Controller
     public function index()
     {
         $user = \Auth::user();
-
-        foreach ($user->proyectos as $p) {
-            echo "<li>" . $p->nombre . "</li>";
-        }
+        $proyectos = $user->proyectos;
+        return view('proyectos.index', compact('proyectos', 'user'));
+        /*
+         * Otra forma
+         * return view('proyectos.index', compact('proyectos');
+         * return view('proyectos.index')->with('proyectos', $proyectos);
+         * $nombre = "eregerge"
+         * */
+        //return $user->proyectos;
     }
 
     /**
@@ -27,24 +32,33 @@ class ProyectosController extends Controller
      */
     public function create()
     {
-        return "Formulario para crear un proyecto";
+        return view('proyectos.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+
+        $proyecto = new \App\Proyecto();
+
+        $proyecto->nombre = $request->input('nombre');
+        $proyecto->configuracion = $request->input('configuracion');
+        $proyecto->validado = 0;
+        $proyecto->cliente_id = \Auth::user()->id;
+        $proyecto->comercial_id = 0;
+        $proyecto->tecnico_id = 0;
+        $proyecto->save();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -55,7 +69,7 @@ class ProyectosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -66,8 +80,8 @@ class ProyectosController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -78,7 +92,7 @@ class ProyectosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
