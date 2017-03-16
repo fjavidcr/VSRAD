@@ -15,9 +15,12 @@ class RoleCheck
      */
     public function handle($request, Closure $next, $rol)
     {
-        if (! $request->user()->hasRol($rol))
+        if (!$request->user()->hasRol($rol))
             return redirect('/');
 
         return $next($request);
+
+
+
     }
 }
