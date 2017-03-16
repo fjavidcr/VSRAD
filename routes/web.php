@@ -11,44 +11,36 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(['middleware' => 'guest'], function () {
+
+//    Route::get('/', function () {
+//        return "Test";
+//    });
+
 });
 
-Route::get('/about', function () {
-    return view('about');
-});
+Route::group(['middleware' => 'auth'], function () {
 
-Route::get('crearusuario', function () {
-    return view('/admin/crearusuario');
-});
-Auth::routes();
+    Route::get('/', 'HomeController@index');
 
-Route::get('/home', 'HomeController@index');
-
-/*Route::get('/proyectos/{id?}', function ($id = null) {
-    if (isset($id)) {
-        $proyecto = App\Proyecto::findOrFail($id);
-
-        return $proyecto;
-//        $proyectos = \Auth::getUser()->proyectos;
+//    Route::group(['middleware' => 'role:administrador'], function () {
+//        Route::get('/', "AdministradorController@index");
+//    });
 //
-//        foreach ($proyectos as $proyecto)
-//            echo $proyecto->isValidado();
-    }
-    else
-        return App\Proyecto::all();
-});*/
+    Route::group(['middleware' => 'role:cliente'], function () {
+//        Route::get('/', "ClienteController@index");
+    });
+//
+//    Route::group(['middleware' => 'role:tecnico'], function () {
+//        Route::get('/', "TecnicoController@index");
+//    });
 
+    Route::resource('/proyectos', 'ProyectosController');
+    Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
 
-Route::get('/perfil', function () {
-    $user = Auth::user();
+    Route::resource('/componentes', 'ComponentesController');
 
-    echo $user->name;
-
-    foreach ($user->proyectos as $proyecto) {
-        echo '<li>' . $proyecto->nombre . '</li>';
-    }
 });
 
-Route::resource('/proyectos', 'ProyectosController');
+Auth::routes();
