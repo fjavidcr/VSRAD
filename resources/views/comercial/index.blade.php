@@ -1,24 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-
-    <div class="container container-page">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>Proyectos de {{ $user->name }}</h3>
-
-                <a href="{{ route('proyectos.create') }}" class="btn btn-primary">
-                    Nuevo proyecto
-                </a>
-            </div>
-        </div>
-
+    <div class="container">
+        <h3> Clientes de {{$user->name}}</h3>
         <div class="row">
             <div class="col-lg-12">
 
-                @if(count($proyectos) == 0)
+                @if(count($clientes) == 0)
                     <div class="alert alert-warning">
-                        <b>Ups!</b> Parece que no tienes proyectos creados
+                        <b> No tienes clientes asignados.</b>
                     </div>
                 @else
 
@@ -27,12 +17,12 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Proyecto</th>
+                            <th>Cliente</th>
                             <th>Estado</th>
                             <th></th>
                         </tr>
                         </thead>
-                        @foreach($proyectos as $p)
+                        @foreach($users as $p)
                             <tr>
                                 <td>{{ $p->id }}</td>
                                 <td>{{ $p->nombre }}</td>
@@ -60,38 +50,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(".cambiarEstado").click(function () {
-
-            var id = $(this).data('id');
-
-            $.ajax({
-                url: "http://vsrad.dev/proyectos/cambiarEstado/" + id,
-                context: document.body,
-                method: "get",
-                success: todoOk,
-                error: todoMal
-            });
-
-        });
-
-        function todoOk(data) {
-
-            var labelvalidado = $(".labelValidado-" + data.id);
-
-            labelvalidado.toggleClass("btn-primary btn-success");
-
-            labelvalidado.text("Pendiente de validación");
-
-            if (data.validado)
-                labelvalidado.text("Validado");
-        }
-
-        function todoMal() {
-            alert("Todo mal");
-        }
-
-    </script>
 
 @endsection

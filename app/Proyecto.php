@@ -16,14 +16,20 @@ class Proyecto extends Model
     }
 
     public function cliente() {
-        return $this->belongsTo('App\User', 'cliente_id');
+        return $this->belongsTo('App\User', 'id_cliente');
     }
 
     public function tecnico() {
-        return $this->belongsTo('App\User', 'tecnico_id');
+        return $this->belongsTo('App\User', 'id_tecnico');
     }
 
+
     public function comercial() {
-        return $this->belongsTo('App\User', 'comercial_id');
+        return $this->belongsTo('App\User', 'id_comercial');
+    }
+
+    public function mensajes()
+    {
+        return $this->hasMany('App\Mensaje', 'id_proyecto');
     }
 }

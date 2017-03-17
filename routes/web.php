@@ -10,7 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
 
+return view('/home');
+
+});
 
 Route::group(['middleware' => 'guest'], function () {
 
@@ -22,24 +26,36 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/', 'HomeController@index');
+    Route::get('/home', 'HomeController@index');
 
-//    Route::group(['middleware' => 'role:administrador'], function () {
-//        Route::get('/', "AdministradorController@index");
-//    });
-//
-    Route::group(['middleware' => 'role:cliente'], function () {
-//        Route::get('/', "ClienteController@index");
+    /*
+    Route::group(['middleware' => 'rol:administrador'], function () {
+        Route::get('/home', 'AdministradorController@index');
     });
-//
-//    Route::group(['middleware' => 'role:tecnico'], function () {
-//        Route::get('/', "TecnicoController@index");
-//    });
+    */
+
+    Route::group(['middleware' => 'rol:cliente'], function () {
+        Route::get('/home', 'ClienteController@index');
+    });
+
+
+    Route::group(['middleware' => 'rol:comercial'], function () {
+        Route::get('/home', 'ComercialController@index');
+    });
+
+
+    /*
+    Route::group(['middleware' => 'rol:tecnico'], function () {
+        Route::get('/home', 'TecnicoController@index');
+    });
+    */
 
     Route::resource('/proyectos', 'ProyectosController');
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
 
-    Route::resource('/componentes', 'ComponentesController');
+    Route::resource('/productos', 'ProductosController');
+
+    Route::resource('/user', 'UserController');
 
 });
 
