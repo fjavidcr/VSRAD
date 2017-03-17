@@ -8,7 +8,7 @@
 
                 @if(count($clientes) == 0)
                     <div class="alert alert-warning">
-                        <b>Ups!</b> No tienes clientes asignados.
+                        <b> No tienes clientes asignados.</b>
                     </div>
                 @else
 
@@ -50,3 +50,5 @@
             </div>
         </div>
     </div>
+
+@endsection

@@ -10,7 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
 
+return view('/home');
+
+});
 
 Route::group(['middleware' => 'guest'], function () {
 
@@ -28,11 +32,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'rol:administrador'], function () {
         Route::get('/home', 'AdministradorController@index');
     });
+    */
 
     Route::group(['middleware' => 'rol:cliente'], function () {
         Route::get('/home', 'ClienteController@index');
     });
-    */
+
 
     Route::group(['middleware' => 'rol:comercial'], function () {
         Route::get('/home', 'ComercialController@index');
@@ -49,6 +54,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
 
     Route::resource('/productos', 'ProductosController');
+
+    Route::resource('/user', 'UserController');
 
 });
 

@@ -5,11 +5,10 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
 class User extends Authenticatable
 {
-    use Notifiable;
-
-    protected $table = "users";
+    //use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,9 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'email', 'password', 'nombre', 'apellidos',
-        'direccion_fisica', 'telefono', 'fecha_registro',
-        'id_tecnico', 'id_comercial', 'rol', 'oferta',
+        'name', 'email', 'password', 'rol'
     ];
 
     /**
@@ -50,7 +47,7 @@ class User extends Authenticatable
     }
 
     public function getCompleteName() {
-        return User::$title[$this->rol] . ". " . $this->nombre;
+        return User::$title[$this->rol] . ". " . $this->name;
     }
 
     public function proyectos()
