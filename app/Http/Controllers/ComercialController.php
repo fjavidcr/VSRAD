@@ -19,11 +19,9 @@ class ComercialController extends Controller
         $clientes = array();
         foreach ( $users as $u) {
             if ($u->getRol() == "cliente") {
-                array_add($clientes, $u);
+                array_push($clientes, $u);
             }
-
         }
-
         return view('comercial.index', compact('clientes', 'user'));
     }
 

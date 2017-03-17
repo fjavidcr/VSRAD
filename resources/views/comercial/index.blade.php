@@ -22,22 +22,22 @@
                             <th></th>
                         </tr>
                         </thead>
-                        @foreach($users as $p)
+                        @foreach($clientes as $c)
                             <tr>
-                                <td>{{ $p->id }}</td>
-                                <td>{{ $p->nombre }}</td>
+                                <td>{{ $c->id }}</td>
+                                <td>{{ $c->name }}</td>
                                 <td>
-                                    @if($p->validado)
-                                        <p class="labelValidado-{{$p->id}}">Validado</p>
+                                    @if($c->validado)
+                                        <p class="labelValidado-{{$c->id}}">Validado</p>
                                     @else
-                                        <p class="labelValidado-{{$p->id}}">Pendiente de validación</p>
+                                        <p class="labelValidado-{{$c->id}}">Pendiente de validación</p>
                                     @endif
-                                    <a data-id="{{$p->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
+                                    <a data-id="{{$c->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
                                         estado</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-default btn-xs"
-                                       href="{{ route('proyectos.show', $p->id) }}">
+                                       href="{{ route('proyectos.show', $c->id) }}">
                                         Ver
                                     </a>
 
