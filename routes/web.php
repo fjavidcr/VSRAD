@@ -26,7 +26,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/home', 'HomeController@index');
+
 
     /*
     Route::group(['middleware' => 'rol:administrador'], function () {
@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/home', 'TecnicoController@index');
     });
     */
+    Route::get('/home', 'HomeController@index');
 
     Route::resource('/proyectos', 'ProyectosController');
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');

@@ -13,7 +13,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        return "Hola cliente";
+        return view('proyectos.index');
     }
 
     /**
