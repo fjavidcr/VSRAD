@@ -44,8 +44,9 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-
-                        @if (Auth::user()->hasRol("cliente"))
+                        @if (Auth::guest())
+                            <li>  </li>
+                        @elseif (Auth::user()->hasRol("cliente"))
                             <li><a href="{{ route('proyectos.index') }}">Mis proyectos</a></li>
                             &nbsp;
                         @endif
