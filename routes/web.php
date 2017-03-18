@@ -51,6 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/proyectos', 'ProyectosController');
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
 
+    Route::resource('/comercial', 'ComercialController');
+    Route::get('/comercial/asignarOfertaTecnico/{id}', 'ComercialController@asignarOfertaTecnico');
+
     Route::resource('/productos', 'ProductosController');
 
     Route::resource('/user', 'UserController');
