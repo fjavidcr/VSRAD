@@ -16,3 +16,4 @@
         </div>
         <input type="submit" value="Crear" class="btn btn-success">
     </form>
+@endsection

@@ -32,7 +32,6 @@ class ProyectosController extends Controller
      */
     public function create()
     {
-        return view('proyectos.create');
     }
 
     /**
@@ -48,11 +47,14 @@ class ProyectosController extends Controller
 
         $proyecto->nombre = $request->input('nombre');
         $proyecto->configuracion = $request->input('configuracion');
-        $proyecto->validado = 0;
-        $proyecto->cliente_id = \Auth::user()->id;
-        $proyecto->comercial_id = 0;
-        $proyecto->tecnico_id = 0;
+        $proyecto->estado = false;
+        $proyecto->coste = 0;
+        $proyecto->fecha_creacion= "01/01/01";
+        $proyecto->id_cliente = \Auth::user()->id;
+        $proyecto->id_plano = 0;
+        $proyecto->id_tecnico = 0;
         $proyecto->save();
+
     }
 
     /**
