@@ -18,7 +18,7 @@ class ComercialController extends Controller
         //$users = DB::table('tabla')->select('columna')->get();
         $clientes = array();
         foreach ( $users as $u) {
-            if ($u->getRol() == "cliente") {
+            if ($u->hasRol("cliente") && $u->hasId_comercial($user->id)) {
                 array_push($clientes, $u);
             }
         }
