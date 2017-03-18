@@ -90,4 +90,9 @@ class ComercialController extends Controller
     {
         //
     }
+
+    public function asignarOfertaTecnico($id_cliente)
+    {
+
+    }
 }
