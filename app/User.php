@@ -46,6 +46,15 @@ class User extends Authenticatable
         return User::$roles[$this->rol];
     }
 
+    public function hasId_comercial($id_comercial)
+    {
+        return $this->id_comercial == $id_comercial;
+    }
+
+    public function getId_comercial() {
+        return $this->id_comercial;
+    }
+
     public function getCompleteName() {
         return User::$title[$this->rol] . ". " . $this->name;
     }
