@@ -18,12 +18,9 @@
                             <tr class="success">
                                 <th>ID de cliente: {{ $c->id }}</th>
                                 <th>Nombre: {{ $c->name }}</th>
-                                <th>Oferta: {{$c->oferta}}</th>
-                                <th><a class="btn btn-default btn-xs"
-                                      href="{{ route('comercial.asignarOfertaTecnico', $c->id) }}">
-                                        Editar asignación
-                                    </a>
-                                </th>
+                                <th>Estado </th>
+                                <th>Ténico </th>
+                                <th>Oferta </th>
                             </tr>
                             </thead>
                             @if(count($c->proyectos) == 0)
@@ -45,11 +42,37 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-xs"
-                                               href="{{ route('proyectos.show', $c->id) }}">
-                                                Ver proyecto
-                                            </a>
+                                            @if(!isset($p->id_tecnico))
+                                                <form action="{{route('comercial.store')}}" method="post">
 
+                                                    {{csrf_field()}}
+                                                    <div class="form-inline">
+                                                        <select name="id_tecnico">
+                                                            <option>Técnico</option>
+                                                            @foreach($tecnicos as $t)
+                                                                <option value="{{$t->id}}">{{$t->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                        <button type="submit" class="btn btn-success">Asignar</button>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                {{$p->id_tecnico}}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(!isset($p->oferta) && $p->estado == 2 )
+                                                <form action="{{route('comercial.store')}}" method="post">
+                                                    <div class="form-inline">
+                                                        <input id="oferta" type="text" name="oferta">
+                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                        <button type="submit" class="btn btn-success">Asignar</button>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                {{$p->oferta}}
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

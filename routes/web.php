@@ -39,13 +39,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:comercial'], function () {
         //Route::get('/', 'ComercialController@index');
-
-        //Route::resource('/comercial', 'ComercialController');
+        Route::resource('/comercial', 'ComercialController');
+        Route::get('/comercial/home', 'ComercialController@index');
+        Route::get('/comercial/asignarOfertaTecnico', 'ComercialController@asignarOfertaTecnico');
+        /*
         Route::group(['as' => 'comercial'], function () {
-            Route::get('/home', 'ComercialController@index');
+            Route::get('/comercial', ['as' => 'home', 'uses' => 'ComercialController@index']);
             //Route::get('/comercial/asignarOfertaTecnico/{id}', 'ComercialController@asignarOfertaTecnico');
-            Route::get('/comercial/asignarOfertaTecnico/{id}', ['as' => 'asignarOfertaTecnico', 'uses' => 'ComercialController@asignarOfertaTecnico']);
-        });
+            //Route::get('/comercial/asignarOfertaTecnico/{id}', ['as' => 'asignarOfertaTecnico', 'uses' => 'ComercialController@asignarOfertaTecnico']);
+        });*/
     });
 
     /*

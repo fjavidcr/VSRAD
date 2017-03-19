@@ -17,12 +17,16 @@ class ComercialController extends Controller
         $users = \App\User::all();
         //$users = DB::table('tabla')->select('columna')->get();
         $clientes = array();
+        $tecnicos = array();
         foreach ( $users as $u) {
             if ($u->hasRol("cliente") && $u->hasId_comercial($user->id)) {
                 array_push($clientes, $u);
             }
+            elseif ($u->hasRol("tecnico")) {
+                array_push($tecnicos, $u);
+            }
         }
-        return view('comercial.index', compact('clientes', 'user'));
+        return view('comercial.index', compact('clientes', 'tecnicos' , 'user'));
     }
 
     /**
@@ -91,9 +95,54 @@ class ComercialController extends Controller
         //
     }
 
-    public function asignarOfertaTecnico($id_cliente)
+    public function asignarTecnico(Request $request)
     {
+        $this->validate($request, [
+            'tecnico' => 'required|min:5',
+            'oferta' => 'required'
+        ]);
 
-        return view('comercial.asignarOfertaTecnico', compact('id_cliente'));
+        //$id_tecnico = $request->input('id_tecnico');
+        $id_cliente = $request->input('id_cliente');
+
+        /*
+
+        $users = \App\User::All();
+        foreach ($users as $user){
+            if($user->id == $id_cliente)
+                $cliente =  $user;
+        }*/
+        $cliente = \App\User::find($id_cliente);
+        $cliente->update($request->all());
+
+        $request->session()->flash('alert-success', 'Asignado con éxito.');
+        return redirect()->route('comercial.index');
+    }
+
+    public function asignarOferta(Request $request)
+    {
+        $this->validate($request, [
+            'tecnico' => 'required|min:5',
+            'oferta' => 'required'
+        ]);
+
+        $id_comercial = \Auth::user()->id;
+
+        $id_tecnico = $request->input('tecnico');
+        $oferta = $request->input('oferta');
+        $id_cliente = $request->input('id_cliente');
+
+        $cliente = \App\User::find($id_cliente);
+
+        $users = \App\User::All();
+        foreach ($users as $user){
+            if($user->id == $id_cliente)
+                $cliente =  $user;
+        }
+
+        $cliente->update();
+
+        $request->session()->flash('alert-success', 'Asignado con éxito.');
+        return redirect()->route('comercial.index');
     }
 }
