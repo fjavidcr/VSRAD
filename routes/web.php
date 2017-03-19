@@ -39,7 +39,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:comercial'], function () {
         //Route::get('/', 'ComercialController@index');
-        Route::get('/home', 'ComercialController@index');
+
+        //Route::resource('/comercial', 'ComercialController');
+        Route::group(['as' => 'comercial'], function () {
+            Route::get('/home', 'ComercialController@index');
+            //Route::get('/comercial/asignarOfertaTecnico/{id}', 'ComercialController@asignarOfertaTecnico');
+            Route::get('/comercial/asignarOfertaTecnico/{id}', ['as' => 'asignarOfertaTecnico', 'uses' => 'ComercialController@asignarOfertaTecnico']);
+        });
     });
 
     /*
@@ -51,8 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/proyectos', 'ProyectosController');
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
 
-    Route::resource('/comercial', 'ComercialController');
-    Route::get('/comercial/asignarOfertaTecnico/{id}', 'ComercialController@asignarOfertaTecnico');
+
 
     Route::resource('/productos', 'ProductosController');
 

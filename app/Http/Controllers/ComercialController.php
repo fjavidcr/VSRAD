@@ -94,5 +94,6 @@ class ComercialController extends Controller
     public function asignarOfertaTecnico($id_cliente)
     {
 
+        return view('comercial.asignarOfertaTecnico', compact('id_cliente'));
     }
 }

@@ -20,7 +20,7 @@
                                 <th>Nombre: {{ $c->name }}</th>
                                 <th>Oferta: {{$c->oferta}}</th>
                                 <th><a class="btn btn-default btn-xs"
-                                       href="{{ route('comercial.asignarOfertaTecnico', $c->id) }}">
+                                      href="{{ route('comercial.asignarOfertaTecnico', $c->id) }}">
                                         Editar asignación
                                     </a>
                                 </th>
