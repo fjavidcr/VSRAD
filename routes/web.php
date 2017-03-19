@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
 
-return view('home');
+    return view('home');
 
 });
 
@@ -39,12 +39,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:comercial'], function () {
         //Route::get('/', 'ComercialController@index');
+        Route::get('/home', 'ComercialController@index');
 
         Route::resource('/comercial', 'ComercialController');
 
-        Route::get('/comercial/home', 'ComercialController@index');
-        Route::get('/comercial/asignarTecnico', 'ComercialController@asignarTecnico');
-        Route::get('/comercial/asignarOferta', 'ComercialController@asignarOferta');
+        //Route::get('/comercial/asignarTecnico', 'ComercialController@asignarTecnico');
+        //Route::get('/comercial/asignarOferta', 'ComercialController@asignarOferta');
         /*
         Route::group(['as' => 'comercial'], function () {
             Route::get('/comercial', ['as' => 'home', 'uses' => 'ComercialController@index']);
@@ -61,8 +61,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/proyectos', 'ProyectosController');
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
-
-
 
     Route::resource('/productos', 'ProductosController');
 

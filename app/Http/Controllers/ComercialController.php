@@ -98,51 +98,33 @@ class ComercialController extends Controller
     public function asignarTecnico(Request $request)
     {
         $this->validate($request, [
-            'tecnico' => 'required|min:5',
-            'oferta' => 'required'
         ]);
 
-        //$id_tecnico = $request->input('id_tecnico');
-        $id_cliente = $request->input('id_cliente');
+        $id_proyecto = $request->input('id_proyecto');
+        $id_tecnico = $request->input('id_tecnico');
 
-        /*
+        $proyecto = \App\User::findOrFail($id_proyecto);
+        $proyecto->id_tecnico == $id_tecnico;
+        $proyecto->update($request->all());
 
-        $users = \App\User::All();
-        foreach ($users as $user){
-            if($user->id == $id_cliente)
-                $cliente =  $user;
-        }*/
-        $cliente = \App\User::find($id_cliente);
-        $cliente->update($request->all());
-
-        $request->session()->flash('alert-success', 'Asignado con éxito.');
+        $request->session()->flash('alert-success', 'Técnico asignado con éxito.');
         return redirect()->route('comercial.index');
     }
 
     public function asignarOferta(Request $request)
     {
         $this->validate($request, [
-            'tecnico' => 'required|min:5',
             'oferta' => 'required'
         ]);
 
-        $id_comercial = \Auth::user()->id;
-
-        $id_tecnico = $request->input('tecnico');
+        $id_proyecto = $request->input('id_proyecto');
         $oferta = $request->input('oferta');
-        $id_cliente = $request->input('id_cliente');
 
-        $cliente = \App\User::find($id_cliente);
+        $proyecto = \App\User::findOrFail($id_proyecto);
+        $proyecto->oferta == $oferta;
+        $proyecto->update($request->all());
 
-        $users = \App\User::All();
-        foreach ($users as $user){
-            if($user->id == $id_cliente)
-                $cliente =  $user;
-        }
-
-        $cliente->update();
-
-        $request->session()->flash('alert-success', 'Asignado con éxito.');
+        $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
         return redirect()->route('comercial.index');
     }
 }
