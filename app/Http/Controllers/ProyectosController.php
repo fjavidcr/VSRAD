@@ -16,6 +16,7 @@ class ProyectosController extends Controller
         $user = \Auth::user();
         $proyectos = $user->proyectos;
         return view('proyectos.index', compact('proyectos', 'user'));
+
         /*
          * Otra forma
          * return view('proyectos.index', compact('proyectos');
@@ -43,16 +44,25 @@ class ProyectosController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'nombre' => 'required|min:5',
+            'configuracion' => 'required'
+        ]);
 
         $proyecto = new \App\Proyecto();
 
         $proyecto->nombre = $request->input('nombre');
         $proyecto->configuracion = $request->input('configuracion');
-        $proyecto->validado = 0;
-        $proyecto->cliente_id = \Auth::user()->id;
-        $proyecto->comercial_id = 0;
-        $proyecto->tecnico_id = 0;
+        $proyecto->estado = false;
+        $proyecto->coste = 0;
+        $proyecto->fecha_creacion= "01/01/01";
+        $proyecto->id_cliente = \Auth::user()->id;
+        $proyecto->id_plano = 0;
+        $proyecto->id_tecnico = 0;
         $proyecto->save();
+
+        $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
+        return redirect()->route('proyectos.index');
     }
 
     /**
@@ -63,7 +73,13 @@ class ProyectosController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+
+        if ($proyecto->cliente_id != $user->id)
+            return redirect()->route('proyectos.index');
+
+        return view('proyectos.show', compact('proyecto'));
     }
 
     /**
@@ -95,8 +111,33 @@ class ProyectosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        // Mandar un mensaje de confirmacion
+
+        \App\Proyecto::destroy($id);
+
+        // Mensaje de feeback. Un alert de bootstrap
+
+        $request->session()->flash('alert-danger', 'Proyecto eliminado con éxito.');
+        return redirect()->route('proyectos.index');
+    }
+
+    public function cambiarEstado($id)
+    {
+        $proyecto = \App\Proyecto::findOrFail($id);
+
+//        if($proyecto->validado == 0)
+//            $proyecto->validado = 1;
+//        else
+//            $proyecto->validado = 0;
+
+//        $proyecto->validado = ($proyecto->validado) ? 0 : 1;
+
+        $proyecto->validado = !$proyecto->validado;
+
+        $proyecto->save();
+
+        return $proyecto;
     }
 }
