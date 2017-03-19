@@ -39,9 +39,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:comercial'], function () {
         //Route::get('/', 'ComercialController@index');
+
         Route::resource('/comercial', 'ComercialController');
+
         Route::get('/comercial/home', 'ComercialController@index');
-        Route::get('/comercial/asignarOfertaTecnico', 'ComercialController@asignarOfertaTecnico');
+        Route::get('/comercial/asignarTecnico', 'ComercialController@asignarTecnico');
+        Route::get('/comercial/asignarOferta', 'ComercialController@asignarOferta');
         /*
         Route::group(['as' => 'comercial'], function () {
             Route::get('/comercial', ['as' => 'home', 'uses' => 'ComercialController@index']);
