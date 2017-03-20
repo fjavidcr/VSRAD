@@ -95,19 +95,21 @@ class TecnicoController extends Controller
     }
 
     //FUNCIÓN PARA VALIDAR LOS PROYECTOS
-    public function validar_proyecto($id)
+    public function validar_proyecto(Request $request)
     {
         $user = \Auth::user();
-        $proyecto = \App\Proyecto::findOrFail($id);
+        $id_proyecto = $request->input('id_proyecto');
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
 
         if ($proyecto->id_tecnico != $user->id)
         {
-            Session::flash('Warning', 'No tienes asginado este proyecto, no tienes permiso para validarlo.');
+            $request->session()->flash('alert-warning', 'No tienes asginado este proyecto, no tienes permiso para validarlo.');
             return redirect()->route('tecnico.index');
         }
         //Valido el proyecto
         $proyecto->estado = 2;
         $proyecto->save();
-        Session::flash('Success', 'Proyecto validado con éxito.');
+        $request->session()->flash('alert-success', 'Proyecto validado con éxito.');
+        return redirect()->route('tecnico.index');
     }
 }

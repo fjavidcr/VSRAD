@@ -12,13 +12,10 @@
 
                 <p>{{$proyecto->configuracion}}</p>
 
-                <form action="{{ route('tecnico.validar', $proyecto->id) }}" method="post">
-
+                <form action="{{ route('tecnico.proyecto.validar', $proyecto->id) }}" method="post">
                     {{ csrf_field() }}
-
-                    <input type="text" name="_method" value="delete">
-
-                    <input type="submit" class="btn btn-danger" value="Eliminar">
+                    <input type="hidden" name="id_proyecto" value="{{$proyecto->id}}">
+                    <input type="submit" class="btn btn-success" value="Validar">
                 </form>
 
             </div>

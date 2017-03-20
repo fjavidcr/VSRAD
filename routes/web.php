@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/tecnico', 'TecnicoController');
 
         Route::get('tecnico/proyecto/{id}', 'TecnicoController@show');
+        Route::get('tecnico/proyecto/{id}/validar', 'TecnicoController@validar_proyecto');
     });
 
 
