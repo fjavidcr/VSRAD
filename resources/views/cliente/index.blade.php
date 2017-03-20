@@ -26,9 +26,7 @@
                         </thead>
                         @foreach($clientes as $c)
                             <tr>
-                                <td>{{ $c->id }}</td>
-                                <td>{{ $c->name }}</td>
-                                <td>{{ $p->getEstado()}}</td>
+                                
                                 <td>
                                     <a class="btn btn-default btn-xs"
                                        href="{{ route('proyectos.show', $c->id) }}">
