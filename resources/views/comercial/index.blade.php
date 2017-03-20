@@ -43,8 +43,7 @@
                                         </td>
                                         <td>
                                             @if(!isset($p->id_tecnico))
-                                                <form action="{{route('comercial.asignarTecnico')}}" method="post">
-
+                                                <form action="{{route('comercial.asignar_tecnico')}}" method="post">
                                                     {{csrf_field()}}
                                                     <div class="form-inline">
                                                         <select name="id_tecnico">
@@ -63,7 +62,8 @@
                                         </td>
                                         <td>
                                             @if($p->oferta == 0 && $p->estado == 2 )
-                                                <form action="{{route('comercial.asignarOferta')}}" method="post">
+                                                <form action="{{route('comercial.asignar_oferta')}}" method="post">
+                                                    {{csrf_field()}}
                                                     <div class="form-inline">
                                                         <input id="oferta" type="text" name="oferta">
                                                         <input type="hidden" name="id_proyecto" value="{{$p->id}}">
