@@ -64,4 +64,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Proyecto', 'id_cliente');
     }
 
+    public function proyectos_tecnico()
+    {
+        return $this->hasMany('App\Proyecto', 'id_tecnico');
+    }
+
 }

@@ -45,11 +45,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('comercial', 'ComercialController');
     });
 
-    /*
+
     Route::group(['middleware' => 'rol:tecnico'], function () {
-        Route::get('/home', 'TecnicoController@index');
+        Route::get('/tecnico', 'TecnicoController@index');
+        Route::resource('/tecnico', 'TecnicoController');
+
+        Route::get('tecnico/proyecto/{id}', 'TecnicoController@show')->name('tecnico.proyecto');
+        Route::post('tecnico/cambiar_estado', 'TecnicoController@cambiar_estado')->name('tecnico.cambiar_estado');
+        Route::post('tecnico/enviar_mensaje', 'TecnicoController@enviar_mensaje')->name('tecnico.enviar_mensaje');
     });
-    */
+
 
     Route::resource('/proyectos', 'ProyectosController');
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');

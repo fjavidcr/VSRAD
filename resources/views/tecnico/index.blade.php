@@ -5,50 +5,44 @@
     <div class="container container-page">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Proyectos de {{ $user->name }}</h3>
-
-                <a href="{{ route('proyectos.create') }}" class="btn btn-primary">
-                    Nuevo proyecto
-                </a>
+                <h3>Proyectos asignados a  {{ $user->name }}</h3>
             </div>
         </div>
 
         <div class="row">
             <div class="col-lg-12">
-
                 @if(count($proyectos) == 0)
-                    <div class="alert alert-warning">
-                        <b>Ups!</b> Parece que no tienes proyectos creados.
+                    <div class="alert alert-success">
+                        No tienes proyectos que validar.
                     </div>
                 @else
-
                     <table class="table table-responsive table-striped">
-
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Proyecto</th>
+                            <th>Nombre proyecto</th>
+                            <th>Nombre cliente</th>
                             <th>Estado</th>
-                            <th></th>
                         </tr>
                         </thead>
                         @foreach($proyectos as $p)
                             <tr>
                                 <td>{{ $p->id }}</td>
                                 <td>{{ $p->nombre }}</td>
-                                <td>{{ $p->getEstado()}}</td>
-                                <td>
-                                    <a class="btn btn-default btn-xs"
-                                       href="{{ route('proyectos.show', $p->id) }}">
-                                        Ver
-                                    </a>
-
-                                </td>
+                                <td>{{ $p->getCliente()->name }}</td>
+                                <td>{{ $p->getTituloEstado() }}</td>
+                                @if($p->getEstado() == "pendiente")
+                                    <td>
+                                        <a class="btn btn-warning btn-xs"
+                                           href="{{ route('tecnico.proyecto', $p->id) }}">
+                                            Revisar
+                                        </a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </table>
                 @endif
-
             </div>
         </div>
     </div>
