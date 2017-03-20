@@ -111,7 +111,7 @@ class ComercialController extends Controller
 
         $proyecto = \App\Proyecto::findOrFail($id_proyecto);
         $proyecto->id_tecnico = $id_tecnico;
-        $proyecto->update($request->all());
+        $proyecto->save();
 
         $request->session()->flash('alert-success', 'Técnico asignado con éxito.');
         return redirect()->route('comercial.index');
@@ -128,7 +128,7 @@ class ComercialController extends Controller
 
         $proyecto = \App\Proyecto::findOrFail($id_proyecto);
         $proyecto->oferta = $oferta;
-        $proyecto->update($request->all());
+        $proyecto->save();
 
         $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
         return redirect()->route('comercial.index');
