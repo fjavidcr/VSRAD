@@ -29,22 +29,16 @@
                             <tr>
                                 <td>{{ $p->id }}</td>
                                 <td>{{ $p->nombre }}</td>
-                                <td>{{$p->getCliente()->name}}</td>
-                                <td>
-                                    @if($p->validado)
-                                        <p class="labelValidado-{{$p->id}}">Validado</p>
-                                    @else
-                                        <p class="labelValidado-{{$p->id}}">Pendiente de validación</p>
-                                    @endif
-                                    <a data-id="{{$p->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
-                                        estado</a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-default btn-xs"
-                                       href="{{ route('tecnico.proyecto', $p->id) }}">
-                                        Ver
-                                    </a>
-                                </td>
+                                <td>{{ $p->getCliente()->name }}</td>
+                                <td>{{ $p->getTituloEstado() }}</td>
+                                @if($p->getEstado() == "pendiente")
+                                    <td>
+                                        <a class="btn btn-warning btn-xs"
+                                           href="{{ route('tecnico.proyecto', $p->id) }}">
+                                            Revisar
+                                        </a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </table>

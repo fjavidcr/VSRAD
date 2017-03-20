@@ -12,8 +12,16 @@ class Proyecto extends Model
         'no_pendiente', 'pendiente', 'validado', 'no_validado'
     ];
 
+    public static $tituloEstados = [
+        'No pendiente', 'Pendiente', 'Validado', 'No validado'
+    ];
+
     public function getEstado() {
         return Proyecto::$estados[$this->estado];
+    }
+
+    public function getTituloEstado() {
+        return Proyecto::$tituloEstados[$this->estado];
     }
 
     public function isValidado() {
