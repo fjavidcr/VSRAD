@@ -104,8 +104,8 @@ class ComercialController extends Controller
         $id_proyecto = $request->input('id_proyecto');
         $id_tecnico = $request->input('id_tecnico');
 
-        $proyecto = \App\User::findOrFail($id_proyecto);
-        $proyecto->id_tecnico == $id_tecnico;
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+        $proyecto->id_tecnico = $id_tecnico;
         $proyecto->update($request->all());
 
         $request->session()->flash('alert-success', 'Técnico asignado con éxito.');
@@ -121,8 +121,8 @@ class ComercialController extends Controller
         $id_proyecto = $request->input('id_proyecto');
         $oferta = $request->input('oferta');
 
-        $proyecto = \App\User::findOrFail($id_proyecto);
-        $proyecto->oferta == $oferta;
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+        $proyecto->oferta = $oferta;
         $proyecto->update($request->all());
 
         $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
