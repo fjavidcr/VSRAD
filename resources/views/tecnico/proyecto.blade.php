@@ -10,7 +10,7 @@
 
                 <h3>{{ $proyecto->nombre }}</h3>
 
-                <p>{{$proyecto->configuracion}}</p>
+                <p>{{ $proyecto->configuracion }}</p>
 
                 <form action="{{ route('tecnico.proyecto.validar', $proyecto->id) }}" method="post">
                     {{ csrf_field() }}

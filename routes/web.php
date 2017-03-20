@@ -50,8 +50,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/tecnico', 'TecnicoController@index');
         Route::resource('/tecnico', 'TecnicoController');
 
-        Route::get('tecnico/proyecto/{id}', 'TecnicoController@show');
-        Route::get('tecnico/proyecto/{id}/validar', 'TecnicoController@validar_proyecto');
+        Route::get('tecnico/proyecto/{id}', 'TecnicoController@show')->name('tecnico.proyecto');
+        Route::get('tecnico/proyecto/{id}/validar', 'TecnicoController@validar_proyecto')->name('tecnico.proyecto.validar');
     });
 
 
