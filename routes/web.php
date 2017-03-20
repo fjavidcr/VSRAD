@@ -36,24 +36,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/home', 'ClienteController@index');
     });
 
-
     Route::group(['middleware' => 'rol:comercial'], function () {
-        //Route::get('/', 'ComercialController@index');
-        Route::get('/comercial/home', 'ComercialController@index');
+        Route::get('/', 'ComercialController@redireccion');
 
-        Route::resource('/comercial', 'ComercialController');
+        Route::post('comercial/asignar_tecnico', 'ComercialController@asignar_tecnico')->name('comercial.asignar_tecnico');
+        Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
 
-        //Route::post('/comercial/asignarTecnico', 'ComercialController@asignarTecnico');
-        Route::post('/comercial', ['as' => 'asignarTecnico', 'uses' => 'ComercialController@asignarTecnico']);
-        //Route::post('/comercial/asignarOferta', 'ComercialController@asignarOferta');
-        Route::post('/comercial', ['as' => 'asignarOferta', 'uses' => 'ComercialController@asignarOferta']);
-
-        /*
-        Route::group(['as' => 'comercial'], function () {
-            Route::get('/comercial', ['as' => 'home', 'uses' => 'ComercialController@index']);
-            //Route::get('/comercial/asignarOfertaTecnico/{id}', 'ComercialController@asignarOfertaTecnico');
-            //Route::get('/comercial/asignarOfertaTecnico/{id}', ['as' => 'asignarOfertaTecnico', 'uses' => 'ComercialController@asignarOfertaTecnico']);
-        });*/
+        Route::resource('comercial', 'ComercialController');
     });
 
     /*
