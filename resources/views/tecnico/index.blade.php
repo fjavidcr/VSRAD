@@ -25,7 +25,7 @@
                             <th>ID</th>
                             <th>Proyecto</th>
                             <th>Estado</th>
-                            <th></th>
+                            <th>Nombre cliente</th>
                         </tr>
                         </thead>
                         @foreach($proyectos as $p)
@@ -41,6 +41,7 @@
                                     <a data-id="{{$p->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
                                         estado</a>
                                 </td>
+                                <td>{{$p->getCliente()->name}}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs"
                                        href="{{ route('proyectos.show', $p->id) }}">

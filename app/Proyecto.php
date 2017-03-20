@@ -15,6 +15,12 @@ class Proyecto extends Model
         return "Pendiente de validación";
     }
 
+    public function getCliente()
+    {
+        $cliente = \App\User::findOrFail($this->id_cliente);
+        return $cliente;
+    }
+
     //TODO: revisar las relaciones
 
     public function cliente() {
