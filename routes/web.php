@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
 
     return view('home');
 
-});
+});*/
 
 Route::group(['middleware' => 'guest'], function () {
 
@@ -33,7 +33,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:cliente'], function () {
         //Route::get('/', 'ClienteController@index');
-        Route::get('/home', 'ClienteController@index');
+        //Route::get('/home', 'ClienteController@index');
+
+        Route::get('/', 'ClienteController@redireccion');
+
+        Route::get('/cliente/cambiarEstado/{id}', 'ClienteController@cambiarEstado')->name('cliente.cambiar_estado');
+
+        Route::resource('cliente', 'ClienteController');
     });
 
     Route::group(['middleware' => 'rol:comercial'], function () {
@@ -56,12 +62,12 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
 
-    Route::resource('/proyectos', 'ProyectosController');
-    Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
+    //Route::resource('/proyectos', 'ProyectosController');
+    //Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
 
-    Route::resource('/productos', 'ProductosController');
+    //Route::resource('/productos', 'ProductosController');
 
-    Route::resource('/user', 'UserController');
+    //Route::resource('/user', 'UserController');
 
 });
 
