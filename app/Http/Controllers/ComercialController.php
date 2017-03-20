@@ -17,12 +17,16 @@ class ComercialController extends Controller
         $users = \App\User::all();
         //$users = DB::table('tabla')->select('columna')->get();
         $clientes = array();
+        $tecnicos = array();
         foreach ( $users as $u) {
             if ($u->hasRol("cliente") && $u->hasId_comercial($user->id)) {
                 array_push($clientes, $u);
             }
+            elseif ($u->hasRol("tecnico")) {
+                array_push($tecnicos, $u);
+            }
         }
-        return view('comercial.index', compact('clientes', 'user'));
+        return view('comercial.index', compact('clientes', 'tecnicos' , 'user'));
     }
 
     /**
@@ -89,5 +93,39 @@ class ComercialController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function asignarTecnico(Request $request)
+    {
+        $this->validate($request, [
+            'tecnico' => 'required'
+        ]);
+
+        $id_proyecto = $request->input('id_proyecto');
+        $id_tecnico = $request->input('id_tecnico');
+
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+        $proyecto->id_tecnico = $id_tecnico;
+        $proyecto->update($request->all());
+
+        $request->session()->flash('alert-success', 'Técnico asignado con éxito.');
+        return redirect()->route('comercial.index');
+    }
+
+    public function asignarOferta(Request $request)
+    {
+        $this->validate($request, [
+            'oferta' => 'required'
+        ]);
+
+        $id_proyecto = $request->input('id_proyecto');
+        $oferta = $request->input('oferta');
+
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+        $proyecto->oferta = $oferta;
+        $proyecto->update($request->all());
+
+        $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
+        return redirect()->route('comercial.index');
     }
 }

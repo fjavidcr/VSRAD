@@ -12,37 +12,71 @@
                     </div>
                 @else
 
-                    <table class="table table-responsive table-striped">
-
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Cliente</th>
-                            <th>Estado</th>
-                            <th></th>
-                        </tr>
-                        </thead>
+                    <table class="table table-responsive table-bordered ">
                         @foreach($clientes as $c)
-                            <tr>
-                                <td>{{ $c->id }}</td>
-                                <td>{{ $c->name }}</td>
-                                <td>
-                                    @if($c->validado)
-                                        <p class="labelValidado-{{$c->id}}">Validado</p>
-                                    @else
-                                        <p class="labelValidado-{{$c->id}}">Pendiente de validación</p>
-                                    @endif
-                                    <a data-id="{{$c->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
-                                        estado</a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-default btn-xs"
-                                       href="{{ route('proyectos.show', $c->id) }}">
-                                        Ver
-                                    </a>
-
-                                </td>
+                            <thead>
+                            <tr class="success">
+                                <th>ID de cliente: {{ $c->id }}</th>
+                                <th>Nombre: {{ $c->name }}</th>
+                                <th>Estado </th>
+                                <th>Ténico </th>
+                                <th>Oferta </th>
                             </tr>
+                            </thead>
+                            @if(count($c->proyectos) == 0)
+                                <tr>
+                                    <div class="alert alert-warning">
+                                        El cliente no tiene proyectos creados.
+                                    </div>
+                                </tr>
+                            @else
+                                @foreach($c->proyectos as $p)
+                                    <tr>
+                                        <td>ID de Proyecto: {{ $p->id }}</td>
+                                        <td>{{ $p->nombre }}</td>
+                                        <td>
+                                            @if($p->estado)
+                                                <p class="labelValidado-{{$c->id}}">Validado</p>
+                                            @else
+                                                <p class="labelValidado-{{$c->id}}">Pendiente de validación</p>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(!isset($p->id_tecnico))
+                                                <form action="{{route('comercial.asignarTecnico')}}" method="post">
+
+                                                    {{csrf_field()}}
+                                                    <div class="form-inline">
+                                                        <select name="id_tecnico">
+                                                            <option>Técnico</option>
+                                                            @foreach($tecnicos as $t)
+                                                                <option value="{{$t->id}}">{{$t->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                        <button type="submit" class="btn btn-success">Asignar</button>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                {{$p->id_tecnico}}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($p->oferta == 0 && $p->estado == 2 )
+                                                <form action="{{route('comercial.asignarOferta')}}" method="post">
+                                                    <div class="form-inline">
+                                                        <input id="oferta" type="text" name="oferta">
+                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                        <button type="submit" class="btn btn-success">Asignar</button>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                {{$p->oferta}}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         @endforeach
                     </table>
                 @endif
