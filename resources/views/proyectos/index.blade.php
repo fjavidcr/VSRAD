@@ -18,7 +18,7 @@
 
                 @if(count($proyectos) == 0)
                     <div class="alert alert-warning">
-                        <b>Ups!</b> Parece que no tienes proyectos creados
+                        <b>Ups!</b> Parece que no tienes proyectos creados.
                     </div>
                 @else
 
@@ -36,15 +36,7 @@
                             <tr>
                                 <td>{{ $p->id }}</td>
                                 <td>{{ $p->nombre }}</td>
-                                <td>
-                                    @if($p->validado)
-                                        <p class="labelValidado-{{$p->id}}">Validado</p>
-                                    @else
-                                        <p class="labelValidado-{{$p->id}}">Pendiente de validación</p>
-                                    @endif
-                                    <a data-id="{{$p->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
-                                        estado</a>
-                                </td>
+                                <td>{{ $p->getEstado()}}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs"
                                        href="{{ route('proyectos.show', $p->id) }}">

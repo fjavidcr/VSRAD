@@ -59,6 +59,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:tecnico'], function () {
         Route::get('/tecnico', 'TecnicoController@index');
+        Route::resource('/tecnico', 'TecnicoController');
+
+        Route::get('tecnico/proyecto/{id}', 'TecnicoController@show');
     });
 
 

@@ -8,11 +8,16 @@ class Proyecto extends Model
 {
     protected $table = "proyectos";
 
-    public function isValidado() {
-        if ($this->validado == 1)
-            return "Proyecto validado";
+    public static $estados = [
+        'no_pendiente', 'pendiente', 'validado', 'no_validado'
+    ];
 
-        return "Pendiente de validación";
+    public function getEstado() {
+        return Proyecto::$estados[$this->estado];
+    }
+
+    public function isValidado() {
+        return $this->getEstado() == "validado";
     }
 
     public function getCliente()

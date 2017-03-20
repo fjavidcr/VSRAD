@@ -11,27 +11,25 @@
 
         <div class="row">
             <div class="col-lg-12">
-
                 @if(count($proyectos) == 0)
                     <div class="alert alert-success">
-                        No tienes proyectos que validar
+                        No tienes proyectos que validar.
                     </div>
                 @else
-
                     <table class="table table-responsive table-striped">
-
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Proyecto</th>
-                            <th>Estado</th>
+                            <th>Nombre proyecto</th>
                             <th>Nombre cliente</th>
+                            <th>Estado</th>
                         </tr>
                         </thead>
                         @foreach($proyectos as $p)
                             <tr>
                                 <td>{{ $p->id }}</td>
                                 <td>{{ $p->nombre }}</td>
+                                <td>{{$p->getCliente()->name}}</td>
                                 <td>
                                     @if($p->validado)
                                         <p class="labelValidado-{{$p->id}}">Validado</p>
@@ -41,19 +39,16 @@
                                     <a data-id="{{$p->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
                                         estado</a>
                                 </td>
-                                <td>{{$p->getCliente()->name}}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs"
-                                       href="{{ route('proyectos.show', $p->id) }}">
+                                       href="{{ route('tecnico.proyecto', $p->id) }}">
                                         Ver
                                     </a>
-
                                 </td>
                             </tr>
                         @endforeach
                     </table>
                 @endif
-
             </div>
         </div>
     </div>

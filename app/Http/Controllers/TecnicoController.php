@@ -45,9 +45,19 @@ class TecnicoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    //FUNCION PARA MOSTAR LOS PROYECTOS ASIGNADOS AL TÉCNICO
     public function show($id)
     {
-        //
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+
+        if ($proyecto->id_tecnico != $user->id)
+        {
+            Session::flash('Warning', 'No tienes asginado este proyecto.');
+            return redirect()->route('tecnico.index');
+        }
+        return view('tecnico.proyecto', compact('proyecto'));
     }
 
     /**
@@ -82,5 +92,22 @@ class TecnicoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //FUNCIÓN PARA VALIDAR LOS PROYECTOS
+    public function validar_proyecto($id)
+    {
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+
+        if ($proyecto->id_tecnico != $user->id)
+        {
+            Session::flash('Warning', 'No tienes asginado este proyecto, no tienes permiso para validarlo.');
+            return redirect()->route('tecnico.index');
+        }
+        //Valido el proyecto
+        $proyecto->estado = 2;
+        $proyecto->save();
+        Session::flash('Success', 'Proyecto validado con éxito.');
     }
 }
