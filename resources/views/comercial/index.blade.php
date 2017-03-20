@@ -55,7 +55,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($p->oferta == 0 && $p->estado == 2 )
+                                            @if($p->oferta == 0 && $p->getEstado() == "validado" )
                                                 <form action="{{route('comercial.asignar_oferta')}}" method="post">
                                                     {{csrf_field()}}
                                                     <div class="form-inline">
