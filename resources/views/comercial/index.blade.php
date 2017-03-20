@@ -34,13 +34,7 @@
                                     <tr>
                                         <td>ID de Proyecto: {{ $p->id }}</td>
                                         <td>{{ $p->nombre }}</td>
-                                        <td>
-                                            @if($p->estado)
-                                                <p class="labelValidado-{{$c->id}}">Validado</p>
-                                            @else
-                                                <p class="labelValidado-{{$c->id}}">Pendiente de validación</p>
-                                            @endif
-                                        </td>
+                                        <td>{{$p->getEstado()}}</td>
                                         <td>
                                             @if(!isset($p->id_tecnico))
                                                 <form action="{{route('comercial.asignar_tecnico')}}" method="post">
@@ -61,7 +55,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($p->oferta == 0 && $p->estado == 2 )
+                                            @if($p->oferta == 0 && $p->getEstado() == "validado" )
                                                 <form action="{{route('comercial.asignar_oferta')}}" method="post">
                                                     {{csrf_field()}}
                                                     <div class="form-inline">
