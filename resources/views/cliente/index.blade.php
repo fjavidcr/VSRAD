@@ -42,7 +42,7 @@
                                     @if($p->getEstado() != "no_pendiente")
                                         <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
                                     @else
-                                        <a data-id="{{$p->id}}" class="cambiar_estado btn btn-sm btn-primary">Pedir validación</a>
+                                        <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-sm btn-primary">Pedir validación</a>
                                     @endif
                                 </td>
                                 <td>
@@ -60,38 +60,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(".cambiarEstado").click(function () {
-
-            var id = $(this).data('id');
-
-            $.ajax({
-                url: "http://vsrad.dev/proyectos/cambiarEstado/" + id,
-                context: document.body,
-                method: "get",
-                success: todoOk,
-                error: todoMal
-            });
-
-        });
-
-        function todoOk(data) {
-
-            var labelvalidado = $(".labelValidado-" + data.id);
-
-            labelvalidado.toggleClass("btn-primary btn-success");
-
-            labelvalidado.text("Pendiente de validación");
-
-            if (data.validado)
-                labelvalidado.text("Validado");
-        }
-
-        function todoMal() {
-            alert("Todo mal");
-        }
-
-    </script>
-
 @endsection

@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/', 'ClienteController@redireccion');
 
-        Route::get('/cliente/cambiarEstado/{id}', 'ClienteController@cambiarEstado')->name('cliente.cambiar_estado');
+        Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
 
         Route::resource('cliente', 'ClienteController');
     });
