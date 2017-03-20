@@ -26,7 +26,15 @@
                         </thead>
                         @foreach($clientes as $c)
                             <tr>
-                                
+                                <td>{{ $p->id }}</td>
+                                <td>{{ $p->nombre }}</td>
+                                <td>
+                                    @if($p->getEstado() != "no_pendiente")
+                                        <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
+                                    @else
+                                        <a data-id="{{$p->id}}" class="cambiar_estado btn btn-sm btn-primary">Pedir validación</a>
+                                    @endif
+                                </td>
                                 <td>
                                     <a class="btn btn-default btn-xs"
                                        href="{{ route('proyectos.show', $c->id) }}">
