@@ -95,7 +95,12 @@ class ComercialController extends Controller
         //
     }
 
-    public function asignarTecnico(Request $request)
+    public function redireccion()
+    {
+        return redirect()->route('comercial.index');
+    }
+
+    public function asignar_tecnico(Request $request)
     {
         $this->validate($request, [
             'tecnico' => 'required'
@@ -112,7 +117,7 @@ class ComercialController extends Controller
         return redirect()->route('comercial.index');
     }
 
-    public function asignarOferta(Request $request)
+    public function asignar_oferta(Request $request)
     {
         $this->validate($request, [
             'oferta' => 'required'
