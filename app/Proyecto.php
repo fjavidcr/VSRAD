@@ -15,6 +15,8 @@ class Proyecto extends Model
         return "Pendiente de validación";
     }
 
+    //TODO: revisar las relaciones
+
     public function cliente() {
         return $this->belongsTo('App\User', 'id_cliente');
     }

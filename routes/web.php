@@ -56,11 +56,11 @@ Route::group(['middleware' => 'auth'], function () {
         });*/
     });
 
-    /*
+
     Route::group(['middleware' => 'rol:tecnico'], function () {
-        Route::get('/home', 'TecnicoController@index');
+        Route::get('/tecnico', 'TecnicoController@index');
     });
-    */
+
 
     Route::resource('/proyectos', 'ProyectosController');
     Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');

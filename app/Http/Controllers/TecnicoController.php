@@ -13,7 +13,9 @@ class TecnicoController extends Controller
      */
     public function index()
     {
-        //
+        $user = \Auth::user();
+        $proyectos = $user->proyectos_tecnico;
+        return view('tecnico.index', compact('proyectos', 'user'));
     }
 
     /**
