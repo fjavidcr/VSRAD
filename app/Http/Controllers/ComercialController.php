@@ -103,7 +103,7 @@ class ComercialController extends Controller
     public function asignar_tecnico(Request $request)
     {
         $this->validate($request, [
-            'tecnico' => 'required'
+            'id_tecnico' => 'required'
         ]);
 
         $id_proyecto = $request->input('id_proyecto');
