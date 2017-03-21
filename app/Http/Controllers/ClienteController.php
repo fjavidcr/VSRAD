@@ -66,8 +66,8 @@ class ClienteController extends Controller
         $user = \Auth::user();
         $proyecto = \App\Proyecto::findOrFail($id);
 
-        if ($proyecto->cliente_id != $user->id)
-            return redirect()->route('cliente.index');
+        /*if ($proyecto->cliente_id != $user->id)
+            return redirect()->route('cliente.index');*/
 
         return view('cliente.show', compact('proyecto'));
     }
