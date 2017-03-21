@@ -30,7 +30,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/home', 'AdministradorController@index');
     });
     */
-
     Route::resource('/', 'RedireccionController');
 
     Route::group(['middleware' => 'rol:cliente'], function () {
@@ -40,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'rol:comercial'], function () {
+
         Route::post('comercial/asignar_tecnico', 'ComercialController@asignar_tecnico')->name('comercial.asignar_tecnico');
         Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
 
@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::group(['middleware' => 'rol:tecnico'], function () {
+
         Route::get('tecnico/proyecto/{id}', 'TecnicoController@show')->name('tecnico.proyecto');
         Route::post('tecnico/cambiar_estado', 'TecnicoController@cambiar_estado')->name('tecnico.cambiar_estado');
         Route::post('tecnico/enviar_mensaje', 'TecnicoController@enviar_mensaje')->name('tecnico.enviar_mensaje');
