@@ -43,7 +43,9 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'rol:comercial'], function () {
-        Route::get('/', 'ComercialController@redireccion');
+        //Route::get('/', 'ComercialController@redireccion');
+        Route::get('/', 'ComercialController@index');
+        Route::get('/home', 'ComercialController@index');
 
         Route::post('comercial/asignar_tecnico', 'ComercialController@asignar_tecnico')->name('comercial.asignar_tecnico');
         Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
