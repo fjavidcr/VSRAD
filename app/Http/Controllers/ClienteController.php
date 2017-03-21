@@ -113,11 +113,6 @@ class ClienteController extends Controller
         return redirect()->route('cliente.index');
     }
 
-    public function redireccion()
-    {
-        return redirect()->route('cliente.index');
-    }
-
     public function cambiar_estado($id)
     {
         $proyecto = \App\Proyecto::findOrFail($id);

@@ -95,11 +95,6 @@ class ComercialController extends Controller
         //
     }
 
-    public function redireccion()
-    {
-        return redirect()->route('comercial.index');
-    }
-
     public function asignar_tecnico(Request $request)
     {
         $this->validate($request, [
