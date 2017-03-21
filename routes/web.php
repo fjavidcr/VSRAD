@@ -32,9 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
     */
 
     Route::group(['middleware' => 'rol:cliente'], function () {
-        //Route::get('/', 'ClienteController@index');
-        //Route::get('/home', 'ClienteController@index');
-
         Route::get('/', 'ClienteController@redireccion');
 
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
@@ -53,12 +50,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::group(['middleware' => 'rol:tecnico'], function () {
-        Route::get('/tecnico', 'TecnicoController@index');
-        Route::resource('/tecnico', 'TecnicoController');
+        Route::get('/', 'TecnicoController@redireccion');
 
         Route::get('tecnico/proyecto/{id}', 'TecnicoController@show')->name('tecnico.proyecto');
         Route::post('tecnico/cambiar_estado', 'TecnicoController@cambiar_estado')->name('tecnico.cambiar_estado');
         Route::post('tecnico/enviar_mensaje', 'TecnicoController@enviar_mensaje')->name('tecnico.enviar_mensaje');
+
+        Route::resource('/tecnico', 'TecnicoController');
     });
 
 

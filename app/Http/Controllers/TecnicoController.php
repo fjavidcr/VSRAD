@@ -95,6 +95,11 @@ class TecnicoController extends Controller
         //
     }
 
+    public function redireccion()
+    {
+        return redirect()->route('tecnico.index');
+    }
+
     //FUNCIÓN PARA CAMBIAR EL ESTADO DE LOS PROYECTOS
     public function cambiar_estado(Request $request)
     {
