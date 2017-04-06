@@ -15,18 +15,12 @@ class AdministradorController extends Controller
     {
         $user = \Auth::user();
         $users = \App\User::all();
+        $productos = \App\Producto::all();
+        $planos = \App\Plano::all();
         //$users = DB::table('tabla')->select('columna')->get();
-        $clientes = array();
-        $tecnicos = array();
-        foreach ( $users as $u) {
-            if ($u->hasRol("cliente") && $u->hasId_comercial($user->id)) {
-                array_push($clientes, $u);
-            }
-            elseif ($u->hasRol("tecnico")) {
-                array_push($tecnicos, $u);
-            }
-        }
-        return view('administrador.index', compact('clientes', 'tecnicos' , 'user'));
+        $clientes = $users;
+
+        return view('administrador.index', compact('users', 'productos','planos' , 'user', 'clientes'));
     }
 
     /**

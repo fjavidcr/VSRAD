@@ -23,13 +23,7 @@
                                 <th>Oferta </th>
                             </tr>
                             </thead>
-                            @if(count($c->proyectos) == 0)
-                                <tr>
-                                    <div class="alert alert-warning">
-                                        El cliente no tiene proyectos creados.
-                                    </div>
-                                </tr>
-                            @else
+
                                 @foreach($c->proyectos as $p)
                                     <tr>
                                         <td>ID de Proyecto: {{ $p->id }}</td>
