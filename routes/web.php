@@ -25,12 +25,12 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
 
-    /*
-    Route::group(['middleware' => 'rol:administrador'], function () {
-        Route::get('/home', 'AdministradorController@index');
-    });
-    */
     Route::resource('/', 'RedireccionController');
+
+    Route::group(['middleware' => 'rol:administrador'], function () {
+
+        Route::resource('administrador', 'AdministradorController');
+    });
 
     Route::group(['middleware' => 'rol:cliente'], function () {
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
@@ -53,7 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('tecnico/cambiar_estado', 'TecnicoController@cambiar_estado')->name('tecnico.cambiar_estado');
         Route::post('tecnico/enviar_mensaje', 'TecnicoController@enviar_mensaje')->name('tecnico.enviar_mensaje');
 
-        Route::resource('/tecnico', 'TecnicoController');
+        Route::resource('tecnico', 'TecnicoController');
     });
 
 

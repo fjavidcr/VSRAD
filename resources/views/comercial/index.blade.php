@@ -70,7 +70,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            @endif
                         @endforeach
                     </table>
                 @endif
