@@ -101,7 +101,7 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         // Mandar un mensaje de confirmacion
 
@@ -116,7 +116,7 @@ class ClienteController extends Controller
     public function cambiar_estado($id)
     {
         $proyecto = \App\Proyecto::findOrFail($id);
-        $proyecto->estado == 1;
+        $proyecto->estado = 1;
         $proyecto->save();
 
         return $proyecto;
