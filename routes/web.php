@@ -27,10 +27,28 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/', 'RedireccionController');
 
+
+
+
     Route::group(['middleware' => 'rol:administrador'], function () {
+
+        Route::get('administrador/form_crear_usuario', 'AdministradorController@form_crear_usuario')->name('administrador.form_crear_usuario');
+        Route::post('administrador/crear_usuario', 'AdministradorController@crear_usuario')->name('administrador.crear_usuario');
+        Route::get('administrador/editar_usuario/{id}', 'AdministradorController@form_editar_usuario')->name('administrador.form_editar_usuario');
+        Route::post('administrador/editar_usuario', 'AdministradorController@editar_usuario')->name('administrador.editar_usuario');
+
+        Route::get('administrador/form_crear_producto', 'AdministradorController@form_crear_producto')->name('administrador.form_crear_producto');
+        Route::post('administrador/crear_producto', 'AdministradorController@crear_producto')->name('administrador.crear_producto');
+
+        Route::get('administrador/form_crear_plano', 'AdministradorController@form_crear_plano')->name('administrador.form_crear_plano');
+        Route::post('administrador/crear_plano', 'AdministradorController@crear_plano')->name('administrador.crear_plano');
 
         Route::resource('administrador', 'AdministradorController');
     });
+
+
+
+
 
     Route::group(['middleware' => 'rol:cliente'], function () {
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdministradorController extends Controller
 {
@@ -18,9 +19,8 @@ class AdministradorController extends Controller
         $productos = \App\Producto::all();
         $planos = \App\Plano::all();
         //$users = DB::table('tabla')->select('columna')->get();
-        $clientes = $users;
 
-        return view('administrador.index', compact('users', 'productos','planos' , 'user', 'clientes'));
+        return view('administrador.index', compact('users','productos','planos' , 'user' ));
     }
 
     /**
@@ -87,5 +87,128 @@ class AdministradorController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function crear_usuario(Request $request){
+
+        $this->validate($request, [
+            'name' => 'required|min:5',
+            'password' => 'required',
+            'email' => 'required',
+            'apellidos' => 'required',
+            'direccion_fisica' => 'required',
+            'telefono' => 'required',
+            'rol' => 'required'
+        ]);
+
+        $user = new \App\User();
+
+        $user->name = $request->input('name');
+        $user->apellidos = $request->input('apellidos');
+        $user->email = $request->input('email');
+        $user->password =  Hash::make($request->input('password'));
+        $user->direccion_fisica = $request->input('direccion_fisica');
+        $user->telefono = $request->input('telefono');
+        $user->rol = $request->input('rol');
+        $user->save();
+
+        $request->session()->flash('alert-success', 'Usuario creado con éxito.');
+        return redirect()->route('administrador.index');
+
+    }
+
+    public function form_crear_usuario(){
+
+
+        return view('administrador.crear_usuario');
+    }
+
+    public function editar_usuario(Request $request){
+
+        $this->validate($request, [
+            'name' => 'required|min:5',
+            'email' => 'required',
+            'apellidos' => 'required',
+            'direccion_fisica' => 'required',
+            'telefono' => 'required',
+            'rol' => 'required'
+        ]);
+
+        $user = \App\User::findOrFail($request->input('id'));
+
+        $user->name = $request->input('name');
+        $user->apellidos = $request->input('apellidos');
+        $user->email = $request->input('email');
+        $pass = $request->input('password');
+        if(isset($pass))
+            $user->password =  Hash::make($pass);
+        $user->direccion_fisica = $request->input('direccion_fisica');
+        $user->telefono = $request->input('telefono');
+        $user->rol = $request->input('rol');
+        $user->save();
+
+        $request->session()->flash('alert-success', 'Usuario editado con éxito.');
+        return redirect()->route('administrador.index');
+
+    }
+
+    public function form_editar_usuario($id)
+    {
+        $user = \App\User::findOrFail($id);
+
+        return view('administrador.editar_usuario', compact('user'));
+    }
+
+    public function crear_producto(Request $request){
+
+        $this->validate($request, [
+            'nombre' => 'required|min:5',
+            'descripcion' => 'required',
+            'coste' => 'required',
+            'imagen' => 'required'
+        ]);
+
+        $producto = new \App\Producto();
+
+        $producto->nombre = $request->input('nombre');
+        $producto->descripcion = $request->input('descripcion');
+        $producto->restricciones = $request->input('restricciones');
+        $producto->coste =  $request->input('coste');
+        $producto->imagen = $request->input('imagen');
+        $producto->save();
+
+        $request->session()->flash('alert-success', 'Producto creado con éxito.');
+        return redirect()->route('administrador.index');
+
+    }
+
+    public function form_crear_producto(){
+
+
+        return view('administrador.crear_producto');
+    }
+
+    public function crear_plano(Request $request){
+
+        $this->validate($request, [
+            'nombre' => 'required|min:5',
+            'imagen' => 'required'
+        ]);
+
+        $plano = new \App\Plano();
+
+        $plano->nombre = $request->input('nombre');
+        $plano->imagen = $request->input('imagen');
+        $plano->save();
+
+        $request->session()->flash('alert-success', 'Plano creado con éxito.');
+        return redirect()->route('administrador.index');
+
+    }
+
+    public function form_crear_plano(){
+
+
+        return view('administrador.crear_plano');
     }
 }
