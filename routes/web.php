@@ -39,9 +39,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('administrador/form_crear_producto', 'AdministradorController@form_crear_producto')->name('administrador.form_crear_producto');
         Route::post('administrador/crear_producto', 'AdministradorController@crear_producto')->name('administrador.crear_producto');
+        Route::get('administrador/editar_producto/{id}', 'AdministradorController@form_editar_producto')->name('administrador.form_editar_producto');
+        Route::post('administrador/editar_producto', 'AdministradorController@editar_producto')->name('administrador.editar_producto');
 
         Route::get('administrador/form_crear_plano', 'AdministradorController@form_crear_plano')->name('administrador.form_crear_plano');
         Route::post('administrador/crear_plano', 'AdministradorController@crear_plano')->name('administrador.crear_plano');
+        Route::get('administrador/editar_plano/{id}', 'AdministradorController@form_editar_plano')->name('administrador.form_editar_plano');
+        Route::post('administrador/editar_plano', 'AdministradorController@editar_plano')->name('administrador.editar_plano');
 
         Route::resource('administrador', 'AdministradorController');
     });

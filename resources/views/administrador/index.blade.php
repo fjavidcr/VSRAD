@@ -59,6 +59,11 @@
                             <td>{{ $p->restricciones}} </td>
                             <td>{{ $p->coste . " €"}} </td>
                             <td>{{ $p->imagen }}</td>
+                            <td> <a class="btn btn-default btn-xs"
+                                    href="{{ route('administrador.form_editar_producto', $p->id) }}">
+                                    Editar
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </table>
@@ -79,6 +84,11 @@
                             <td>{{ $p->id }}</td>
                             <td>{{ $p->nombre }}</td>
                             <td>{{ $p->imagen }}</td>
+                            <td> <a class="btn btn-default btn-xs"
+                                    href="{{ route('administrador.form_editar_plano', $p->id) }}">
+                                    Editar
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </table>

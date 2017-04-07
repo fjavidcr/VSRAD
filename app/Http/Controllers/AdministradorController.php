@@ -188,6 +188,36 @@ class AdministradorController extends Controller
         return view('administrador.crear_producto');
     }
 
+    public function editar_producto(Request $request){
+
+        $this->validate($request, [
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'coste' => 'required',
+            'imagen' => 'required'
+        ]);
+
+        $producto = \App\Producto::findOrFail($request->input('id'));
+
+        $producto->nombre = $request->input('nombre');
+        $producto->descripcion = $request->input('descripcion');
+        $producto->restricciones = $request->input('restricciones');
+        $producto->coste =  $request->input('coste');
+        $producto->imagen = $request->input('imagen');
+        $producto->save();
+
+        $request->session()->flash('alert-success', 'Producto editado con éxito.');
+        return redirect()->route('administrador.index');
+
+    }
+
+    public function form_editar_producto($id)
+    {
+        $pro = \App\Producto::findOrFail($id);
+
+        return view('administrador.editar_producto', compact('pro'));
+    }
+
     public function crear_plano(Request $request){
 
         $this->validate($request, [
@@ -210,5 +240,30 @@ class AdministradorController extends Controller
 
 
         return view('administrador.crear_plano');
+    }
+
+    public function editar_plano(Request $request){
+
+        $this->validate($request, [
+            'nombre' => 'required',
+            'imagen' => 'required'
+        ]);
+
+        $plano = \App\Plano::findOrFail($request->input('id'));
+
+        $plano->nombre = $request->input('nombre');
+        $plano->imagen = $request->input('imagen');
+        $plano->save();
+
+        $request->session()->flash('alert-success', 'Plano editado con éxito.');
+        return redirect()->route('administrador.index');
+
+    }
+
+    public function form_editar_plano($id)
+    {
+        $plano = \App\Plano::findOrFail($id);
+
+        return view('administrador.editar_plano', compact('plano'));
     }
 }
