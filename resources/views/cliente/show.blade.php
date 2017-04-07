@@ -12,11 +12,11 @@
 
                 <p>{{$proyecto->configuracion}}</p>
 
-                <form action="{{ route('proyectos.destroy', $proyecto->id) }}" method="post">
+                <form action="{{ route('cliente.destroy', $proyecto->id) }}" method="post">
 
                     {{ csrf_field() }}
 
-                    <input type="text" name="_method" value="delete">
+                    <input type="hidden" name="_method" value="delete">
 
                     <input type="submit" class="btn btn-danger" value="Eliminar">
 
