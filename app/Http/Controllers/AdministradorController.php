@@ -266,5 +266,54 @@ class AdministradorController extends Controller
 
         return view('administrador.editar_plano', compact('plano'));
     }
+
+    public function deshabilitar_usuario(Request $request){
+
+        $user = \App\User::findOrFail($request->input('id'));
+        $user->oculto = 1;
+        $user->save();
+
+        return redirect()->route('administrador.index');
+    }
+
+    public function habilitar_usuario(Request $request){
+        $user = \App\User::findOrFail($request->input('id'));
+        $user->oculto = 0;
+        $user->save();
+
+        return redirect()->route('administrador.index');
+    }
+
+    public function deshabilitar_producto(Request $request){
+        $producto = \App\Producto::findOrFail($request->input('id'));
+        $producto->oculto = 1;
+        $producto->save();
+
+        return redirect()->route('administrador.index');
+    }
+
+    public function habilitar_producto(Request $request){
+        $producto = \App\Producto::findOrFail($request->input('id'));
+        $producto->oculto = 0;
+        $producto->save();
+
+        return redirect()->route('administrador.index');
+    }
+
+    public function deshabilitar_plano(Request $request){
+        $plano = \App\Plano::findOrFail($request->input('id'));
+        $plano->oculto = 1;
+        $plano->save();
+
+        return redirect()->route('administrador.index');
+    }
+
+    public function habilitar_plano(Request $request){
+        $plano = \App\Plano::findOrFail($request->input('id'));
+        $plano->oculto = 0;
+        $plano->save();
+
+        return redirect()->route('administrador.index');
+    }
 }
 
