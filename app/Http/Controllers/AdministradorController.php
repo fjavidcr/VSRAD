@@ -267,3 +267,4 @@ class AdministradorController extends Controller
         return view('administrador.editar_plano', compact('plano'));
     }
 }
+
