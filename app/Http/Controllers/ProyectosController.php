@@ -56,9 +56,11 @@ class ProyectosController extends Controller
         $proyecto->fecha_creacion= "01/01/01";
         $proyecto->id_cliente = \Auth::user()->id;
         $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
+        $proyecto->estado = 0;
         $proyecto->save();
 
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
+
         return redirect()->route('proyectos.index');
     }
 

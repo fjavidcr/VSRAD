@@ -1,0 +1,38 @@
+
+.container-page {
+    background: #fff;
+    border: 1px solid #d3e0e9;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.canvas-plano {
+    width: 100%;
+    height: 500px;
+    background-color: #eaf9ca;
+}
+
+.canvas-casa-1 {
+    background: #eaf9ca url("../img/planos/casa1.png") no-repeat;
+    background-size: cover;
+}
+
+.canvas-casa-2 {
+    background: #eaf9ca url("../img/planos/casa2.png") no-repeat;
+    background-size: cover;
+}
+
+.canvas-casa-3 {
+    background: #eaf9ca url("../img/planos/casa3.png") no-repeat;
+    background-size: cover;
+}
+
+.canvas-casa-4 {
+    background: #eaf9ca url("../img/planos/casa4.png") no-repeat;
+    background-size: cover;
+}
+
+.canvas-casa-5 {
+    background: #eaf9ca url("../img/planos/casa5.png") no-repeat;
+    background-size: cover;
+}
