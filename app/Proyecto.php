@@ -20,6 +20,10 @@ class Proyecto extends Model
         return Proyecto::$estados[$this->estado];
     }
 
+    public function getTecnico() {
+        return $tecnico = \App\User::findorFail($this->id_tecnico);
+    }
+
     public function getTituloEstado() {
         return Proyecto::$tituloEstados[$this->estado];
     }

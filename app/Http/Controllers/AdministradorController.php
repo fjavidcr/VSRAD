@@ -174,7 +174,14 @@ class AdministradorController extends Controller
         $producto->descripcion = $request->input('descripcion');
         $producto->restricciones = $request->input('restricciones');
         $producto->coste =  $request->input('coste');
-        $producto->imagen = $request->input('imagen');
+        if ($request->file('imagen')->isValid()) {
+            /*'productos' -> subcarpeta donde se guarda
+             * '' -> nombre con el que se guarda
+             * 'img' -> se guarda dentro del path storage/app/public/img
+             * */
+            $path = $request->imagen->store('productos','img');
+            $producto->imagen =  $path;
+        }
         $producto->save();
 
         $request->session()->flash('alert-success', 'Producto creado con éxito.');
@@ -193,8 +200,7 @@ class AdministradorController extends Controller
         $this->validate($request, [
             'nombre' => 'required',
             'descripcion' => 'required',
-            'coste' => 'required',
-            'imagen' => 'required'
+            'coste' => 'required'
         ]);
 
         $producto = \App\Producto::findOrFail($request->input('id'));
@@ -203,7 +209,16 @@ class AdministradorController extends Controller
         $producto->descripcion = $request->input('descripcion');
         $producto->restricciones = $request->input('restricciones');
         $producto->coste =  $request->input('coste');
-        $producto->imagen = $request->input('imagen');
+        $imagen = $request->file('imagen');
+        if(isset($imagen))
+            if ($imagen->isValid()) {
+                /*'productos' -> subcarpeta donde se guarda
+                 * '' -> nombre con el que se guarda
+                 * 'img' -> se guarda dentro del path storage/app/public/img
+                 * */
+                $path = $request->imagen->store('productos','img');
+                $producto->imagen =  $path;
+            }
         $producto->save();
 
         $request->session()->flash('alert-success', 'Producto editado con éxito.');
@@ -228,7 +243,16 @@ class AdministradorController extends Controller
         $plano = new \App\Plano();
 
         $plano->nombre = $request->input('nombre');
-        $plano->imagen = $request->input('imagen');
+        $imagen = $request->file('imagen');
+        if(isset($imagen))
+            if ($imagen->isValid()) {
+            /*'productos' -> subcarpeta donde se guarda
+             * '' -> nombre con el que se guarda
+             * 'img' -> se guarda dentro del path storage/app/public/img
+             * */
+            $path = $request->imagen->store('planos','img');
+            $plano->imagen =  $path;
+        }
         $plano->save();
 
         $request->session()->flash('alert-success', 'Plano creado con éxito.');
@@ -246,13 +270,19 @@ class AdministradorController extends Controller
 
         $this->validate($request, [
             'nombre' => 'required',
-            'imagen' => 'required'
         ]);
 
         $plano = \App\Plano::findOrFail($request->input('id'));
 
         $plano->nombre = $request->input('nombre');
-        $plano->imagen = $request->input('imagen');
+        if ($request->file('imagen')->isValid()) {
+            /*'productos' -> subcarpeta donde se guarda
+             * '' -> nombre con el que se guarda
+             * 'img' -> se guarda dentro del path storage/app/public/img
+             * */
+            $path = $request->imagen->store('planos','img');
+            $plano->imagen =  $path;
+        }
         $plano->save();
 
         $request->session()->flash('alert-success', 'Plano editado con éxito.');
@@ -271,6 +301,7 @@ class AdministradorController extends Controller
 
         $user = \App\User::findOrFail($request->input('id'));
         $user->oculto = 1;
+        $user->password = '';
         $user->save();
 
         return redirect()->route('administrador.index');

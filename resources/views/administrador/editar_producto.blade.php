@@ -2,7 +2,7 @@
 
 @section('content')
     <h3>Editar producto</h3>
-    <form class="form-horizontal" action="{{route('administrador.editar_producto')}}" method="post">
+    <form class="form-horizontal" enctype="multipart/form-data" action="{{route('administrador.editar_producto')}}" method="post">
 
         {{csrf_field()}}
         <input type="hidden" name="id" value="{{ $pro->id }}">
@@ -33,7 +33,8 @@
         <div class="form-group">
             <label for="imagen" class="col-sm-2 control-label">Imagen</label>
             <div class="col-sm-10">
-                <input id="imagen" type="text" name="imagen" value="{{ $pro->imagen }}">
+                <input id="imagen" type="file" name="imagen" value="{{ $pro->imagen }}">
+                ( Si no se introduce una nueva imagen no se modificará la actual )
             </div>
         </div>
 

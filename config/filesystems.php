@@ -63,14 +63,9 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
-        'planos' => [
+        'img' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/planos'),
-        ],
-
-        'productos' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/productos'),
+            'root' => storage_path('app/public/img'),
         ],
 
     ],
