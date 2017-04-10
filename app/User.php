@@ -46,6 +46,10 @@ class User extends Authenticatable
         return User::$roles[$this->rol];
     }
 
+    public function getTitle() {
+        return User::$title[$this->rol];
+    }
+
     public function hasId_comercial($id_comercial)
     {
         return $this->id_comercial == $id_comercial;
