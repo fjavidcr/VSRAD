@@ -2,7 +2,10 @@
 
 @section('content')
     <div class="container">
-        <h3> Comerciales de {{$user->name}}</h3>
+
+        <div class="panel panel-default">
+        <div class="panel-heading"><h4><b> Comerciales de {{$user->name}}</b></h4></div>
+        <div class="panel-body">
         <div class="row">
             <div class="col-lg-12">
 
@@ -12,7 +15,7 @@
                     </div>
                 @else
 
-                    <table class="table table-responsive table-condensed ">
+                    <table class="table table-responsive table-condensed table-striped">
                         <thead>
                         <tr>
                             <th>ID </th>
@@ -48,6 +51,8 @@
                 @endif
 
             </div>
+        </div>
+        </div>
         </div>
     </div>
 
