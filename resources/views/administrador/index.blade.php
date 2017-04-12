@@ -43,11 +43,34 @@
                                         <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($u->oculto ==1)
-                                    <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="id" value="{{$u->id}}">
-                                        <input type="submit" class="btn btn-warning btn-xs" value="Habilitar">
-                                    </form>
+                                    <!-- TODO: Seguir con esto -->
+
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
+                                        Habilitar
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Habilitar Usuario</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
+                                                        {{ csrf_field() }}
+                                                        <input type="hidden" name="id" value="{{$u->id}}">
+                                                        <label for="password" class="control-label">Nueva contraseña  </label>
+                                                        <input type="password" name="password">
+                                                        <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">Para habilitar de nuevo a {{ $u->name .' '. $u->apellidos}} es necesario establecer una nueva contraseña.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 @endif
                                 </div>
                             </td>
@@ -95,7 +118,7 @@
                                     <form action="{{ route('administrador.habilitar_producto') }}" method="post">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{$p->id}}">
-                                        <input type="submit" class="btn btn-warning btn-xs" value="Habilitar">
+                                        <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
                                     </form>
                                 @endif
                                 </div>
@@ -136,34 +159,13 @@
                                     </form>
                                 @elseif($p->oculto ==1)
 
-                                        <!-- TODO: Seguir con esto -->
 
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                                            Habilitar
-                                        </button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form action="{{ route('administrador.habilitar_plano') }}" method="post">
-                                                            {{ csrf_field() }}
-                                                            <input type="hidden" name="id" value="{{$p->id}}">
-                                                            <input type="submit" class="btn btn-warning btn-xs" value="Habilitar">
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                                            <form action="{{ route('administrador.habilitar_plano') }}" method="post">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" name="id" value="{{$p->id}}">
+                                                <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
+                                            </form>
 
 
                                 @endif

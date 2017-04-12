@@ -308,8 +308,16 @@ class AdministradorController extends Controller
     }
 
     public function habilitar_usuario(Request $request){
+
+        $this->validate($request, [
+            'password' => 'required'
+        ]);
+
         $user = \App\User::findOrFail($request->input('id'));
         $user->oculto = 0;
+        $pass = $request->input('password');
+        if(isset($pass))
+            $user->password =  Hash::make($pass);
         $user->save();
 
         return redirect()->route('administrador.index');
