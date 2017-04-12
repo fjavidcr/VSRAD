@@ -57,7 +57,13 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
 
+    Route::group(['middleware' => 'rol:director_comercial'], function () {
 
+        Route::post('director_comercial/asignar_tecnico', 'DirectorComercialController@asignar_tecnico')->name('director_comercial.asignar_tecnico');
+        Route::post('director_comercial/asignar_oferta', 'DirectorComercialController@asignar_oferta')->name('director_comercial.asignar_oferta');
+
+        Route::resource('director_comercial', 'DirectorComercialController');
+    });
 
 
     Route::group(['middleware' => 'rol:cliente'], function () {
