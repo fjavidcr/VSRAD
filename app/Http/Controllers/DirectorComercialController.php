@@ -88,4 +88,21 @@ class DirectorComercialController extends Controller
     {
         //
     }
+
+    public function asignar_oferta(Request $request)
+    {
+        $this->validate($request, [
+            'oferta' => 'required'
+        ]);
+
+        $id = $request->input('id');
+        $oferta = $request->input('oferta');
+
+        $comercial = \App\User::findOrFail($id);
+        $comercial->oferta = $oferta;
+        $comercial->save();
+
+        $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
+        return redirect()->route('director_comercial.index');
+    }
 }

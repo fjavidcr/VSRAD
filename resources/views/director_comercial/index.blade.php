@@ -13,18 +13,36 @@
                 @else
 
                     <table class="table table-responsive table-condensed ">
+                        <thead>
+                        <tr>
+                            <th>ID </th>
+                            <th>Nombre </th>
+                            <th>Estado </th>
+                            <th>Oferta máxima </th>
+                        </tr>
+                        </thead>
                         @foreach($comerciales as $c)
-                            <thead>
                             <tr>
-                                <th>ID de comercial: {{ $c->id }}</th>
-                                <th>Nombre: {{ $c->name }}</th>
-                                <th>Estado </th>
-                                <th>Ténico </th>
-                                <th>Oferta </th>
+                                <td>{{ $c->id }}</td>
+                                <td>{{ $c->name .' '. $c->apellidos }}</td>
+                                <td> @if($c->oculto == 0) Habilitado @else Deshabilitado @endif </td>
+                                <td>
+                                    <form action="{{route('director_comercial.asignar_oferta')}}" method="post">
+                                        {{csrf_field()}}
+                                        <div class="form-inline">
+                                            <input id="oferta" type="number" min="0" max="99.99" step="0.01" value="{{$c->oferta}}" name="oferta"> %
+                                            <input type="hidden" name="id" value="{{$c->id}}">
+                                            <button type="submit" class="btn btn-success btn-xs">Asignar</button>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td><a class="btn btn-primary btn-xs"
+                                        href="">
+                                        Pedir informe
+                                    </a>
+                                </td>
+
                             </tr>
-                            </thead>
-
-
                         @endforeach
                     </table>
                 @endif
