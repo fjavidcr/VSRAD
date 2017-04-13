@@ -60,7 +60,7 @@ class User extends Authenticatable
     }
 
     public function getCompleteName() {
-        return User::$title[$this->rol] . ". " . $this->name;
+        return User::$title[$this->rol] . ". " . $this->name .' '. $this->apellidos;
     }
 
     public function proyectos()
