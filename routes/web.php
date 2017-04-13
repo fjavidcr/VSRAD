@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('director_comercial/asignar_tecnico', 'DirectorComercialController@asignar_tecnico')->name('director_comercial.asignar_tecnico');
         Route::post('director_comercial/asignar_oferta', 'DirectorComercialController@asignar_oferta')->name('director_comercial.asignar_oferta');
+        Route::post('director_comercial/añadir_cliente', 'DirectorComercialController@añadir_cliente')->name('director_comercial.añadir_cliente');
 
         Route::resource('director_comercial', 'DirectorComercialController');
     });

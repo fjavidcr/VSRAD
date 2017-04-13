@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class DirectorComercialController extends Controller
 {
@@ -16,10 +17,10 @@ class DirectorComercialController extends Controller
         $user = \Auth::user();
         $users = \App\User::all();
         $comerciales = array();
-        foreach ( $users as $u) {
+        foreach ( $users as $u)
             if ($u->hasRol("comercial"))
                 array_push($comerciales, $u);
-        }
+
         return view('director_comercial.index', compact('user', 'comerciales'));
     }
 
@@ -103,6 +104,27 @@ class DirectorComercialController extends Controller
         $comercial->save();
 
         $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
+        return redirect()->route('director_comercial.index');
+    }
+
+    public function añadir_cliente(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'password' => 'required',
+            'email' => 'required',
+            'id_comercial' => 'required'
+        ]);
+
+        $cliente = new \App\User();
+        $cliente->name = $request->input('name');
+        $cliente->email = $request->input('email');
+        $cliente->password = Hash::make($request->input('password'));
+        $cliente->id_comercial = $request->input('id_comercial');
+        $cliente->rol = 0;
+        $cliente->save();
+
+        $request->session()->flash('alert-success', 'Cliente añadido con éxito.');
         return redirect()->route('director_comercial.index');
     }
 }

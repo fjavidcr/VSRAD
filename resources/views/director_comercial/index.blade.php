@@ -54,6 +54,49 @@
         </div>
         </div>
         </div>
+
+        <div class="panel panel-default">
+        <div class="panel-heading"><h4><b> Añadir nuevo cliente </b></h4></div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="{{route('director_comercial.añadir_cliente')}}" method="post">
+
+                {{csrf_field()}}
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Nombre</label>
+                    <div class="col-sm-10">
+                        <input id="name" type="text" name="name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                        <input id="email" type="text" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">Contraseña</label>
+                    <div class="col-sm-10">
+                        <input id="password" type="password" name="password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="rol" class="col-sm-2 control-label">Comercial</label>
+                    <div class="col-sm-10">
+                        <select name="id_comercial" required>
+                            <option>Seleccionar un comercial</option>
+                            @foreach($comerciales as $u)
+                                <option value="{{$u->id}}">{{$u->name .' '. $u->apellidos}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" value="Añadir" class="btn btn-success">
+                </div>
+            </form>
+        </div>
+        </div>
+
     </div>
 
 @endsection
