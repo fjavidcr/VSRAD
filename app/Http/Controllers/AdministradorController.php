@@ -385,4 +385,3 @@ class AdministradorController extends Controller
         return redirect()->route('administrador.index');
     }
 }
-

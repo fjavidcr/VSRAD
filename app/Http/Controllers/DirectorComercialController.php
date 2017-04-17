@@ -152,7 +152,6 @@ class DirectorComercialController extends Controller
         foreach ($comprados as $c)
             $media_comprados += $c->coste;
 
-
         if(count($comprados)>0)
         $media_comprados = $media_comprados/count($comprados);
         else
@@ -165,10 +164,6 @@ class DirectorComercialController extends Controller
         $media_rechazados = $media_rechazados/count($rechazados);
         else
             $media_rechazados = "No hay rechazados";
-
-
-
-
 
         $pdf = \App::make('dompdf.wrapper');
         $contenido = "<h1>Informe</h1> 
