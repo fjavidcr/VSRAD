@@ -8,12 +8,37 @@ class Proyecto extends Model
 {
     protected $table = "proyectos";
 
-    public function isValidado() {
-        if ($this->validado == 1)
-            return "Proyecto validado";
+    public static $estados = [
+        'no_pendiente', 'pendiente', 'validado', 'no_validado', 'comprado', 'rechazado'
+    ];
 
-        return "Pendiente de validación";
+    public static $tituloEstados = [
+        'No pendiente', 'Pendiente', 'Validado', 'No validado', 'Comprado', 'Rechazado'
+    ];
+
+    public function getEstado() {
+        return Proyecto::$estados[$this->estado];
     }
+
+    public function getTecnico() {
+        return $tecnico = \App\User::findorFail($this->id_tecnico);
+    }
+
+    public function getTituloEstado() {
+        return Proyecto::$tituloEstados[$this->estado];
+    }
+
+    public function isValidado() {
+        return $this->getEstado() == "validado";
+    }
+
+    public function getCliente()
+    {
+        $cliente = \App\User::findOrFail($this->id_cliente);
+        return $cliente;
+    }
+
+    //TODO: revisar las relaciones
 
     public function cliente() {
         return $this->belongsTo('App\User', 'id_cliente');

@@ -46,6 +46,10 @@ class User extends Authenticatable
         return User::$roles[$this->rol];
     }
 
+    public function getTitle() {
+        return User::$title[$this->rol];
+    }
+
     public function hasId_comercial($id_comercial)
     {
         return $this->id_comercial == $id_comercial;
@@ -56,12 +60,17 @@ class User extends Authenticatable
     }
 
     public function getCompleteName() {
-        return User::$title[$this->rol] . ". " . $this->name;
+        return User::$title[$this->rol] . ". " . $this->name .' '. $this->apellidos;
     }
 
     public function proyectos()
     {
         return $this->hasMany('App\Proyecto', 'id_cliente');
+    }
+
+    public function proyectos_tecnico()
+    {
+        return $this->hasMany('App\Proyecto', 'id_tecnico');
     }
 
 }

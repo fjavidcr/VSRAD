@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class ComercialController extends Controller
+class DirectorComercialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,18 +16,12 @@ class ComercialController extends Controller
     {
         $user = \Auth::user();
         $users = \App\User::all();
-        //$users = DB::table('tabla')->select('columna')->get();
-        $clientes = array();
-        $tecnicos = array();
-        foreach ( $users as $u) {
-            if ($u->hasRol("cliente") && $u->hasId_comercial($user->id)) {
-                array_push($clientes, $u);
-            }
-            elseif ($u->hasRol("tecnico")) {
-                array_push($tecnicos, $u);
-            }
-        }
-        return view('comercial.index', compact('clientes', 'tecnicos' , 'user'));
+        $comerciales = array();
+        foreach ( $users as $u)
+            if ($u->hasRol("comercial"))
+                array_push($comerciales, $u);
+
+        return view('director_comercial.index', compact('user', 'comerciales'));
     }
 
     /**
@@ -95,37 +90,41 @@ class ComercialController extends Controller
         //
     }
 
-    public function asignar_tecnico(Request $request)
-    {
-        $this->validate($request, [
-            'id_tecnico' => 'required'
-        ]);
-
-        $id_proyecto = $request->input('id_proyecto');
-        $id_tecnico = $request->input('id_tecnico');
-
-        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
-        $proyecto->id_tecnico = $id_tecnico;
-        $proyecto->save();
-
-        $request->session()->flash('alert-success', 'Técnico asignado con éxito.');
-        return redirect()->route('comercial.index');
-    }
-
     public function asignar_oferta(Request $request)
     {
         $this->validate($request, [
             'oferta' => 'required'
         ]);
 
-        $id_proyecto = $request->input('id_proyecto');
+        $id = $request->input('id');
         $oferta = $request->input('oferta');
 
-        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
-        $proyecto->oferta = $oferta;
-        $proyecto->save();
+        $comercial = \App\User::findOrFail($id);
+        $comercial->oferta = $oferta;
+        $comercial->save();
 
         $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
-        return redirect()->route('comercial.index');
+        return redirect()->route('director_comercial.index');
+    }
+
+    public function añadir_cliente(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'password' => 'required',
+            'email' => 'required',
+            'id_comercial' => 'required'
+        ]);
+
+        $cliente = new \App\User();
+        $cliente->name = $request->input('name');
+        $cliente->email = $request->input('email');
+        $cliente->password = Hash::make($request->input('password'));
+        $cliente->id_comercial = $request->input('id_comercial');
+        $cliente->rol = 0;
+        $cliente->save();
+
+        $request->session()->flash('alert-success', 'Cliente añadido con éxito.');
+        return redirect()->route('director_comercial.index');
     }
 }

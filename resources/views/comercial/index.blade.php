@@ -18,42 +18,52 @@
                             <tr class="success">
                                 <th>ID de cliente: {{ $c->id }}</th>
                                 <th>Nombre: {{ $c->name }}</th>
-                                <th>Oferta: {{$c->oferta}}</th>
-                                <th><a class="btn btn-default btn-xs"
-                                       href="{{ route('comercial.asignarOfertaTecnico', $c->id) }}">
-                                        Editar asignación
-                                    </a>
-                                </th>
+                                <th>Estado </th>
+                                <th>Ténico </th>
+                                <th>Oferta </th>
                             </tr>
                             </thead>
-                            @if(count($c->proyectos) == 0)
-                                <tr>
-                                    <div class="alert alert-warning">
-                                        El cliente no tiene proyectos creados.
-                                    </div>
-                                </tr>
-                            @else
+
                                 @foreach($c->proyectos as $p)
                                     <tr>
                                         <td>ID de Proyecto: {{ $p->id }}</td>
                                         <td>{{ $p->nombre }}</td>
+                                        <td>{{$p->getTituloEstado()}}</td>
                                         <td>
-                                            @if($p->estado)
-                                                <p class="labelValidado-{{$c->id}}">Validado</p>
+                                            @if(!isset($p->id_tecnico))
+                                                <form action="{{route('comercial.asignar_tecnico')}}" method="post">
+                                                    {{csrf_field()}}
+                                                    <div class="form-inline">
+                                                        <select name="id_tecnico">
+                                                            <option>Seleccionar un técnico</option>
+                                                            @foreach($tecnicos as $t)
+                                                                <option value="{{$t->id}}">{{$t->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                        <button type="submit" class="btn btn-success btn-xs">Asignar</button>
+                                                    </div>
+                                                </form>
                                             @else
-                                                <p class="labelValidado-{{$c->id}}">Pendiente de validación</p>
+                                                {{$p->getTecnico()->name}}
                                             @endif
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-xs"
-                                               href="{{ route('proyectos.show', $c->id) }}">
-                                                Ver proyecto
-                                            </a>
-
+                                            @if($p->oferta == 0 && $p->getEstado() == "validado" )
+                                                <form action="{{route('comercial.asignar_oferta')}}" method="post">
+                                                    {{csrf_field()}}
+                                                    <div class="form-inline">
+                                                        <input id="oferta" type="number" min="0" max="99.99" step="0.01" value="0.00" name="oferta"> %
+                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                        <button type="submit" class="btn btn-success btn-xs">Asignar</button>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                {{$p->oferta}} %
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
-                            @endif
                         @endforeach
                     </table>
                 @endif

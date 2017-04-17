@@ -1,14 +1,26 @@
 @extends('layouts.app')
 
+<!--- TODO: CAMBIAR TODO --->
+
 @section('content')
-    <div class="container">
-        <h3> Clientes de {{$user->name}}</h3>
+
+    <div class="container container-page">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Proyectos de {{ $user->name }}</h3>
+
+                <a href="{{ route('cliente.create') }}" class="btn btn-primary">
+                    Nuevo proyecto
+                </a>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-lg-12">
 
-                @if(count($clientes) == 0)
+                @if(count($proyectos) == 0)
                     <div class="alert alert-warning">
-                        <b> No tienes clientes asignados.</b>
+                        <b>Ups!</b> Parece que no tienes proyectos creados
                     </div>
                 @else
 
@@ -17,27 +29,25 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Cliente</th>
+                            <th>Proyecto</th>
                             <th>Estado</th>
                             <th></th>
                         </tr>
                         </thead>
-                        @foreach($clientes as $c)
+                        @foreach($proyectos as $p)
                             <tr>
-                                <td>{{ $c->id }}</td>
-                                <td>{{ $c->name }}</td>
+                                <td>{{ $p->id }}</td>
+                                <td>{{ $p->nombre }}</td>
                                 <td>
-                                    @if($c->validado)
-                                        <p class="labelValidado-{{$c->id}}">Validado</p>
+                                    @if($p->getEstado() != "no_pendiente")
+                                        <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
                                     @else
-                                        <p class="labelValidado-{{$c->id}}">Pendiente de validación</p>
+                                        <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-sm btn-primary">Pedir validación</a>
                                     @endif
-                                    <a data-id="{{$c->id}}" class="cambiarEstado btn btn-sm btn-primary">Cambiar
-                                        estado</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-default btn-xs"
-                                       href="{{ route('proyectos.show', $c->id) }}">
+                                       href="{{ route('cliente.show', $p->id) }}">
                                         Ver
                                     </a>
 
@@ -50,5 +60,4 @@
             </div>
         </div>
     </div>
-
 @endsection
