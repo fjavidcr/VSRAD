@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="container">
-        <h3> Panel de control</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4><b>Panel de control</b></h4></div>
+        <div class="panel-body">
         <div class="row">
             <div class="col-lg-12">
 
@@ -11,7 +13,7 @@
                        href="{{ route('administrador.form_crear_usuario')}}">
                         Crear usuario
                     </a>
-                <table class="table table-responsive table-condensed ">
+                <table class="table table-responsive table-condensed table-striped">
                     <thead>
                         <th>ID de usuario</th>
                         <th>Nombre</th>
@@ -43,7 +45,6 @@
                                         <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($u->oculto ==1)
-                                    <!-- TODO: Seguir con esto -->
 
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
@@ -83,7 +84,7 @@
                        href="{{ route('administrador.form_crear_producto')}}">
                         Crear producto
                     </a>
-                <table class="table table-responsive table-condensed">
+                <table class="table table-responsive table-condensed table-striped">
                     <thead>
                     <th>ID de producto</th>
                     <th>Nombre</th>
@@ -132,7 +133,7 @@
                        href="{{ route('administrador.form_crear_plano')}}">
                         Crear plano
                     </a>
-                <table class="table table-responsive table-condensed ">
+                <table class="table table-responsive table-condensed table-striped">
                     <thead>
                     <th>ID de plano</th>
                     <th>Nombre</th>
@@ -175,6 +176,8 @@
                     @endforeach
                 </table>
             </div>
+        </div>
+        </div>
         </div>
     </div>
 
