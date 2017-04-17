@@ -40,7 +40,7 @@
                                     </form>
                                 </td>
                                 <td><a class="btn btn-primary btn-xs"
-                                        href="">
+                                        href="{{route('director_comercial.informe_comercial', $c->id)}}">
                                         Pedir informe
                                     </a>
                                 </td>
