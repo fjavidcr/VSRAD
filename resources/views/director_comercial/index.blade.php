@@ -34,7 +34,7 @@
                                     <form action="{{route('director_comercial.asignar_oferta')}}" method="post">
                                         {{csrf_field()}}
                                         <div class="form-inline">
-                                            <input id="oferta" type="number" min="0" max="99.99" step="0.01" value="{{$c->oferta}}" name="oferta"> %
+                                            <input id="oferta" type="number" min="0" max="99.99" step="0.01" value="{{$c->oferta}}" name="oferta" required> %
                                             <input type="hidden" name="id" value="{{$c->id}}">
                                             <button type="submit" class="btn btn-success btn-xs">Asignar</button>
                                         </div>
@@ -59,6 +59,17 @@
         <div class="panel panel-default">
         <div class="panel-heading"><h4><b> Añadir nuevo cliente </b></h4></div>
         <div class="panel-body">
+
+            @if(count($errors))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $e)
+                            <li>{{$e}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form class="form-horizontal" action="{{route('director_comercial.añadir_cliente')}}" method="post">
 
                 {{csrf_field()}}

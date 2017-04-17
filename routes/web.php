@@ -12,26 +12,17 @@
 */
 
 /*Route::get('/', function () {
-
     return view('home');
-
 });*/
 
 Route::group(['middleware' => 'guest'], function () {
-
     //Route::get('/home', 'HomeController@index');
-
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::resource('/', 'RedireccionController');
 
-
-
-
     Route::group(['middleware' => 'rol:administrador'], function () {
-
         Route::get('administrador/form_crear_usuario', 'AdministradorController@form_crear_usuario')->name('administrador.form_crear_usuario');
         Route::post('administrador/crear_usuario', 'AdministradorController@crear_usuario')->name('administrador.crear_usuario');
         Route::get('administrador/editar_usuario/{id}', 'AdministradorController@form_editar_usuario')->name('administrador.form_editar_usuario');
@@ -56,7 +47,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('administrador', 'AdministradorController');
     });
 
-
     Route::group(['middleware' => 'rol:director_comercial'], function () {
 
         Route::post('director_comercial/asignar_tecnico', 'DirectorComercialController@asignar_tecnico')->name('director_comercial.asignar_tecnico');
@@ -66,7 +56,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::resource('director_comercial', 'DirectorComercialController');
     });
-
 
     Route::group(['middleware' => 'rol:cliente'], function () {
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
@@ -84,7 +73,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('comercial', 'ComercialController');
     });
 
-
     Route::group(['middleware' => 'rol:tecnico'], function () {
 
         Route::get('tecnico/proyecto/{id}', 'TecnicoController@show')->name('tecnico.proyecto');
@@ -93,15 +81,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::resource('tecnico', 'TecnicoController');
     });
-
-
-    //Route::resource('/proyectos', 'ProyectosController');
-    //Route::get('/proyectos/cambiarEstado/{id}', 'ProyectosController@cambiarEstado');
-
-    //Route::resource('/productos', 'ProductosController');
-
-    //Route::resource('/user', 'UserController');
-
 });
 
 Auth::routes();

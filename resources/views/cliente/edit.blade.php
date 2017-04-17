@@ -6,6 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h3>Editar proyecto</h3>
+
                 @if(count($errors))
                     <div class="alert alert-danger">
                         <ul>
@@ -22,12 +23,12 @@
                     <input type="hidden" name="id" value="{{$proyecto->id}}">
                     <div class="form-group">
                         <label for="nombre">Nombre del proyecto</label>
-                        <input id="nombre" type="text" name="nombre" value="{{ $proyecto->name }}" class="form-control">
+                        <input id="nombre" type="text" name="nombre" value="{{ $proyecto->name }}" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="configuracion">Configuracion</label>
-                        <textarea id="configuracion" name="configuracion" class="form-control">{{ $proyecto->configuracion }}</textarea>
+                        <textarea id="configuracion" name="configuracion" class="form-control" required>{{ $proyecto->configuracion }}</textarea>
                     </div>
 
                     <div class="row">
@@ -53,16 +54,6 @@
                     <input type="submit" value="Editar" class="btn btn-success">
 
                 </form>
-
-                @if(count($errors))
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $e)
-                                <li>{{$e}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
             </div>
         </div>
