@@ -20,8 +20,5 @@ class RoleCheck
             return redirect('/');
 
         return $next($request);
-
-
-
     }
 }

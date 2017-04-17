@@ -46,9 +46,10 @@ class ClienteController extends Controller
 
         $proyecto->nombre = $request->input('nombre');
         $proyecto->configuracion = $request->input('configuracion');
-        $proyecto->fecha_creacion= "01/01/01"; // Esta línea se elimina cuando esté funcionando (o se mete la fecha real si no se hace automáticamente)
+        $proyecto->fecha_creacion= "01/01/01";
         $proyecto->id_cliente = \Auth::user()->id;
         $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
+        $proyecto->estado = 0;
         $proyecto->save();
 
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
@@ -101,7 +102,7 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         // Mandar un mensaje de confirmacion
 
@@ -113,17 +114,12 @@ class ClienteController extends Controller
         return redirect()->route('cliente.index');
     }
 
-    public function redireccion()
-    {
-        return redirect()->route('cliente.index');
-    }
-
     public function cambiar_estado($id)
     {
         $proyecto = \App\Proyecto::findOrFail($id);
-        $proyecto->estado == 1;
+        $proyecto->estado = 1;
         $proyecto->save();
 
-        return $proyecto;
+        return redirect()->route('cliente.index');
     }
 }
