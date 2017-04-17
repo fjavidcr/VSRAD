@@ -110,8 +110,8 @@ class DirectorComercialController extends Controller
     public function añadir_cliente(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'password' => 'required',
+            'name' => 'required|min:5|max:16',
+            'password' => 'required|min:8',
             'email' => 'required',
             'id_comercial' => 'required'
         ]);
@@ -126,5 +126,64 @@ class DirectorComercialController extends Controller
 
         $request->session()->flash('alert-success', 'Cliente añadido con éxito.');
         return redirect()->route('director_comercial.index');
+    }
+
+    public function informe_comercial($id){
+        $c = \App\User::findOrFail($id);
+        $users = \App\User::all();
+        $clientes = array();
+        $pendientes = array();
+        $comprados = array();
+        $rechazados = array();
+        foreach ( $users as $u) {
+            if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
+                array_push($clientes, $u);
+                foreach ( $u->proyectos() as $p) {
+                    if ($p->getEstado() == "pendiente")
+                        array_push($pendientes, $p);
+                    elseif ($p->getEstado() == "comprado")
+                        array_push($comprados, $p);
+                    elseif ($p->getEstado() == "rechazado")
+                        array_push($rechazados, $p);
+                }
+            }
+        }
+        $media_comprados=0;
+        foreach ($comprados as $c)
+            $media_comprados += $c->coste;
+
+
+        if(count($comprados)>0)
+        $media_comprados = $media_comprados/count($comprados);
+        else
+            $media_comprados = "No hay comprados";
+
+        $media_rechazados=0;
+        foreach ($rechazados as $c)
+            $media_rechazados += $c->coste;
+        if(count($rechazados)>0)
+        $media_rechazados = $media_rechazados/count($rechazados);
+        else
+            $media_rechazados = "No hay rechazados";
+
+
+
+
+
+        $pdf = \App::make('dompdf.wrapper');
+        $contenido = "<h1>Informe</h1> 
+<img src=\"<?=Image::url('/img/LogoActioris.png',300,300,array('crop','grayscale'))?>\" />
+
+<h2>Nombre del comercial : ". $c->name. "</h2><ul><li>Número Clientes: ". count($clientes)
+            ."</li><li>Número Proyectos pendientes: ". count($pendientes)
+            ."</li><li>Número Proyectos comprados: ". count($comprados)
+            ."</li><li>Número Proyectos rechazados: ". count($rechazados)
+            ."</li> <li>Media Proyectos rechazados: ". $media_rechazados
+            ."</li> <li>Media Proyectos comprados: ". $media_comprados ."</li></ul> ";
+
+
+        $pdf->loadHTML($contenido);
+        return $pdf->stream();
+
     }
 }

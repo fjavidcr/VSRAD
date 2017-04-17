@@ -29,14 +29,15 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nombre</th>
+                            <th>Proyecto</th>
                             <th>Estado</th>
                             <th></th>
                         </tr>
                         </thead>
+                        <input type="hidden" value="{{ $cont = 0 }}">
                         @foreach($proyectos as $p)
                             <tr>
-                                <td>{{ $p->id }}</td>
+                                <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
                                 <td>
                                     @if($p->getEstado() != "no_pendiente")
