@@ -92,7 +92,7 @@ class AdministradorController extends Controller
     public function crear_usuario(Request $request){
 
         $this->validate($request, [
-            'name' => 'required|min:5|max:16',
+            'name' => 'required|min:3|max:16',
             'password' => 'required|min:8',
             'email' => 'required',
             'apellidos' => 'required|max:32',

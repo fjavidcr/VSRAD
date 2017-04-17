@@ -20,7 +20,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Proyecto</th>
+                             <th>Proyecto</th>
                             <th>Cliente</th>
                             <th>Estado</th>
                         </tr>
