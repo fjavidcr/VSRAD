@@ -18,7 +18,7 @@
                     <table class="table table-responsive table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th>ID </th>
+                            <th>#</th>
                             <th>Nombre </th>
                             <th>Estado </th>
                             <th>Oferta máxima </th>

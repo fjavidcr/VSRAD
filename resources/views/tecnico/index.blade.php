@@ -19,7 +19,7 @@
                     <table class="table table-responsive table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>#</th>
                             <th>Nombre proyecto</th>
                             <th>Nombre cliente</th>
                             <th>Estado</th>
