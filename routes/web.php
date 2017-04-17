@@ -69,6 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:cliente'], function () {
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
+        Route::get('/cliente/edit/{id}', 'ClienteController@edit')->name('cliente.edit');
+        Route::post('/cliente/editar', 'ClienteController@editar')->name('cliente.editar');
 
         Route::resource('cliente', 'ClienteController');
     });

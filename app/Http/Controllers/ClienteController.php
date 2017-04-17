@@ -38,7 +38,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nombre' => 'required|min:5',
+            'nombre' => 'required',
             'configuracion' => 'required'
         ]);
 
@@ -81,7 +81,8 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        //
+        $proyecto = \App\Proyecto::findOrFail($id);
+        return view('cliente.edit', compact('proyecto'));
     }
 
     /**
@@ -120,6 +121,29 @@ class ClienteController extends Controller
         $proyecto->estado = 1;
         $proyecto->save();
 
+        return redirect()->route('cliente.index');
+    }
+
+    public function editar(Request $request)
+    {
+        $this->validate($request, [
+            'nombre' => 'required',
+            'configuracion' => 'required'
+        ]);
+
+        $proyecto = new \App\Proyecto();
+
+        $proyecto->nombre = $request->input('nombre');
+        $proyecto->configuracion = $request->input('configuracion');
+        $hoy = getdate();
+        return $hoy;
+        $proyecto->fecha_creacion= $hoy;
+        $proyecto->id_cliente = \Auth::user()->id;
+        $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
+        $proyecto->estado = 0;
+        $proyecto->save();
+
+        $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
         return redirect()->route('cliente.index');
     }
 }
