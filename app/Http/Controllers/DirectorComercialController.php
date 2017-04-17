@@ -110,7 +110,7 @@ class DirectorComercialController extends Controller
     public function añadir_cliente(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|min:5|max:16',
+            'name' => 'required|min:3|max:16',
             'password' => 'required|min:8',
             'email' => 'required',
             'id_comercial' => 'required'
@@ -184,6 +184,5 @@ class DirectorComercialController extends Controller
 
         $pdf->loadHTML($contenido);
         return $pdf->stream();
-
     }
 }

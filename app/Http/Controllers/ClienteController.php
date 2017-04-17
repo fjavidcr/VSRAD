@@ -127,7 +127,7 @@ class ClienteController extends Controller
     public function editar(Request $request)
     {
         $this->validate($request, [
-            'nombre' => 'required',
+            'nombre' => 'required|min:3|max:16',
             'configuracion' => 'required'
         ]);
 

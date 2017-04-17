@@ -7,18 +7,28 @@
             <div class="col-lg-12">
                 <h3>Crear nuevo proyecto</h3>
 
+                @if(count($errors))
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $e)
+                                <li>{{$e}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('cliente.store') }}" method="post">
 
                     {{ csrf_field() }}
 
                     <div class="form-group">
                         <label for="nombre">Nombre del proyecto</label>
-                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control">
+                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="configuracion">Configuracion</label>
-                        <textarea id="configuracion" name="configuracion" class="form-control">{{ old('configuracion') }}</textarea>
+                        <textarea id="configuracion" name="configuracion" class="form-control" required>{{ old('configuracion') }}</textarea>
                     </div>
 
                     <div class="row">
@@ -44,16 +54,6 @@
                     <input type="submit" value="Crear" class="btn btn-success">
 
                 </form>
-
-                @if(count($errors))
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $e)
-                                <li>{{$e}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
             </div>
         </div>

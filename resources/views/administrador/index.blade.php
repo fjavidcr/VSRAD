@@ -134,7 +134,7 @@
 
                 <h4> Planos </h4>
                     <a class="btn btn-primary btn-xs"
-                       href="{{ route('administrador.form_crear_plano')}}">
+                       href="{{ route('administrador.form_crear_plano') }}">
                         Crear plano
                     </a>
                 <table class="table table-responsive table-condensed table-striped">

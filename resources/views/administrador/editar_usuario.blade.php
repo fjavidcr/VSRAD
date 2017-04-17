@@ -2,6 +2,17 @@
 
 @section('content')
     <h3>Editar usuario</h3>
+
+    @if(count($errors))
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $e)
+                    <li>{{$e}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form name="formulario" class="form-horizontal" action="{{route('administrador.editar_usuario')}}" method="post">
 
         {{csrf_field()}}
@@ -27,7 +38,7 @@
         <div class="form-group">
             <label for="password" class="col-sm-2 control-label">Contraseña</label>
             <div class="col-sm-10">
-                <input id="password" type="password" name="password">
+                <input id="password" type="password" name="password" required>
                 ( Si el campo se deja vacío no se modificará la contraseña )
             </div>
         </div>
@@ -65,6 +76,7 @@
             <input type="submit" value="Editar" class="btn btn-success" onclick="comprobar()">
         </div>
     </form>
+
     <script>
 
         function comprobar() {

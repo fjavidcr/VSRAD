@@ -8,12 +8,23 @@
                 <a href="{{ route('tecnico.index') }}"> &lt; Volver a los proyectos asignados</a>
 
                 <h3>{{ $proyecto->nombre }}</h3>
+
+                @if(count($errors))
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $e)
+                                <li>{{$e}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('tecnico.cambiar_estado') }}" method="post">
                     {{ csrf_field() }}
                     <input type="hidden" name="id_proyecto" value="{{$proyecto->id}}">
                     <div class="form-group">
                         <h4>Configuración</h4>
-                        <textarea id="configuracion" name="configuracion">{{ $proyecto->configuracion }}</textarea>
+                        <textarea id="configuracion" name="configuracion" required>{{ $proyecto->configuracion }}</textarea>
                     </div>
                     <div class="form-group">
                         <h4>Estado del proyecto</h4>
