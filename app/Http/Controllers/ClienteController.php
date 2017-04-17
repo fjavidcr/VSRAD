@@ -26,7 +26,8 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        return view('cliente.create');
+        $productos = \App\Producto::all();
+        return view('cliente.create', compact('productos', 'planos'));
     }
 
     /**

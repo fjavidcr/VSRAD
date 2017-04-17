@@ -61,7 +61,10 @@
 
     <script>
         var $ = go.GraphObject.make;
-        var myDiagram = $(go.Diagram, "planoCasaDiagram");
+        var myDiagram = $(go.Diagram, "planoCasaDiagram",
+            {
+                "undoManager.isEnabled": true // enable Ctrl-Z to undo and Ctrl-Y to redo
+            });
         var model = $(go.Model);
 
         myDiagram.nodeTemplate =
@@ -86,7 +89,7 @@
         model.nodeDataArray =
             [ // note that each node data object holds whatever properties it needs;
                 // for this app we add the "name" and "source" properties
-                {name: "Humo", source: "http://lorempixel.com/100/100"},
+                {name: "Humo", source: ""},
                 {name: "Puerta", source: "http://lorempixel.com/100/100"},
                 {name: "Centralita", source: "http://lorempixel.com/100/100"}
             ];

@@ -13,7 +13,7 @@
 }
 
 .canvas-casa-1 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa1.png") no-repeat;
+    background: #eaf9ca url("../img/planos/casa1.png") no-repeat;
     background-size: cover;
 }
 
