@@ -97,8 +97,9 @@ class AdministradorController extends Controller
             'email' => 'required',
             'apellidos' => 'required',
             'direccion_fisica' => 'required',
-            'telefono' => 'required',
-            'rol' => 'required'
+            'telefono' => 'required|min:9',
+            'rol' => 'required',
+            'dni' => 'required|min:9'
         ]);
 
         $user = new \App\User();
@@ -110,10 +111,33 @@ class AdministradorController extends Controller
         $user->direccion_fisica = $request->input('direccion_fisica');
         $user->telefono = $request->input('telefono');
         $user->rol = $request->input('rol');
-        $user->save();
+        $dni = $request->input('dni');
 
-        $request->session()->flash('alert-success', 'Usuario creado con éxito.');
-        return redirect()->route('administrador.index');
+        /*
+         * Comprobación de la letra del DNI
+         * */
+        $dni = strtoupper($dni);
+        $letra = substr($dni, -1, 1);
+        $numero = substr($dni, 0, 8);
+
+        // Si es un NIE hay que cambiar la primera letra por 0, 1 ó 2 dependiendo de si es X, Y o Z.
+        $numero = str_replace(array('X', 'Y', 'Z'), array(0, 1, 2), $numero);
+
+        $modulo = $numero % 23;
+        $letras_validas = "TRWAGMYFPDXBNJZSQVHLCKE";
+        $letra_correcta = substr($letras_validas, $modulo, 1);
+
+        if($letra_correcta==$letra) {
+            $user->dni = $dni;
+            $user->save();
+            return redirect()->route('administrador.index');
+            $request->session()->flash('alert-success', 'Usuario creado con éxito.');
+            //return "Letra incorrecta, la letra deber&iacute;a ser la $letra_correcta.";
+        }
+        else{
+            $request->session()->flash('alert-warning', 'DNI incorrecto.');
+            return redirect()->back();
+        }
 
     }
 
@@ -130,8 +154,9 @@ class AdministradorController extends Controller
             'email' => 'required',
             'apellidos' => 'required',
             'direccion_fisica' => 'required',
-            'telefono' => 'required',
-            'rol' => 'required'
+            'telefono' => 'required|min:9',
+            'rol' => 'required',
+            'dni' => 'required|min:9'
         ]);
 
         $user = \App\User::findOrFail($request->input('id'));
@@ -145,10 +170,33 @@ class AdministradorController extends Controller
         $user->direccion_fisica = $request->input('direccion_fisica');
         $user->telefono = $request->input('telefono');
         $user->rol = $request->input('rol');
-        $user->save();
+        $dni = $request->input('dni');
 
-        $request->session()->flash('alert-success', 'Usuario editado con éxito.');
-        return redirect()->route('administrador.index');
+        /*
+         * Comprobación de la letra del DNI
+         * */
+        $dni = strtoupper($dni);
+        $letra = substr($dni, -1, 1);
+        $numero = substr($dni, 0, 8);
+
+        // Si es un NIE hay que cambiar la primera letra por 0, 1 ó 2 dependiendo de si es X, Y o Z.
+        $numero = str_replace(array('X', 'Y', 'Z'), array(0, 1, 2), $numero);
+
+        $modulo = $numero % 23;
+        $letras_validas = "TRWAGMYFPDXBNJZSQVHLCKE";
+        $letra_correcta = substr($letras_validas, $modulo, 1);
+
+        if($letra_correcta==$letra) {
+            $user->dni = $dni;
+            $user->save();
+            return redirect()->route('administrador.index');
+            $request->session()->flash('alert-success', 'Usuario editado con éxito.');
+            //return "Letra incorrecta, la letra deber&iacute;a ser la $letra_correcta.";
+        }
+        else{
+            $request->session()->flash('alert-warning', 'DNI incorrecto.');
+            return redirect()->back();
+        }
 
     }
 
