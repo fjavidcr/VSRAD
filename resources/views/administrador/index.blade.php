@@ -15,11 +15,12 @@
                     </a>
                 <table class="table table-responsive table-condensed table-striped">
                     <thead>
-                        <th>ID de usuario</th>
+                        <th> #</th>
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Dirección</th>
                         <th>Teléfono</th>
+                        <th>DNI</th>
                         <th>Rol</th>
                     </thead>
                     @foreach($users as $u)
@@ -29,6 +30,7 @@
                             <td>{{ $u->email }} </td>
                             <td>{{ $u->direccion_fisica}} </td>
                             <td>{{ $u->telefono }} </td>
+                            <td>{{ $u->dni }} </td>
                             <td>{{ $u->getTitle() }}</td>
                             <td>
                                 <a class="btn btn-default btn-xs"
@@ -86,7 +88,7 @@
                     </a>
                 <table class="table table-responsive table-condensed table-striped">
                     <thead>
-                    <th>ID de producto</th>
+                    <th>#</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Restricciones</th>
@@ -135,7 +137,7 @@
                     </a>
                 <table class="table table-responsive table-condensed table-striped">
                     <thead>
-                    <th>ID de plano</th>
+                    <th>#</th>
                     <th>Nombre</th>
                     <th>Imagen</th>
                     </thead>
