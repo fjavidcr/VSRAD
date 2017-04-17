@@ -13,22 +13,23 @@
                 @else
 
                     <table class="table table-responsive table-bordered ">
+                        <input type="hidden" value="{{ $cont = 0 }}">
                         @foreach($clientes as $c)
                             <thead>
                             <tr class="success">
-                                <th>ID de cliente: {{ $c->id }}</th>
-                                <th>Nombre: {{ $c->name }}</th>
+                                <th># {{ ++$cont }}  {{ $c->name }}</th>
+                                <th>Nombre</th>
                                 <th>Estado </th>
                                 <th>Ténico </th>
                                 <th>Oferta </th>
                             </tr>
                             </thead>
-
+                            <input type="hidden" value="{{ $cont2 = 0 }}">
                                 @foreach($c->proyectos as $p)
                                     <tr>
-                                        <td>ID de Proyecto: {{ $p->id }}</td>
+                                        <td># {{ $cont }}.{{ ++$cont2 }}</td>
                                         <td>{{ $p->nombre }}</td>
-                                        <td>{{$p->getTituloEstado()}}</td>
+                                        <td>{{ $p->getTituloEstado() }}</td>
                                         <td>
                                             @if(!isset($p->id_tecnico))
                                                 <form action="{{route('comercial.asignar_tecnico')}}" method="post">

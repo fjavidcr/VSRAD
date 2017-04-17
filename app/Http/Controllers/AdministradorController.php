@@ -92,10 +92,10 @@ class AdministradorController extends Controller
     public function crear_usuario(Request $request){
 
         $this->validate($request, [
-            'name' => 'required|min:5',
-            'password' => 'required',
+            'name' => 'required|min:5|max:16',
+            'password' => 'required|min:8',
             'email' => 'required',
-            'apellidos' => 'required',
+            'apellidos' => 'required|max:32',
             'direccion_fisica' => 'required',
             'telefono' => 'required|min:9',
             'rol' => 'required',
@@ -150,9 +150,9 @@ class AdministradorController extends Controller
     public function editar_usuario(Request $request){
 
         $this->validate($request, [
-            'name' => 'required|min:5',
-            'email' => 'required',
-            'apellidos' => 'required',
+            'name' => 'required|min:5|max:16',
+            'email' => 'required|min:8',
+            'apellidos' => 'required|max:32',
             'direccion_fisica' => 'required',
             'telefono' => 'required|min:9',
             'rol' => 'required',
@@ -210,8 +210,9 @@ class AdministradorController extends Controller
     public function crear_producto(Request $request){
 
         $this->validate($request, [
-            'nombre' => 'required|min:5',
-            'descripcion' => 'required',
+            'nombre' => 'required|min:5|max:16',
+            'descripcion' => 'required|max:120',
+            'restricciones' => 'max:120',
             'coste' => 'required',
             'imagen' => 'required'
         ]);
@@ -246,8 +247,9 @@ class AdministradorController extends Controller
     public function editar_producto(Request $request){
 
         $this->validate($request, [
-            'nombre' => 'required',
-            'descripcion' => 'required',
+            'nombre' => 'required|min:5|max:16',
+            'descripcion' => 'required|max:120',
+            'restricciones' => 'max:120',
             'coste' => 'required'
         ]);
 
@@ -284,7 +286,7 @@ class AdministradorController extends Controller
     public function crear_plano(Request $request){
 
         $this->validate($request, [
-            'nombre' => 'required|min:5',
+            'nombre' => 'required|min:5|max:16',
             'imagen' => 'required'
         ]);
 
@@ -317,7 +319,7 @@ class AdministradorController extends Controller
     public function editar_plano(Request $request){
 
         $this->validate($request, [
-            'nombre' => 'required',
+            'nombre' => 'required|max:16',
         ]);
 
         $plano = \App\Plano::findOrFail($request->input('id'));
