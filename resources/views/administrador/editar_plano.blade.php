@@ -2,6 +2,17 @@
 
 @section('content')
     <h3>Editar plano</h3>
+
+    @if(count($errors))
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $e)
+                    <li>{{$e}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form class="form-horizontal" enctype="multipart/form-data" action="{{route('administrador.editar_plano')}}" method="post">
 
         {{csrf_field()}}
@@ -9,7 +20,7 @@
         <div class="form-group">
             <label for="nombre" class="col-sm-2 control-label">Nombre</label>
             <div class="col-sm-10">
-                <input id="nombre" type="text" name="nombre" value=" {{$plano->nombre}} ">
+                <input id="nombre" type="text" name="nombre" value=" {{$plano->nombre}} " required>
             </div>
         </div>
         <div class="form-group">
