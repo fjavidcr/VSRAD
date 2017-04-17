@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="container">
-        <h3> Panel de control</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4><b>Panel de control</b></h4></div>
+        <div class="panel-body">
         <div class="row">
             <div class="col-lg-12">
 
@@ -11,7 +13,7 @@
                        href="{{ route('administrador.form_crear_usuario')}}">
                         Crear usuario
                     </a>
-                <table class="table table-responsive table-condensed ">
+                <table class="table table-responsive table-condensed table-striped">
                     <thead>
                         <th>ID de usuario</th>
                         <th>Nombre</th>
@@ -43,11 +45,33 @@
                                         <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($u->oculto ==1)
-                                    <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="id" value="{{$u->id}}">
-                                        <input type="submit" class="btn btn-warning btn-xs" value="Habilitar">
-                                    </form>
+
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
+                                        Habilitar
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Habilitar Usuario</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
+                                                        {{ csrf_field() }}
+                                                        <input type="hidden" name="id" value="{{$u->id}}">
+                                                        <label for="password" class="control-label">Nueva contraseña  </label>
+                                                        <input type="password" name="password">
+                                                        <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">Para habilitar de nuevo a {{ $u->name .' '. $u->apellidos}} es necesario establecer una nueva contraseña.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 @endif
                                 </div>
                             </td>
@@ -60,7 +84,7 @@
                        href="{{ route('administrador.form_crear_producto')}}">
                         Crear producto
                     </a>
-                <table class="table table-responsive table-condensed">
+                <table class="table table-responsive table-condensed table-striped">
                     <thead>
                     <th>ID de producto</th>
                     <th>Nombre</th>
@@ -95,7 +119,7 @@
                                     <form action="{{ route('administrador.habilitar_producto') }}" method="post">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{$p->id}}">
-                                        <input type="submit" class="btn btn-warning btn-xs" value="Habilitar">
+                                        <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
                                     </form>
                                 @endif
                                 </div>
@@ -109,7 +133,7 @@
                        href="{{ route('administrador.form_crear_plano')}}">
                         Crear plano
                     </a>
-                <table class="table table-responsive table-condensed ">
+                <table class="table table-responsive table-condensed table-striped">
                     <thead>
                     <th>ID de plano</th>
                     <th>Nombre</th>
@@ -136,34 +160,13 @@
                                     </form>
                                 @elseif($p->oculto ==1)
 
-                                        <!-- TODO: Seguir con esto -->
 
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                                            Habilitar
-                                        </button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form action="{{ route('administrador.habilitar_plano') }}" method="post">
-                                                            {{ csrf_field() }}
-                                                            <input type="hidden" name="id" value="{{$p->id}}">
-                                                            <input type="submit" class="btn btn-warning btn-xs" value="Habilitar">
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                                            <form action="{{ route('administrador.habilitar_plano') }}" method="post">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" name="id" value="{{$p->id}}">
+                                                <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
+                                            </form>
 
 
                                 @endif
@@ -173,6 +176,8 @@
                     @endforeach
                 </table>
             </div>
+        </div>
+        </div>
         </div>
     </div>
 
