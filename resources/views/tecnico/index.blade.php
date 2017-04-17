@@ -20,14 +20,15 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nombre proyecto</th>
-                            <th>Nombre cliente</th>
+                             <th>Proyecto</th>
+                            <th>Cliente</th>
                             <th>Estado</th>
                         </tr>
                         </thead>
+                        <input type="hidden" value="{{ $cont = 0 }}">
                         @foreach($proyectos as $p)
                             <tr>
-                                <td>{{ $p->id }}</td>
+                                <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
                                 <td>{{ $p->getCliente()->name }}</td>
                                 <td>{{ $p->getTituloEstado() }}</td>

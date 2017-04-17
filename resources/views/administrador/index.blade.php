@@ -15,7 +15,7 @@
                     </a>
                 <table class="table table-responsive table-condensed table-striped">
                     <thead>
-                        <th> #</th>
+                        <th>#</th>
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Dirección</th>
@@ -23,9 +23,10 @@
                         <th>DNI</th>
                         <th>Rol</th>
                     </thead>
+                    <input type="hidden" value="{{ $cont = 0 }}">
                     @foreach($users as $u)
                         <tr @if($u->oculto ==1) class="danger" @endif>
-                            <td>{{ $u->id }}</td>
+                            <td>{{ ++$cont }}</td>
                             <td>{{ $u->name . ' ' . $u->apellidos}}</td>
                             <td>{{ $u->email }} </td>
                             <td>{{ $u->direccion_fisica}} </td>
@@ -44,7 +45,7 @@
                                     <form action="{{ route('administrador.deshabilitar_usuario') }}" method="post">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{$u->id}}">
-                                        <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
+                                        <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($u->oculto ==1)
 
@@ -95,9 +96,10 @@
                     <th>Coste</th>
                     <th>Imagen</th>
                     </thead>
+                    <input type="hidden" value="{{ $cont = 0 }}">
                     @foreach($productos as $p)
                         <tr @if($p->oculto ==1) class="danger" @endif>
-                            <td>{{ $p->id }}</td>
+                            <td>{{ ++$cont }}</td>
                             <td>{{ $p->nombre }}</td>
                             <td>{{ $p->descripcion }} </td>
                             <td>{{ $p->restricciones}} </td>
@@ -115,7 +117,7 @@
                                     <form action="{{ route('administrador.deshabilitar_producto') }}" method="post">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{$p->id}}">
-                                        <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
+                                        <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($p->oculto ==1)
                                     <form action="{{ route('administrador.habilitar_producto') }}" method="post">
@@ -141,9 +143,10 @@
                     <th>Nombre</th>
                     <th>Imagen</th>
                     </thead>
+                    <input type="hidden" value="{{ $cont = 0 }}">
                     @foreach($planos as $p)
                         <tr @if($p->oculto ==1) class="danger" @endif>
-                            <td>{{ $p->id }}</td>
+                            <td>{{ ++$cont }}</td>
                             <td>{{ $p->nombre }}</td>
                             <td>{{ $p->imagen }}</td>
                             <td>
@@ -158,7 +161,7 @@
                                     <form action="{{ route('administrador.deshabilitar_plano') }}" method="post">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{$p->id}}">
-                                        <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
+                                        <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($p->oculto ==1)
 

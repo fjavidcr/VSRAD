@@ -38,7 +38,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nombre' => 'required|min:5',
+            'nombre' => 'required|min:5|max:16',
             'configuracion' => 'required'
         ]);
 

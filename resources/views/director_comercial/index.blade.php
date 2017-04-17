@@ -19,14 +19,15 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nombre </th>
-                            <th>Estado </th>
-                            <th>Oferta máxima </th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                            <th>Oferta máxima</th>
                         </tr>
                         </thead>
+                        <input type="hidden" value="{{ $cont = 0 }}">
                         @foreach($comerciales as $c)
                             <tr>
-                                <td>{{ $c->id }}</td>
+                                <td>{{ ++$cont }}</td>
                                 <td>{{ $c->name .' '. $c->apellidos }}</td>
                                 <td> @if($c->oculto == 0) Habilitado @else Deshabilitado @endif </td>
                                 <td>

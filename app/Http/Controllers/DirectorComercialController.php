@@ -110,8 +110,8 @@ class DirectorComercialController extends Controller
     public function añadir_cliente(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'password' => 'required',
+            'name' => 'required|min:5|max:16',
+            'password' => 'required|min:8',
             'email' => 'required',
             'id_comercial' => 'required'
         ]);
