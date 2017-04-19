@@ -135,6 +135,7 @@ class DirectorComercialController extends Controller
         $pendientes = array();
         $comprados = array();
         $rechazados = array();
+        $hoy = date("d/m/Y");
         foreach ( $users as $u) {
             if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
                 array_push($clientes, $u);
@@ -171,15 +172,104 @@ class DirectorComercialController extends Controller
 
 
         $pdf = \App::make('dompdf.wrapper');
-        $contenido = "<h1>Informe</h1> 
-<img src=\"<?=Image::url('/img/LogoActioris.png',300,300,array('crop','grayscale'))?>\" />
 
-<h2>Nombre del comercial : ". $c->name. "</h2><ul><li>Número Clientes: ". count($clientes)
-            ."</li><li>Número Proyectos pendientes: ". count($pendientes)
-            ."</li><li>Número Proyectos comprados: ". count($comprados)
-            ."</li><li>Número Proyectos rechazados: ". count($rechazados)
-            ."</li> <li>Media Proyectos rechazados: ". $media_rechazados
-            ."</li> <li>Media Proyectos comprados: ". $media_comprados ."</li></ul> ";
+        $contenido =
+
+
+        "<head>
+    <meta charset=\"utf-8\">
+    <title>Informe ". $c->name. "</title>
+    <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
+  </head>
+  <body>
+    <header class=\"clearfix\">
+      <div id=\"logo\">
+        <img src=\"LogoActioris.png\"><h2>Actioris ".$hoy."</h2>   
+      </div>
+      <div id=\"company\">
+        <h2 class=\"name\">Company Name</h2>
+        <div>Avd Pene Grande, AZ 85004, Madrid</div>
+        <div>(602) 519-0450</div>
+        <div><a href=\"mailto:company@example.com\">company@example.com</a></div>
+      </div>
+      </div>
+    </header>
+    <main>
+      <div id=\"details\" class=\"clearfix\">
+        <div id=\"client\">
+          <div class=\"to\">Nombre: </div>
+          <h2 class=\"name\">". $c->name. "</h2>
+          <div class=\"address\">Avd Pene Grande, AZ 85004, Madrid</div>
+          <div class=\"email\"><a href=\"mailto:john@example.com\">john@example.com</a></div>
+        </div>
+        <div id=\"invoice\">
+          <h1>INVOICE 3-2-1</h1>
+          <div class=\"date\">Date of Invoice: 01/06/2014</div>
+          <div class=\"date\">Due Date: 30/06/2014</div>
+        </div>
+      </div>
+      <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+        <thead>
+          <tr>
+            <th class=\"no\">#</th>
+            <th class=\"desc\">DESCRIPTION</th>
+            <th class=\"unit\">TOTAL</th>
+          
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class=\"no\">01</td>
+            <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
+            <td class=\"unit\">". count($clientes)."</td>
+          </tr>
+          <tr>
+            <td class=\"no\">02</td>
+            <td class=\"desc\"><h3>Número Proyectos pendientes: </h3>Descripcion</td>
+            <td class=\"unit\">".count($pendientes)."</td>
+          </tr>
+          <tr>
+            <td class=\"no\">03</td>
+            <td class=\"desc\"><h3>Número Proyectos comprados: </h3>Descripcion</td>
+            <td class=\"unit\">". count($comprados)."</td>
+          </tr>
+          <tr>
+            <td class=\"no\">04</td>
+            <td class=\"desc\"><h3>Número Proyectos rechazados: </h3>Descripcion</td>
+            <td class=\"unit\">". count($rechazados)."</td>
+          </tr>
+          <tr>
+            <td class=\"no\">05</td>
+            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Descripcion</td>
+            <td class=\"unit\">". $media_rechazados."</td>
+          </tr>
+          <tr>
+            <td class=\"no\">06</td>
+            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Descripcion</td>
+            <td class=\"unit\">". $media_comprados."</td>
+          </tr>        
+        </tbody>        
+      </table>
+      <div id=\"thanks\">Muchas Gracias!!</div>
+      <div id=\"notices\">
+        <div>Advertencia:</div>
+        <div class=\"notice\">No se devuelve nada!</div>
+      </div>
+    </main>
+    <footer>
+      Gracias.
+    </footer>
+  </body>"
+
+
+
+        ;
+
+
+
+        
+
+
 
 
         $pdf->loadHTML($contenido);
