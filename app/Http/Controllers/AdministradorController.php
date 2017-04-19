@@ -90,7 +90,6 @@ class AdministradorController extends Controller
     }
 
     public function crear_usuario(Request $request){
-
         $this->validate($request, [
             'name' => 'required|min:3|max:16',
             'password' => 'required|min:8',
@@ -138,19 +137,15 @@ class AdministradorController extends Controller
             $request->session()->flash('alert-warning', 'DNI incorrecto.');
             return redirect()->back();
         }
-
     }
 
     public function form_crear_usuario(){
-
-
         return view('administrador.crear_usuario');
     }
 
     public function editar_usuario(Request $request){
-
         $this->validate($request, [
-            'name' => 'required|min:5|max:16',
+            'name' => 'required|min:3|max:16',
             'email' => 'required|min:8',
             'apellidos' => 'required|max:32',
             'direccion_fisica' => 'required',
@@ -197,7 +192,6 @@ class AdministradorController extends Controller
             $request->session()->flash('alert-warning', 'DNI incorrecto.');
             return redirect()->back();
         }
-
     }
 
     public function form_editar_usuario($id)
@@ -208,9 +202,8 @@ class AdministradorController extends Controller
     }
 
     public function crear_producto(Request $request){
-
         $this->validate($request, [
-            'nombre' => 'required|min:5|max:16',
+            'nombre' => 'required|min:3|max:16',
             'descripcion' => 'required|max:120',
             'restricciones' => 'max:120',
             'coste' => 'required',
@@ -235,19 +228,15 @@ class AdministradorController extends Controller
 
         $request->session()->flash('alert-success', 'Producto creado con éxito.');
         return redirect()->route('administrador.index');
-
     }
 
     public function form_crear_producto(){
-
-
         return view('administrador.crear_producto');
     }
 
     public function editar_producto(Request $request){
-
         $this->validate($request, [
-            'nombre' => 'required|min:5|max:16',
+            'nombre' => 'required|min:3|max:16',
             'descripcion' => 'required|max:120',
             'restricciones' => 'max:120',
             'coste' => 'required'
@@ -273,7 +262,6 @@ class AdministradorController extends Controller
 
         $request->session()->flash('alert-success', 'Producto editado con éxito.');
         return redirect()->route('administrador.index');
-
     }
 
     public function form_editar_producto($id)
@@ -284,9 +272,8 @@ class AdministradorController extends Controller
     }
 
     public function crear_plano(Request $request){
-
         $this->validate($request, [
-            'nombre' => 'required|min:5|max:16',
+            'nombre' => 'required|min:3|max:16',
             'imagen' => 'required'
         ]);
 
@@ -307,19 +294,15 @@ class AdministradorController extends Controller
 
         $request->session()->flash('alert-success', 'Plano creado con éxito.');
         return redirect()->route('administrador.index');
-
     }
 
     public function form_crear_plano(){
-
-
         return view('administrador.crear_plano');
     }
 
     public function editar_plano(Request $request){
-
         $this->validate($request, [
-            'nombre' => 'required|max:16',
+            'nombre' => 'required|min:3|max:16',
         ]);
 
         $plano = \App\Plano::findOrFail($request->input('id'));
@@ -337,7 +320,6 @@ class AdministradorController extends Controller
 
         $request->session()->flash('alert-success', 'Plano editado con éxito.');
         return redirect()->route('administrador.index');
-
     }
 
     public function form_editar_plano($id)
@@ -348,7 +330,6 @@ class AdministradorController extends Controller
     }
 
     public function deshabilitar_usuario(Request $request){
-
         $user = \App\User::findOrFail($request->input('id'));
         $user->oculto = 1;
         $user->password = '';
@@ -358,9 +339,8 @@ class AdministradorController extends Controller
     }
 
     public function habilitar_usuario(Request $request){
-
         $this->validate($request, [
-            'password' => 'required'
+            'password' => 'required|min:8'
         ]);
 
         $user = \App\User::findOrFail($request->input('id'));
@@ -405,4 +385,3 @@ class AdministradorController extends Controller
         return redirect()->route('administrador.index');
     }
 }
-

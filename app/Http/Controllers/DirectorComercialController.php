@@ -110,7 +110,7 @@ class DirectorComercialController extends Controller
     public function añadir_cliente(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|min:5|max:16',
+            'name' => 'required|min:3|max:16',
             'password' => 'required|min:8',
             'email' => 'required',
             'id_comercial' => 'required'
@@ -153,7 +153,6 @@ class DirectorComercialController extends Controller
         foreach ($comprados as $c)
             $media_comprados += $c->coste;
 
-
         if(count($comprados)>0)
         $media_comprados = $media_comprados/count($comprados);
         else
@@ -166,10 +165,6 @@ class DirectorComercialController extends Controller
         $media_rechazados = $media_rechazados/count($rechazados);
         else
             $media_rechazados = "No hay rechazados";
-
-
-
-
 
         $pdf = \App::make('dompdf.wrapper');
 
@@ -274,6 +269,5 @@ class DirectorComercialController extends Controller
 
         $pdf->loadHTML($contenido);
         return $pdf->stream();
-
     }
 }

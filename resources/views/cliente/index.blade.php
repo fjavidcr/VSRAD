@@ -43,14 +43,21 @@
                                     @if($p->getEstado() != "no_pendiente")
                                         <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
                                     @else
-                                        <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-sm btn-primary">Pedir validación</a>
+                                        <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-xs btn-primary">Pedir validación</a>
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="btn btn-default btn-xs"
-                                       href="{{ route('cliente.show', $p->id) }}">
-                                        Ver
-                                    </a>
+                                    @if($p->getEstado() == "no_pendiente")
+                                        <a class="btn btn-default btn-xs"
+                                           href="{{ route('cliente.edit', $p->id) }}">
+                                            Editar
+                                        </a>
+                                    @else
+                                        <a class="btn btn-default btn-xs"
+                                           href="{{ route('cliente.show', $p->id) }}">
+                                            Ver
+                                        </a>
+                                    @endif
 
                                 </td>
                             </tr>
