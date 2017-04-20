@@ -43,7 +43,7 @@
                                     </div>
                                 </span>
                                 <span style="display: inline-block; vertical-align: top; width:80%">
-                                    <div id="myDiagramDiv" class="canvas-plano" style="background-color: #e4f9e6; border:  solid  1px #d3e0e9;"></div>
+                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #e4f9e6; border:  solid  1px #d3e0e9;"></div>
                                 </span>
                             </div>
 
@@ -59,9 +59,9 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="btn-group-vertical" role="group">
-                                        <a class="btn btn-danger boton-clear">Limpiar componentes</a>
+                                        <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
                                         <a class="btn btn-default boton-cambiar-plano">Cambiar plano</a>
-                                        <a class="btn btn-default">Limpiar</a>
+                                        <!---<a class="btn btn-default">Limpiar</a>--->
                                     </div>
                                 </div>
                             </div>
@@ -269,6 +269,20 @@
             {key: "b", color: blue},
             {key: "y", color: yellow}
         ]);
+
+        jQuery(".boton-clear").click(function() {
+
+            var confirmBox = confirm("Seguro que quieres borrar todo?");
+            if (confirmBox == true)
+                myDiagram.clear();
+        });
+
+        var casa_actual = 1;
+        jQuery(".boton-cambiar-plano").click(function() {
+            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
+            casa_actual++;
+            jQuery("#myDiagramDiv").addClass("canvas-casa-" + casa_actual);
+        });
 
 
     </script>
