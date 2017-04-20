@@ -23,12 +23,14 @@
 
                     <div class="form-group">
                         <label for="nombre">Nombre del proyecto</label>
-                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control" required>
+                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control"
+                               required>
                     </div>
 
                     <div class="form-group">
                         <label for="configuracion">Configuracion</label>
-                        <textarea id="configuracion" name="configuracion" class="form-control" required>{{ old('configuracion') }}</textarea>
+                        <textarea id="configuracion" name="configuracion" class="form-control"
+                                  required>{{ old('configuracion') }}</textarea>
                     </div>
 
                     <div class="row">
@@ -65,7 +67,6 @@
             {
                 "undoManager.isEnabled": true // enable Ctrl-Z to undo and Ctrl-Y to redo
             });
-        var model = $(go.Model);
 
         myDiagram.nodeTemplate =
             $(go.Node, "Vertical",
@@ -86,6 +87,7 @@
                     new go.Binding("text", "name"))
             );
 
+        var model = $(go.Model);
         model.nodeDataArray =
             [ // note that each node data object holds whatever properties it needs;
                 // for this app we add the "name" and "source" properties
@@ -96,7 +98,7 @@
 
         myDiagram.model = model;
 
-        jQuery(".boton-clear").click(function() {
+        jQuery(".boton-clear").click(function () {
 
             var confirmBox = confirm("Seguro que quieres borrar todo?");
             if (confirmBox == true)
@@ -104,7 +106,7 @@
         });
 
         var casa_actual = 1;
-        jQuery(".boton-cambiar-plano").click(function() {
+        jQuery(".boton-cambiar-plano").click(function () {
             jQuery("#planoCasaDiagram").removeClass("canvas-casa-" + casa_actual);
             casa_actual++;
             jQuery("#planoCasaDiagram").addClass("canvas-casa-" + casa_actual);
