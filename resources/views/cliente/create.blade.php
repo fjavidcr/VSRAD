@@ -20,11 +20,11 @@
                 <form action="{{ route('cliente.store') }}" method="post">
 
                     {{ csrf_field() }}
+                    <input id="id_plano" type="hidden" name="id_plano" value="{{ old('id_plano') }}" class="form-control" required>
 
                     <div class="form-group">
                         <label for="nombre">Nombre del proyecto</label>
-                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control"
-                               required>
+                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control" required>
                     </div>
 
                     <div class="form-group">
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-9 col-md-9">
+                        <div class="col-lg-10 col-md-10">
                             <div style="width:100%; white-space:nowrap;">
                                 <span style="display: inline-block; vertical-align: top">
                                     <h3>Productos</h3>
@@ -53,19 +53,12 @@
                                 <pre id="savedModel" style="height:250px"></pre>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-3">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Funciones
-                                </div>
-                                <div class="panel-body">
-                                    <div class="btn-group-vertical" role="group">
-                                        <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
-                                        <input type="submit" value="Guardar proyecto" class="btn btn-success">
-                                        <a class="btn btn-default boton-cambiar-plano">Cambiar plano</a>
-                                        <!---<a class="btn btn-default">Limpiar</a>--->
-                                    </div>
-                                </div>
+                        <div class="col-lg-2 col-md-2">
+                            <div class="btn-group-vertical" role="group">
+                                <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
+                                <input type="submit" value="Guardar proyecto" class="btn btn-success">
+                                <a class="btn btn-default boton-cambiar-plano">Cambiar plano</a>
+                                <!---<a class="btn btn-default">Limpiar</a>--->
                             </div>
                         </div>
                     </div>
@@ -79,7 +72,7 @@
 
 
         var AllowTopLevel = false;
-        var CellSize = new go.Size(50, 50);
+        var CellSize = new go.Size(30, 30);
 
         var $$ = go.GraphObject.make;
         var myDiagram =
@@ -112,6 +105,7 @@
             $$(go.Node, "Auto",
                 {
                     resizable: false, resizeObjectName: "SHAPE",
+                    locationObjectName: "TB",
                     // because the gridSnapCellSpot is Center, offset the Node's location
                     locationSpot: new go.Spot(0, 0, CellSize.width / 2, CellSize.height / 2),
                     // provide a visual warning about dropping anything onto an "item"
@@ -140,7 +134,7 @@
                     new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
                 // with the textual key in the middle
                 $$(go.TextBlock,
-                    {alignment: go.Spot.Center, font: 'bold 16px sans-serif'},
+                    {alignment: go.Spot.Center, font: 'bold 12px sans-serif'},
                     new go.Binding("text", "key"))
             );  // end Node
 
@@ -152,12 +146,11 @@
         myDiagram.model = new go.GraphLinksModel([]);
         // this sample does not make use of any links
 
-        // initialize the first Palette
-        productos =
+        // initialize the Palette
+        var productos =
             $$(go.Palette, "productos",
                 { // share the templates with the main Diagram
                     nodeTemplate: myDiagram.nodeTemplate,
-                    groupTemplate: myDiagram.groupTemplate,
                     layout: $$(go.GridLayout)
                 });
 
@@ -167,14 +160,19 @@
 
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
-            {key: "g", color: green},
-            {key: "b", color: blue},
-            {key: "y", color: yellow}
+            {key: "sensor", color: green},
+            {key: "actuador", color: blue},
+            {key: "central", color: yellow}
         ]);
+
+        var prod = new Array();
+
+        prod.push({key: "sensor", color: green});
+
 
         jQuery(".boton-clear").click(function() {
 
-            var confirmBox = confirm("Seguro que quieres borrar todo?");
+            var confirmBox = confirm("¿Seguro que quieres borrar todo?");
             if (confirmBox == true)
                 myDiagram.clear();
         });
@@ -183,7 +181,12 @@
         jQuery(".boton-cambiar-plano").click(function() {
             jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
             casa_actual++;
+            if(casa_actual == 6){
+                casa_actual = 1;
+            }
             jQuery("#myDiagramDiv").addClass("canvas-casa-" + casa_actual);
+            document.getElementById("id_plano").textContent = casa_actual;
+
         });
 
 
