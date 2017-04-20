@@ -16,26 +16,34 @@
 .canvas-casa-1 {
     background: #eaf9ca url("../img/planos/casa1.png") no-repeat;
     background-size: cover;
-    width: 100%;
-    height: 500px;
+    width: 565px;
+    height: 462px;
 }
 
 .canvas-casa-2 {
     background: #eaf9ca url("../img/planos/casa2.png") no-repeat;
     background-size: cover;
+    width: 393px;
+    height: 467px;
 }
 
 .canvas-casa-3 {
     background: #eaf9ca url("../img/planos/casa3.png") no-repeat;
     background-size: cover;
+    width: 575px;
+    height: 467px;
 }
 
 .canvas-casa-4 {
     background: #eaf9ca url("../img/planos/casa4.png") no-repeat;
     background-size: cover;
+    width: 711px;
+    height: 473px;
 }
 
 .canvas-casa-5 {
     background: #eaf9ca url("../img/planos/casa5.png") no-repeat;
     background-size: cover;
+    width: 373px;
+    height: 467px;
 }
