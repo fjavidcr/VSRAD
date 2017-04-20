@@ -17,7 +17,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('cliente.store') }}" method="post">
+                <form class="form-inline" action="{{ route('cliente.store') }}" method="post">
 
                     {{ csrf_field() }}
                     <input id="id_plano" type="hidden" name="id_plano" value="{{ old('id_plano') }}" class="form-control" required>
@@ -26,9 +26,8 @@
                         <label for="nombre">Nombre del proyecto</label>
                         <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control" required>
                     </div>
-
+                    <hr>
                     <div class="form-group">
-                        <label for="configuracion">Configuración</label>
                         <div hidden>
                             <textarea id="configuracion" name="configuracion" class="form-control" required>{{ old('configuracion') }}</textarea>
                         </div>
@@ -37,15 +36,15 @@
                     <div class="row">
                         <div class="col-lg-10 col-md-10">
                             <div style="width:100%; white-space:nowrap;">
-                                <span style="display: inline-block; vertical-align: top">
+                                <div class="col-lg-3 col-md-3">
                                     <h3>Productos</h3>
                                     <div>
                                       <div id="productos" style="width: 140px; height: 360px"></div>
                                     </div>
-                                </span>
-                                <span style="display: inline-block; vertical-align: top; width:80%">
-                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #e4f9e6; border:  solid  1px #d3e0e9;"></div>
-                                </span>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
+                                </div>
                             </div>
 
                             <div>
