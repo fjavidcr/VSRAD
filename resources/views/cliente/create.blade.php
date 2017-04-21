@@ -179,10 +179,38 @@
             {id: "3", nombre: "central", color: yellow}
         ]);
 
-        var prod='<?php echo$pros;?>';
-        document.getElementById("prod").textContent = prod;
+        var mis_productos = new Array();
 
-        productos.model = new go.GraphLinksModel(prod);
+        var prod='<?php echo$pros;?>';
+
+        for (var p in prod){
+            var producto =  new Object();
+            producto.id = p.id;
+            producto.nombre = "nombre";
+            producto.coste = p.coste;
+            producto.imagen = p.imagen;
+            mis_productos.push(producto);
+        }
+        /*
+        var persona =  new Object();
+        persona.id=  1;
+        persona.nombre = "Pedro";
+
+        var persona2 =  new Object();
+        persona2.id=  1;
+        persona2.nombre = "Pedro";
+
+        var personas = new Array();
+        personas.push(persona);
+        personas.push(persona2);
+        */
+
+        productos.model = new go.GraphLinksModel(mis_productos);
+
+        document.getElementById("prod").textContent = mis_productos;
+
+
+        //productos.model = new go.GraphLinksModel(prod);
 
 
 
