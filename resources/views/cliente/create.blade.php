@@ -5,8 +5,8 @@
     <div class="container container-page">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Crear nuevo proyecto</h3>
-
+                <h2>Crear nuevo proyecto</h2>
+                <hr>
                 @if(count($errors))
                     <div class="alert alert-danger">
                         <ul>
@@ -51,8 +51,23 @@
                                 Diagram Model saved in JSON format, automatically updated after each transaction:
                                 <pre id="savedModel" style="height:250px"></pre>
                             </div>
+                            <div>
+                                Datos de los productos:
+                                <pre id="prod" style="height:250px"></pre>
+                            </div>
                         </div>
                         <div class="col-lg-2 col-md-2">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Coste total aproximado</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="well">
+                                        <input id="coste" type="text" name="coste" size="10" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
                             <div class="btn-group-vertical" role="group">
                                 <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
                                 <input type="submit" value="Guardar proyecto" class="btn btn-success">
@@ -134,7 +149,7 @@
                 // with the textual key in the middle
                 $$(go.TextBlock,
                     {alignment: go.Spot.Center, font: 'bold 12px sans-serif'},
-                    new go.Binding("text", "key"))
+                    new go.Binding("text", "nombre"))
             );  // end Node
 
 
@@ -159,14 +174,17 @@
 
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
-            {key: "sensor", color: green},
-            {key: "actuador", color: blue},
-            {key: "central", color: yellow}
+            {id: "1", nombre: "sensor", color: green},
+            {id: "2", nombre: "actuador", color: blue},
+            {id: "3", nombre: "central", color: yellow}
         ]);
 
-        var prod = new Array();
+        var prod='<?php echo$pros;?>';
+        document.getElementById("prod").textContent = prod;
 
-        prod.push({key: "sensor", color: green});
+        productos.model = new go.GraphLinksModel(prod);
+
+
 
 
         jQuery(".boton-clear").click(function() {
