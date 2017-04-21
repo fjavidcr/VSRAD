@@ -185,10 +185,10 @@
 
         for (var p in prod){
             var producto =  new Object();
-            producto.id = p.id;
-            producto.nombre = "nombre";
-            producto.coste = p.coste;
-            producto.imagen = p.imagen;
+            producto.id = prod[p];
+            producto.nombre = prod[p];
+            producto.coste = prod[p];
+            producto.color = blue;
             mis_productos.push(producto);
         }
         /*
@@ -207,7 +207,7 @@
 
         productos.model = new go.GraphLinksModel(mis_productos);
 
-        document.getElementById("prod").textContent = mis_productos;
+        document.getElementById("prod").textContent = prod;
 
 
         //productos.model = new go.GraphLinksModel(prod);

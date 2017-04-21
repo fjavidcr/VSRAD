@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -26,7 +27,9 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        $pros = \App\Producto::all();
+
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+
         return view('cliente.create', compact('pros', 'planos'));
     }
 
