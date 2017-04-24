@@ -174,20 +174,20 @@
 
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
-            {id: "1", nombre: "sensor", color: green},
-            {id: "2", nombre: "actuador", color: blue},
-            {id: "3", nombre: "central", color: yellow}
+                @foreach($pros as $p)
+            { id: "{{$p->id}}", nombre:"{{$p->nombre}}", color: green, coste:{{$p->coste}}},
+            @endforeach
         ]);
-
+        /*
         var mis_productos = new Array();
 
-        var prod='<?php echo$pros;?>';
+        var prod='';
 
         for (var p in prod){
             var producto =  new Object();
-            producto.id = prod[p];
-            producto.nombre = prod[p];
-            producto.coste = prod[p];
+            producto.id = p.id;
+            producto.nombre = p.nombre;
+            producto.coste = p.coste;
             producto.color = blue;
             mis_productos.push(producto);
         }
@@ -203,9 +203,10 @@
         var personas = new Array();
         personas.push(persona);
         personas.push(persona2);
-        */
+
 
         productos.model = new go.GraphLinksModel(mis_productos);
+        */
 
         document.getElementById("prod").textContent = prod;
 
