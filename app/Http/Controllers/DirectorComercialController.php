@@ -156,7 +156,7 @@ class DirectorComercialController extends Controller
         if(count($comprados)>0)
         $media_comprados = $media_comprados/count($comprados);
         else
-            $media_comprados = "No hay comprados";
+            $media_comprados = "0";
 
         $media_rechazados=0;
         foreach ($rechazados as $c)
@@ -164,7 +164,7 @@ class DirectorComercialController extends Controller
         if(count($rechazados)>0)
         $media_rechazados = $media_rechazados/count($rechazados);
         else
-            $media_rechazados = "No hay rechazados";
+            $media_rechazados = "0";
 
         $pdf = \App::make('dompdf.wrapper');
 
@@ -180,13 +180,7 @@ class DirectorComercialController extends Controller
     <header class=\"clearfix\">
       <div id=\"logo\">
         <img src=\"LogoActioris.png\"><h2>Actioris ".$hoy."</h2>   
-      </div>
-      <div id=\"company\">
-        <h2 class=\"name\">Company Name</h2>
-        <div>Avd Pene Grande, AZ 85004, Madrid</div>
-        <div>(602) 519-0450</div>
-        <div><a href=\"mailto:company@example.com\">company@example.com</a></div>
-      </div>
+      </div>      
       </div>
     </header>
     <main>
@@ -194,14 +188,8 @@ class DirectorComercialController extends Controller
         <div id=\"client\">
           <div class=\"to\">Nombre: </div>
           <h2 class=\"name\">". $c->name. "</h2>
-          <div class=\"address\">Avd Pene Grande, AZ 85004, Madrid</div>
-          <div class=\"email\"><a href=\"mailto:john@example.com\">john@example.com</a></div>
-        </div>
-        <div id=\"invoice\">
-          <h1>INVOICE 3-2-1</h1>
-          <div class=\"date\">Date of Invoice: 01/06/2014</div>
-          <div class=\"date\">Due Date: 30/06/2014</div>
-        </div>
+          <a href=\"mailto:".$c->email."\">".$c->email."</a>
+        </div>        
       </div>
       <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
         <thead>
@@ -216,7 +204,7 @@ class DirectorComercialController extends Controller
           <tr>
             <td class=\"no\">01</td>
             <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
-            <td class=\"unit\">". count($clientes)."</td>
+            <td class=\"unit\">".count($clientes)."</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
@@ -256,13 +244,7 @@ class DirectorComercialController extends Controller
     </footer>
   </body>"
 
-
-
         ;
-
-
-
-        
 
 
 
