@@ -23,8 +23,8 @@
                     <input id="id_plano" type="hidden" name="id_plano" value="{{ old('id_plano') }}" class="form-control" required>
 
                     <div class="form-group">
-                        <label for="nombre">Nombre del proyecto</label>
-                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control" required>
+                        <label for="nombre_proyecto">Nombre del proyecto</label>
+                        <input id="nombre_proyecto" type="text" name="nombre_proyecto" value="{{ old('nombre_proyecto') }}" class="form-control" onchange="habilita()" required>
                     </div>
                     <hr>
                     <div class="form-group">
@@ -72,9 +72,52 @@
                             <hr>
                             <div class="btn-group-vertical" role="group">
                                 <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
-                                <input type="submit" value="Guardar proyecto" class="btn btn-success">
+                                <input id="boton-guardar-proyecto" type="submit" class="btn btn-success" value="Guardar proyecto" disabled>
+
                                 <a class="btn btn-default boton-cambiar-plano">Cambiar plano</a>
                                 <!---<a class="btn btn-default">Limpiar</a>--->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Completa tu registro para continuar</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="form-group">
+                                        <label for="nombre" class="control-label">Nombre</label>
+                                        <input id="name" type="text" name="name" value="{{ $user->name }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="apellidos" class="control-label">Apellidos</label>
+                                        <input id="apellidos" type="text" name="apellidos" value="{{ $user->apellidos }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email" class="control-label">Email</label>
+                                        <input id="email" type="text" name="email" value="{{ $user->email }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="direccion_fisica" class="control-label">Dirección física</label>
+                                        <input id="direccion_fisica" type="text" name="direccion_fisica" value="{{ $user->direccion_fisica }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telefono" class="control-label">Teléfono</label>
+                                        <input id="telefono" type="text" name="telefono" value="{{ $user->telefono }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dni" class="control-label">DNI</label>
+                                        <input id="dni" type="text" name="dni" value="{{ $user->dni }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-success btn-xs" value="Enviar">
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -111,8 +154,7 @@
                         if (e.isTransactionFinished) {
                             document.getElementById("configuracion").textContent = myDiagram.model.toJson();
                             document.getElementById("savedModel").textContent = myDiagram.model.toJson();
-                            var costeTotal = 10;
-
+                            var costeTotal = 0;
                             /*
                             for(var p in myDiagram.model.toJson().nodeDataArray){
                                 costeTotal += p.coste;
@@ -209,6 +251,13 @@
             document.getElementById("id_plano").textContent = casa_actual;
 
         });
+
+        function habilita() {
+            if(isNaN(document.getElementById('nombre_proyecto').value))
+                document.getElementById('boton-guardar-proyecto').disabled=false;
+            else
+                document.getElementById('boton-guardar-proyecto').disabled=true;
+        }
 
 
     </script>
