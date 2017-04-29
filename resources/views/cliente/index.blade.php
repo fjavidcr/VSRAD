@@ -30,6 +30,7 @@
                         <tr>
                             <th>#</th>
                             <th>Proyecto</th>
+                            <th>Fecha de creación</th>
                             <th>Estado</th>
                             <th></th>
                         </tr>
@@ -39,6 +40,7 @@
                             <tr>
                                 <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
+                                <td>{{ $p->fecha_creacion }}</td>
                                 <td>
                                     @if($p->getEstado() != "no_pendiente")
                                         <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
