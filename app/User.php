@@ -65,8 +65,8 @@ class User extends Authenticatable
 
     public function isRegistered(){
         if($this->apellidos == "" && $this->direccion_fisica == "" && $this->telefono =="" && $this->dni =="")
-            return true;
-        return false;
+            return false;
+        return true;
     }
 
     public function proyectos()

@@ -79,48 +79,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Modal -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Completa tu registro para continuar</h4>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="form-group">
-                                        <label for="nombre" class="control-label">Nombre</label>
-                                        <input id="name" type="text" name="name" value="{{ $user->name }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="apellidos" class="control-label">Apellidos</label>
-                                        <input id="apellidos" type="text" name="apellidos" value="{{ $user->apellidos }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email" class="control-label">Email</label>
-                                        <input id="email" type="text" name="email" value="{{ $user->email }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="direccion_fisica" class="control-label">Dirección física</label>
-                                        <input id="direccion_fisica" type="text" name="direccion_fisica" value="{{ $user->direccion_fisica }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="telefono" class="control-label">Teléfono</label>
-                                        <input id="telefono" type="text" name="telefono" value="{{ $user->telefono }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="dni" class="control-label">DNI</label>
-                                        <input id="dni" type="text" name="dni" value="{{ $user->dni }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="submit" class="btn btn-success btn-xs" value="Enviar">
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </form>
 
             </div>

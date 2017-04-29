@@ -30,10 +30,7 @@ class ClienteController extends Controller
 
         $pros = DB::table('productos')->where('oculto', '=', 0)->get();
         $user = \Auth::user();
-        if($user->isRegistered())
-            return view('cliente.create.first', compact('pros', 'user'));
-        else
-            return view('cliente.create.new', compact('pros', 'user'));
+        return view('cliente.create', compact('pros', 'user'));
     }
 
     /**
@@ -53,86 +50,20 @@ class ClienteController extends Controller
 
         $proyecto->nombre = $request->input('nombre');
         $proyecto->configuracion = $request->input('configuracion');
-        $proyecto->fecha_creacion= "01/01/01";
-        $proyecto->id_cliente = \Auth::user()->id;
-        $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
-        $proyecto->estado = 0;
-        $proyecto->save();
-
-        $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
-        return redirect()->route('cliente.index');
-    }
-
-    public function store_first(Request $request)
-    {
-        $this->validate($request, [
-            'nombre' => 'required|min:3|max:16',
-            'configuracion' => 'required',
-            'name' => 'required|min:3|max:16',
-            'email' => 'required|min:8',
-            'apellidos' => 'required|max:32',
-            'direccion_fisica' => 'required',
-            'telefono' => 'required|min:9',
-            'dni' => 'required|min:9'
-        ]);
-
-        $user = \Auth::user();
-        $user->name = $request->input('name');
-        $user->apellidos = $request->input('apellidos');
-        $user->email = $request->input('email');
-        /*
-        $pass = $request->input('password');
-        if(isset($pass))
-            $user->password =  Hash::make($pass);
-        */
-        $user->direccion_fisica = $request->input('direccion_fisica');
-        $user->telefono = $request->input('telefono');
-        $dni = $request->input('dni');
-
-        /*
-         * Comprobación de la letra del DNI
-         * */
-
-        $dni = strtoupper($dni);
-        $letra = substr($dni, -1, 1);
-        $numero = substr($dni, 0, 8);
-
-        // Si es un NIE hay que cambiar la primera letra por 0, 1 ó 2 dependiendo de si es X, Y o Z.
-        $numero = str_replace(array('X', 'Y', 'Z'), array(0, 1, 2), $numero);
-
-        $modulo = $numero % 23;
-        $letras_validas = "TRWAGMYFPDXBNJZSQVHLCKE";
-        $letra_correcta = substr($letras_validas, $modulo, 1);
-
-        if($letra_correcta==$letra) {
-            $user->dni = $dni;
-            $user->save();
-            $request->session()->flash('alert-success', 'Usuario editado con éxito.');
-            //return "Letra incorrecta, la letra deber&iacute;a ser la $letra_correcta.";
-        }
-        else{
-            $request->session()->flash('alert-warning', 'DNI incorrecto.');
-            return redirect()->back();
-        }
-
-        $proyecto = new \App\Proyecto();
-
-        $proyecto->nombre = $request->input('nombre');
-        $proyecto->configuracion = $request->input('configuracion');
-
         $fecha = getdate();
 
         $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
 
         $proyecto->fecha_creacion= $fecha_creacion;
         $proyecto->id_cliente = \Auth::user()->id;
-        $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
+        $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
         $proyecto->estado = 0;
         $proyecto->save();
 
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
         return redirect()->route('cliente.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -198,6 +129,66 @@ class ClienteController extends Controller
         $proyecto = \App\Proyecto::findOrFail($id);
         $proyecto->estado = 1;
         $proyecto->save();
+
+        return redirect()->route('cliente.index');
+    }
+
+    public function completar_registro(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3|max:16',
+            'email' => 'required|min:8',
+            'apellidos' => 'required|max:32',
+            'direccion_fisica' => 'required',
+            'telefono' => 'required|min:9',
+            'dni' => 'required|min:9'
+        ]);
+
+        $user = \Auth::user();
+        $user->name = $request->input('name');
+        $user->apellidos = $request->input('apellidos');
+        $user->email = $request->input('email');
+        /*
+        $pass = $request->input('password');
+        if(isset($pass))
+            $user->password =  Hash::make($pass);
+        */
+        $user->direccion_fisica = $request->input('direccion_fisica');
+        $user->telefono = $request->input('telefono');
+
+        $fecha = getdate();
+        $fecha_registro = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+        $user->fecha_registro = $fecha_registro;
+
+        $dni = $request->input('dni');
+
+        /*
+         * Comprobación de la letra del DNI
+         * */
+
+        $dni = strtoupper($dni);
+        $letra = substr($dni, -1, 1);
+        $numero = substr($dni, 0, 8);
+
+        // Si es un NIE hay que cambiar la primera letra por 0, 1 ó 2 dependiendo de si es X, Y o Z.
+        $numero = str_replace(array('X', 'Y', 'Z'), array(0, 1, 2), $numero);
+
+        $modulo = $numero % 23;
+        $letras_validas = "TRWAGMYFPDXBNJZSQVHLCKE";
+        $letra_correcta = substr($letras_validas, $modulo, 1);
+
+        if($letra_correcta==$letra) {
+            $user->dni = $dni;
+            $user->save();
+            $request->session()->flash('alert-success', 'Usuario editado con éxito.');
+            $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
+            $proyecto->estado = 1;
+            $proyecto->save();
+        }
+        else{
+            $request->session()->flash('alert-warning', 'DNI incorrecto.');
+            return redirect()->back();
+        }
 
         return redirect()->route('cliente.index');
     }

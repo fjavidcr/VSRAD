@@ -82,62 +82,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Modal -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Completa tu registro para continuar</h4>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="form-group">
-                                        <label for="nombre" class=" col-sm-2 control-label">Nombre</label>
-                                        <div class="col-sm-10">
-                                            <input id="name" type="text" name="name" value="{{ $user->name }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="apellidos" class=" col-sm-2 control-label">Apellidos</label>
-                                        <div class="col-sm-10">
-                                            <input id="apellidos" type="text" name="apellidos" value="{{ $user->apellidos }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email" class="col-sm-2  control-label">Email</label>
-                                        <div class="col-sm-10">
-                                            <input id="email" type="text" name="email" value="{{ $user->email }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="direccion_fisica" class="col-sm-2  control-label">Dirección física</label>
-                                        <div class="col-sm-10">
-                                            <input id="direccion_fisica" type="text" name="direccion_fisica" value="{{ $user->direccion_fisica }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="telefono" class="col-sm-2  control-label">Teléfono</label>
-                                        <div class="col-sm-10">
-                                            <input id="telefono" type="tel" name="telefono" value="{{ $user->telefono }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="dni" class="col-sm-2  control-label">DNI</label>
-                                        <div class="col-sm-10">
-                                            <input id="dni" type="text" name="dni" value="{{ $user->dni }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                            <button type="submit" class="btn btn-success btn-xs" onclick="comprobar_DNI()" >Enviar</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </form>
 
             </div>
@@ -274,29 +218,6 @@
                 document.getElementById('boton-guardar-proyecto').disabled=false;
             else
                 document.getElementById('boton-guardar-proyecto').disabled=true;
-        }
-
-        function comprobar_DNI() {
-            var numero
-            var letr
-            var letra
-            var expresion_regular_dni
-            var dni = formulario.dni.value;
-
-            expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
-
-            //if(expresion_regular_dni.test (dni) == true){
-            numero = dni.substr(0,dni.length-1);
-            letr = dni.substr(dni.length-1,1);
-            numero = numero % 23;
-            letra='TRWAGMYFPDXBNJZSQVHLCKET';
-            letra=letra.substring(numero,numero+1);
-            if (letra!=letr.toUpperCase()) {
-                alert('DNI erroneo, la letra del DNI no se corresponde');
-            }
-            /*}else{
-             alert('DNI erroneo, formato no válido');
-             }*/
         }
 
 
