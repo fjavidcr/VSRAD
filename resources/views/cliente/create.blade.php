@@ -46,14 +46,14 @@
                                     <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
                             </div>
+                            <hr>
+                            <div>
+                                <pre id="costePrueba" style="height:5px"></pre>
+                            </div>
 
                             <div>
                                 Diagram Model saved in JSON format, automatically updated after each transaction:
                                 <pre id="savedModel" style="height:250px"></pre>
-                            </div>
-                            <div>
-                                Datos de los productos:
-                                <pre id="prod" style="height:250px"></pre>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2">
@@ -63,8 +63,10 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="well">
-                                        <input id="coste" type="text" name="coste" size="10" readonly>
+
+                                        <input id="coste" type="text" name="coste" size="6" readonly>euros
                                     </div>
+                                    <footer><h6>Precio sin IVA</h6></footer>
                                 </div>
                             </div>
                             <hr>
@@ -92,6 +94,8 @@
         var myDiagram =
             $$(go.Diagram, "myDiagramDiv",
                 {
+                    /*fixedBounds: Rect(0,0,669,460),*/
+                    initialContentAlignment: go.Spot.Center,  // center the content
                     grid: $$(go.Panel, "Grid",
                         {gridCellSize: CellSize},
                         $$(go.Shape, "LineH", {stroke: "lightgray"}),
@@ -107,6 +111,14 @@
                         if (e.isTransactionFinished) {
                             document.getElementById("configuracion").textContent = myDiagram.model.toJson();
                             document.getElementById("savedModel").textContent = myDiagram.model.toJson();
+                            var costeTotal = 10;
+
+                            /*
+                            for(var p in myDiagram.model.toJson().nodeDataArray){
+                                costeTotal += p.coste;
+                                document.getElementById("coste").textContent = p;
+                            }*/
+                            document.getElementById("coste").setAttribute("value", costeTotal);
                         }
                     },
                     "animationManager.isEnabled": true,
@@ -121,7 +133,7 @@
                     resizable: false, resizeObjectName: "SHAPE",
                     locationObjectName: "TB",
                     // because the gridSnapCellSpot is Center, offset the Node's location
-                    locationSpot: new go.Spot(0, 0, CellSize.width / 2, CellSize.height / 2),
+                    locationSpot: go.Spot.Center ,
                     // provide a visual warning about dropping anything onto an "item"
                     mouseDragEnter: function (e, node) {
                         e.handled = true;
@@ -137,18 +149,17 @@
                 // always save/load the point that is the top-left corner of the node, not the location
                 new go.Binding("position", "pos", go.Point.parse).makeTwoWay(go.Point.stringify),
                 // this is the primary thing people see
-                $$(go.Shape, "Rectangle",
+                $$(go.Shape,
                     {
+                        figure: "RoundedRectangle",
                         name: "SHAPE",
                         fill: "white",
-                        minSize: CellSize,
-                        desiredSize: CellSize  // initially 1x1 cell
                     },
                     new go.Binding("fill", "color"),
                     new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
                 // with the textual key in the middle
                 $$(go.TextBlock,
-                    {alignment: go.Spot.Center, font: 'bold 12px sans-serif'},
+                    {alignment: go.Spot.Center, font: 'bold 12px sans-serif', margin: 3},
                     new go.Binding("text", "nombre"))
             );  // end Node
 
@@ -178,43 +189,6 @@
             { id: "{{$p->id}}", nombre:"{{$p->nombre}}", color: green, coste:{{$p->coste}}},
             @endforeach
         ]);
-        /*
-        var mis_productos = new Array();
-
-        var prod='';
-
-        for (var p in prod){
-            var producto =  new Object();
-            producto.id = p.id;
-            producto.nombre = p.nombre;
-            producto.coste = p.coste;
-            producto.color = blue;
-            mis_productos.push(producto);
-        }
-        /*
-        var persona =  new Object();
-        persona.id=  1;
-        persona.nombre = "Pedro";
-
-        var persona2 =  new Object();
-        persona2.id=  1;
-        persona2.nombre = "Pedro";
-
-        var personas = new Array();
-        personas.push(persona);
-        personas.push(persona2);
-
-
-        productos.model = new go.GraphLinksModel(mis_productos);
-        */
-
-        document.getElementById("prod").textContent = prod;
-
-
-        //productos.model = new go.GraphLinksModel(prod);
-
-
-
 
         jQuery(".boton-clear").click(function() {
 
@@ -222,6 +196,7 @@
             if (confirmBox == true)
                 myDiagram.clear();
         });
+
 
         var casa_actual = 1;
         jQuery(".boton-cambiar-plano").click(function() {
