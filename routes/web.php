@@ -21,6 +21,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/', 'RedireccionController');
+    Route::resource('/home', 'RedireccionController');
 
     Route::group(['middleware' => 'rol:administrador'], function () {
         Route::get('administrador/form_crear_usuario', 'AdministradorController@form_crear_usuario')->name('administrador.form_crear_usuario');
