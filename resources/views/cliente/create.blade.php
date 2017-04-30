@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-10 col-md-10">
+                        <div class="col-lg-10">
                             <div style="width:100%; white-space:nowrap;">
                                 <div class="col-lg-2">
                                     <h3>Productos</h3>
@@ -56,7 +56,7 @@
                                 <pre id="savedModel" style="height:250px"></pre>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-2">
+                        <div class="col-lg-2">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Coste total aproximado</h3>
@@ -120,6 +120,7 @@
                                 costeTotal += parseFloat(array[i].coste);
                                 console.log("coste: " + array[i].coste);
                             }
+                            costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
                         }
                     },
