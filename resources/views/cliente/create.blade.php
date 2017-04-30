@@ -113,11 +113,15 @@
                             document.getElementById("configuracion").textContent = myDiagram.model.toJson();
                             document.getElementById("savedModel").textContent = myDiagram.model.toJson();
                             var costeTotal = 0;
-                            /*
-                            for(var p in myDiagram.model.toJson().nodeDataArray){
-                                costeTotal += p.coste;
-                                document.getElementById("coste").textContent = p;
-                            }*/
+
+                            var array = JSON.parse(myDiagram.model.toJson());
+                            array = array.nodeDataArray;
+                            console.log(array);
+
+                            for(var i in array){
+                                costeTotal += parseFloat(array[i].coste);
+                                console.log("coste: " + array[i].coste);
+                            }
                             document.getElementById("coste").setAttribute("value", costeTotal);
                         }
                     },
