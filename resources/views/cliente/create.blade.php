@@ -109,11 +109,7 @@
 
                             document.getElementById("configuracion").textContent = JSON.stringify(myDiagram.model.toJson());
                             console.log(array);
-
-                            //document.getElementById("savedModel").textContent = myDiagram.model.toJson();
                             var costeTotal = 0;
-
-
 
                             for(var i in array){
                                 costeTotal += parseFloat(array[i].coste);

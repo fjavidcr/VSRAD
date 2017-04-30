@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
 
 class ClienteController extends Controller
 {
@@ -15,7 +16,11 @@ class ClienteController extends Controller
     public function index()
     {
         $user = \Auth::user();
-        $proyectos = $user->proyectos;
+        $prots = $user->proyectos;
+        $proyectos = array();
+        foreach ($prots as $p)
+            if($p->oculto == 0)
+                array_push($proyectos, $p);
 
         return view('cliente.index', compact('proyectos', 'user'));
     }
@@ -114,11 +119,13 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request)
     {
         // Mandar un mensaje de confirmacion
 
-        \App\Proyecto::destroy($id);
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->oculto = 1;
+        $proyecto->save();
 
         // Mensaje de feeback. Un alert de bootstrap
 
@@ -202,16 +209,19 @@ class ClienteController extends Controller
             'configuracion' => 'required'
         ]);
 
-        $proyecto = new \App\Proyecto();
+        $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
 
         $proyecto->nombre = $request->input('nombre');
-        $proyecto->configuracion = $request->input('configuracion');
-        $hoy = getdate();
-        return $hoy;
-        $proyecto->fecha_creacion= $hoy;
+        $proyecto->configuracion = $request->input('nueva_configuracion');
+        $fecha = getdate();
+
+        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+
+        $proyecto->fecha_creacion= $fecha_creacion;
         $proyecto->id_cliente = \Auth::user()->id;
-        $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
+        $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
         $proyecto->estado = 0;
+        $proyecto->coste = $request->input('coste');
         $proyecto->save();
 
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');

@@ -30,8 +30,9 @@
                         <tr>
                             <th>#</th>
                             <th>Proyecto</th>
-                            <th>Fecha de creación</th>
+                            <th>Fecha de edición</th>
                             <th>Estado</th>
+                            <th></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -125,7 +126,16 @@
                                             Ver
                                         </a>
                                     @endif
-
+                                </td>
+                                <td>
+                                    <form class="form-inline" action="{{ route('cliente.destroy') }}" method="post">
+                                        {{ csrf_field() }}
+                                        <div class="form-group">
+                                            <input type="hidden" name="id" value="{{$p->id}}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="submit" class="btn btn-danger btn-xs" value="Eliminar">
+                                        </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

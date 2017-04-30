@@ -20,6 +20,7 @@
                 <form class="form-inline" action="{{ route('cliente.editar') }}" method="post">
 
                     {{ csrf_field() }}
+                    <input id="id_proyecto" type="hidden" name="id_proyecto" value="{{$proyecto->id}}" class="form-control" required>
                     <input id="id_plano" type="hidden" name="id_plano" value="{{$proyecto->id_plano}}" class="form-control" required>
 
                     <div class="form-group">
@@ -117,6 +118,7 @@
 
                             for(var i in array){
                                 costeTotal += parseFloat(array[i].coste);
+
                                 console.log("coste: " + array[i].coste);
                             }
                             costeTotal = parseFloat(costeTotal).toFixed(2);
@@ -172,22 +174,10 @@
         var dropStroke = "red";
 
         // start off with four "racks" that are positioned next to each other
-        var configuracion = document.getElementById("configuracion").textContent;
-        console.log("tipo: "+ typeof(configuracion));
-        console.log("contenido: "+ configuracion);
-
-        configuracion = JSON.parse(configuracion);
-
+        var configuracion = JSON.parse(document.getElementById("configuracion").textContent);
 
         console.log("tipo: "+ typeof(configuracion));
         console.log("contenido: "+ configuracion);
-
-        /*
-        for(var i in configuracion){
-            console.log(configuracion[i]);
-        }
-        */
-
 
         myDiagram.model = go.Model.fromJson(configuracion);
 
