@@ -20,11 +20,11 @@
                 <form class="form-inline" action="{{ route('cliente.store') }}" method="post">
 
                     {{ csrf_field() }}
-                    <input id="id_plano" type="hidden" name="id_plano" value="{{ old('id_plano') }}" class="form-control" required>
+                    <input id="id_plano" type="hidden" name="id_plano" value="1" class="form-control" required>
 
                     <div class="form-group">
-                        <label for="nombre_proyecto">Nombre del proyecto</label>
-                        <input id="nombre_proyecto" type="text" name="nombre_proyecto" value="{{ old('nombre_proyecto') }}" class="form-control" onchange="habilita()" required>
+                        <label for="nombre">Nombre del proyecto</label>
+                        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control" onchange="habilita()" required>
                     </div>
                     <hr>
                     <div class="form-group">
@@ -47,13 +47,9 @@
                                 </div>
                             </div>
                             <hr>
-                            <div>
-                                <pre id="costePrueba" style="height:5px"></pre>
-                            </div>
-
-                            <div>
-                                Diagram Model saved in JSON format, automatically updated after each transaction:
-                                <pre id="savedModel" style="height:250px"></pre>
+                            <div id="restricciones" hidden>
+                                Restriccciones de los productos añadidos:
+                                <pre id="res-text" style="height:250px"></pre>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -108,13 +104,16 @@
                     // For this sample, automatically show the state of the diagram's model on the page
                     "ModelChanged": function (e) {
                         if (e.isTransactionFinished) {
-                            document.getElementById("configuracion").textContent = myDiagram.model.toJson();
-                            document.getElementById("savedModel").textContent = myDiagram.model.toJson();
-                            var costeTotal = 0;
-
                             var array = JSON.parse(myDiagram.model.toJson());
                             array = array.nodeDataArray;
+
+                            document.getElementById("configuracion").textContent = JSON.stringify(myDiagram.model.toJson());
                             console.log(array);
+
+                            //document.getElementById("savedModel").textContent = myDiagram.model.toJson();
+                            var costeTotal = 0;
+
+
 
                             for(var i in array){
                                 costeTotal += parseFloat(array[i].coste);
@@ -122,6 +121,8 @@
                             }
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
+                            if(costeTotal > 0)
+                                document.getElementById('restricciones').hidden=false;
                         }
                     },
                     "animationManager.isEnabled": true,
@@ -210,11 +211,12 @@
             }
             jQuery("#myDiagramDiv").addClass("canvas-casa-" + casa_actual);
             document.getElementById("id_plano").value = casa_actual;
+            console.log("Plano actual: " + casa_actual);
 
         });
 
         function habilita() {
-            if(isNaN(document.getElementById('nombre_proyecto').value))
+            if(isNaN(document.getElementById('nombre').value))
                 document.getElementById('boton-guardar-proyecto').disabled=false;
             else
                 document.getElementById('boton-guardar-proyecto').disabled=true;

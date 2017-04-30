@@ -58,6 +58,7 @@ class ClienteController extends Controller
         $proyecto->id_cliente = \Auth::user()->id;
         $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
         $proyecto->estado = 0;
+        $proyecto->coste = $request->input('coste');
         $proyecto->save();
 
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
@@ -91,7 +92,8 @@ class ClienteController extends Controller
     public function edit($id)
     {
         $proyecto = \App\Proyecto::findOrFail($id);
-        return view('cliente.edit', compact('proyecto'));
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+        return view('cliente.edit', compact('proyecto', 'pros'));
     }
 
     /**
