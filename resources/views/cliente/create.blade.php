@@ -62,10 +62,8 @@
                                     <h3 class="panel-title">Coste total aproximado</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="well">
-
-                                        <input id="coste" type="text" name="coste" size="6" readonly>euros
-                                    </div>
+                                    <div class="input-group-addon col-xs-2">€</div>
+                                        <input id="coste" type="text" name="coste" size="6" readonly>
                                     <footer><h6>Precio sin IVA</h6></footer>
                                 </div>
                             </div>
