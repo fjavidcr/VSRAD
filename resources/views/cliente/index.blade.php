@@ -20,7 +20,7 @@
 
                 @if(count($proyectos) == 0)
                     <div class="alert alert-warning">
-                        <b>Ups!</b> Parece que no tienes proyectos creados
+                         Aún no tienes proyectos. <b>¡Crea tu primer proyecto!</b>
                     </div>
                 @else
 

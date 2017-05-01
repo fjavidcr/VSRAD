@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
-                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
+                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-{{$proyecto->id_plano}}" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
                             </div>
                             <hr>
