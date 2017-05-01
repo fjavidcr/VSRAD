@@ -20,7 +20,7 @@
 
                 @if(count($proyectos) == 0)
                     <div class="alert alert-warning">
-                        <b>Ups!</b> Parece que no tienes proyectos creados
+                         Aún no tienes proyectos. <b>¡Crea tu primer proyecto!</b>
                     </div>
                 @else
 
@@ -30,7 +30,9 @@
                         <tr>
                             <th>#</th>
                             <th>Proyecto</th>
+                            <th>Fecha de edición</th>
                             <th>Estado</th>
+                            <th></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -39,11 +41,77 @@
                             <tr>
                                 <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
+                                <td>{{ $p->fecha_creacion }}</td>
                                 <td>
                                     @if($p->getEstado() != "no_pendiente")
                                         <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
                                     @else
-                                        <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-xs btn-primary">Pedir validación</a>
+                                        @if($user->isRegistered())
+                                            <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-xs btn-primary">Pedir validación</a>
+                                        @else
+                                            <button id="boton-guardar-proyecto" type="button" class="cambiar_estado btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal">
+                                                Pedir validación
+                                            </button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Completa tu registro para continuar</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form name="formulario" class="form-horizontal" action="{{ route('cliente.completar_registro') }}" method="post">
+
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" id="id_proyecto" name="id_proyecto" value="{{$p->id}}">
+                                                                <div class="form-group">
+                                                                    <label for="nombre" class=" col-sm-3 control-label">Nombre</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input id="name" type="text" name="name" value="{{ $user->name }}" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="apellidos" class=" col-sm-3 control-label">Apellidos</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input id="apellidos" type="text" name="apellidos" value="{{ $user->apellidos }}" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="email" class="col-sm-3  control-label">Email</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input id="email" type="text" name="email" value="{{ $user->email }}" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="direccion_fisica" class="col-sm-3  control-label">Dirección física</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input id="direccion_fisica" type="text" name="direccion_fisica" value="{{ $user->direccion_fisica }}" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="dni" class="col-sm-3  control-label">DNI</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input id="dni" type="text" name="dni" value="{{ $user->dni }}" onchange="comprobar_DNI()" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="telefono" class="col-sm-3  control-label">Teléfono</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input id="telefono" type="tel" name="telefono" value="{{ $user->telefono }}" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                                        <button id="enviar" type="submit" class="btn btn-success" disabled>Enviar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                     @endif
                                 </td>
                                 <td>
@@ -58,7 +126,16 @@
                                             Ver
                                         </a>
                                     @endif
-
+                                </td>
+                                <td>
+                                    <form class="form-inline" action="{{ route('cliente.destroy') }}" method="post">
+                                        {{ csrf_field() }}
+                                        <div class="form-group">
+                                            <input type="hidden" name="id" value="{{$p->id}}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="submit" class="btn btn-danger btn-xs" value="Eliminar">
+                                        </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -68,4 +145,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function comprobar_DNI() {
+            var numero
+            var letr
+            var letra
+            var dni = document.getElementById('dni').getAttribute('value');
+
+            numero = dni.substr(0,dni.length-1);
+            letr = dni.substr(dni.length-1,1);
+            numero = numero % 23;
+            letra='TRWAGMYFPDXBNJZSQVHLCKET';
+            letra=letra.substring(numero,numero+1);
+            if (letra!=letr.toUpperCase()) {
+                document.getElementById('enviar').disabled=true;
+                alert('DNI erroneo');
+            }
+            else{
+                document.getElementById('enviar').disabled=false;
+            }
+        }
+
+    </script>
 @endsection

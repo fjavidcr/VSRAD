@@ -8,31 +8,42 @@
 
 .canvas-plano {
     width: 100%;
-    height: 500px;
-    background-color: #eaf9ca;
+    height: 600px;
+    background-color: #c5f9d5;
+    border:  solid  1px #d3e0e9;
 }
 
 .canvas-casa-1 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa1.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa1.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-2 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa2.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa2.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-3 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa3.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa3.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-4 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa4.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa4.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-5 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa5.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa5.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
