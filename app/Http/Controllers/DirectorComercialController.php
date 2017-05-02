@@ -246,9 +246,6 @@ class DirectorComercialController extends Controller
 
         ;
 
-
-
-
         $pdf->loadHTML($contenido);
         return $pdf->stream();
     }
