@@ -46,10 +46,26 @@
                                     <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
                             </div>
-                            <hr>
                             <div id="detalles" hidden>
-                                Detalles:
-                                <pre id="det-text" style="height:250px"></pre>
+                                    <div class="col-lg-4">
+                                        <img id="imagen_producto" src="" alt="Imagen del producto" class="img-thumbnail">
+                                    </div>
+                                    <div class="col-lg-8">
+
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Detalles del producto</h3>
+                                            </div>
+                                            <div id="det-text" class="panel-body">
+                                                <ul>
+                                                    <li id="nombre_p"></li>
+                                                    <li id="descripcion_p"></li>
+                                                    <li id="restricciones_p"></li>
+                                                    <li id="coste_p"></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -117,14 +133,23 @@
                             }
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
-                            if(costeTotal > 0)
+                            var prod = array[array.length-1];
+
+                            console.log(prod);
+
+                            if(costeTotal > 0 || prod.key > 0 )
                                 document.getElementById('detalles').hidden=false;
+                            else
+                                document.getElementById('detalles').hidden=true;
 
-                            var detalles = array[array.length-1];
 
-                            console.log(detalles);
 
-                            document.getElementById('det-text').textContent = detalles;
+                            $('#imagen_producto').attr("src","../img/" + prod.imagen);
+
+                            document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
+                            document.getElementById('descripcion_p').textContent = "Descripción: " + prod.descripcion;
+                            document.getElementById('restricciones_p').textContent = "Restricciones: " + prod.restricciones;
+                            document.getElementById('coste_p').textContent = "Coste: " + prod.coste ;
                         }
                     },
                     "animationManager.isEnabled": true,
@@ -251,7 +276,7 @@
 
 
         // start off with four "racks" that are positioned next to each other
-        myDiagram.model = new go.GraphLinksModel([{ key: "G", isGroup: true, coste: 0, pos: "0 0", size: "736 587" }]);
+        myDiagram.model = new go.GraphLinksModel([{ id: 0, key: "G", isGroup: true, coste: 0, pos: "0 0", size: "736 587" }]);
         // this sample does not make use of any links
 
         // initialize the Palette
@@ -269,7 +294,13 @@
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
                 @foreach($pros as $p)
-            { id: "{{$p->id}}", nombre:"{{$p->nombre}}", color: green, coste:{{$p->coste}}},
+            { id: {{$p->id}},
+                nombre:"{{$p->nombre}}",
+                descripcion: "{{$p->descripcion}}",
+                restricciones: "{{$p->restricciones}}",
+                coste:{{$p->coste}},
+                imagen: "{{$p->imagen}}",
+                color: green},
             @endforeach
         ]);
 
