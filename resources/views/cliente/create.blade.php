@@ -139,6 +139,7 @@
                             }
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
+
                             var prod = array[array.length-1];
 
                             console.log(prod);

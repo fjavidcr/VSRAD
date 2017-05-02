@@ -29,10 +29,10 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <div>
+                        <div hidden>
                             <textarea id="configuracion" name="configuracion" class="form-control" required>{{ $proyecto->configuracion  }}</textarea>
                         </div>
-                        <div>
+                        <div hidden>
                             <textarea id="nueva_configuracion" name="nueva_configuracion" class="form-control" required></textarea>
                         </div>
                     </div>
@@ -49,11 +49,6 @@
                                 <div class="col-lg-10">
                                     <div id="myDiagramDiv" class="canvas-plano canvas-casa-{{$proyecto->id_plano}}" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div id="restricciones" hidden>
-                                Restriccciones de los productos añadidos:
-                                <pre id="res-text" style="height:250px"></pre>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -78,6 +73,33 @@
                         </div>
                     </div>
                 </form>
+
+                <hr>
+
+                <div id="detalles" hidden>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Detalles del producto</h3>
+                            </div>
+                            <div id="det-text" class="panel-body">
+                                <div class="col-lg-4">
+                                    <img id="imagen_producto" src="" alt="Imagen del producto" class="img-thumbnail">
+                                </div>
+                                <div class="col-lg-8">
+                                    <ul>
+                                        <li id="nombre_p"></li>
+                                        <li id="descripcion_p"></li>
+                                        <li id="restricciones_p"></li>
+                                        <li id="coste_p"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                </div>
 
             </div>
         </div>
@@ -123,8 +145,23 @@
                             }
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
-                            if(costeTotal > 0)
-                                document.getElementById('restricciones').hidden=false;
+                            var prod = array[array.length-1];
+
+                            console.log(prod);
+
+                            if(costeTotal > 0 || prod.key > 0 )
+                                document.getElementById('detalles').hidden=false;
+                            else
+                                document.getElementById('detalles').hidden=true;
+
+
+
+                            $('#imagen_producto').attr("src","../img/" + prod.imagen);
+
+                            document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
+                            document.getElementById('descripcion_p').textContent = "Descripción: " + prod.descripcion;
+                            document.getElementById('restricciones_p').textContent = "Restricciones: " + prod.restricciones;
+                            document.getElementById('coste_p').textContent = "Coste: " + prod.coste ;
                         }
                     },
                     "animationManager.isEnabled": true,
