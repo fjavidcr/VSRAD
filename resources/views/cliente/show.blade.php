@@ -130,8 +130,8 @@
             grp.isHighlighted = false;
         }
 
-        var groupFill = "rgba(128,128,128,0.2)";
-        var groupStroke = "gray";
+        var groupFill = "rgba(128,128,128,0)";
+        var groupStroke = "white";
         var dropFill = "rgba(128,255,255,0.2)";
         var dropStroke = "red";
 

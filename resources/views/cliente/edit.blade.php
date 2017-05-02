@@ -43,7 +43,7 @@
                                 <div class="col-lg-2">
                                     <h3>Productos</h3>
                                     <div>
-                                      <div id="productos" style="width: 100px; height: 360px"></div>
+                                      <div id="productos" style="width: 100%; height: 360px"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
@@ -110,6 +110,7 @@
 
         var AllowTopLevel = false;
         var CellSize = new go.Size(30, 30);
+        var cont = 0;
 
         var $$ = go.GraphObject.make;
         var myDiagram =
@@ -149,13 +150,16 @@
 
                             console.log(prod);
 
-                            if(costeTotal > 0 || prod.key > 0 )
-                                document.getElementById('detalles').hidden=false;
+                            if(costeTotal > 0 || prod.key > 0){
+                                cont = cont +1;
+                                if(cont > 1)
+                                    document.getElementById('detalles').hidden = false;
+                            }
+
                             else
                                 document.getElementById('detalles').hidden=true;
 
-
-
+                            
                             $('#imagen_producto').attr("src","../img/" + prod.imagen);
 
                             document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
@@ -218,8 +222,8 @@
             }
             grp.isHighlighted = false;
         }
-        var groupFill = "rgba(128,128,128,0.2)";
-        var groupStroke = "gray";
+        var groupFill = "rgba(128,128,128,0)";
+        var groupStroke = "white";
         var dropFill = "rgba(128,255,255,0.2)";
         var dropStroke = "red";
 

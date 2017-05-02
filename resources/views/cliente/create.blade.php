@@ -39,7 +39,7 @@
                                 <div class="col-lg-2">
                                     <h3>Productos</h3>
                                     <div>
-                                      <div id="productos" style="width: 100px; height: 360px"></div>
+                                      <div id="productos" style="width: 100%; height: 360px"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
@@ -215,8 +215,8 @@
             grp.isHighlighted = false;
         }
 
-        var groupFill = "rgba(128,128,128,0.2)";
-        var groupStroke = "gray";
+        var groupFill = "rgba(128,128,128,0)";
+        var groupStroke = "white";
         var dropFill = "rgba(128,255,255,0.2)";
         var dropStroke = "red";
 
