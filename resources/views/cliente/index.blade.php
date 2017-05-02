@@ -128,14 +128,20 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <form class="form-inline" action="{{ route('cliente.destroy') }}" method="post">
-                                        {{ csrf_field() }}
-                                        <div class="form-group">
-                                            <input type="hidden" name="id" value="{{$p->id}}">
-                                            <input type="hidden" name="_method" value="delete">
-                                            <input type="submit" class="btn btn-danger btn-xs" value="Eliminar">
-                                        </div>
-                                    </form>
+                                    @if($p->puedeEliminar())
+                                        <form class="form-inline" action="{{ route('cliente.destroy') }}" method="post">
+                                            {{ csrf_field() }}
+                                            <div class="form-group">
+                                                <input type="hidden" name="id" value="{{$p->id}}">
+                                                <input type="hidden" name="_method" value="delete">
+                                                <input type="submit" class="btn btn-danger btn-xs" value="Eliminar">
+                                            </div>
+                                        </form>
+                                    @elseif($p->getEstado() == "validado")
+                                        Compra o Rechaza
+                                    @elseif($p->getEstado() == "pendiente")
+                                        Esperando validación...
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

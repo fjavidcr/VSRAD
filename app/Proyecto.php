@@ -38,6 +38,12 @@ class Proyecto extends Model
         return $cliente;
     }
 
+    public function puedeEliminar(){
+        if($this->getEstado() == "no_pendiente" || $this->getEstado() == "no_validado" || $this->getEstado() == "rechazado")
+            return true;
+        return false;
+    }
+
     //TODO: revisar las relaciones
 
     public function cliente() {
