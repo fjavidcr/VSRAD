@@ -47,9 +47,9 @@
                                 </div>
                             </div>
                             <hr>
-                            <div id="restricciones" hidden>
-                                Restriccciones de los productos añadidos:
-                                <pre id="res-text" style="height:250px"></pre>
+                            <div id="detalles" hidden>
+                                Detalles:
+                                <pre id="det-text" style="height:250px"></pre>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -118,7 +118,13 @@
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
                             if(costeTotal > 0)
-                                document.getElementById('restricciones').hidden=false;
+                                document.getElementById('detalles').hidden=false;
+
+                            var detalles = array[array.length-1];
+
+                            console.log(detalles);
+
+                            document.getElementById('det-text').textContent = detalles;
                         }
                     },
                     "animationManager.isEnabled": true,
