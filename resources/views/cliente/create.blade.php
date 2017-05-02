@@ -28,7 +28,7 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <div>
+                        <div hidden>
                             <textarea id="configuracion" name="configuracion" class="form-control" required>{{ old('configuracion') }}</textarea>
                         </div>
                     </div>
@@ -45,27 +45,6 @@
                                 <div class="col-lg-10">
                                     <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
-                            </div>
-                            <div id="detalles" hidden>
-                                    <div class="col-lg-4">
-                                        <img id="imagen_producto" src="" alt="Imagen del producto" class="img-thumbnail">
-                                    </div>
-                                    <div class="col-lg-8">
-
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title">Detalles del producto</h3>
-                                            </div>
-                                            <div id="det-text" class="panel-body">
-                                                <ul>
-                                                    <li id="nombre_p"></li>
-                                                    <li id="descripcion_p"></li>
-                                                    <li id="restricciones_p"></li>
-                                                    <li id="coste_p"></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -90,6 +69,33 @@
                         </div>
                     </div>
                 </form>
+
+                <hr>
+
+                <div id="detalles" hidden>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Detalles del producto</h3>
+                            </div>
+                            <div id="det-text" class="panel-body">
+                                <div class="col-lg-4">
+                                    <img id="imagen_producto" src="" alt="Imagen del producto" class="img-thumbnail">
+                                </div>
+                                <div class="col-lg-8">
+                                    <ul>
+                                        <li id="nombre_p"></li>
+                                        <li id="descripcion_p"></li>
+                                        <li id="restricciones_p"></li>
+                                        <li id="coste_p"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                </div>
 
             </div>
         </div>
