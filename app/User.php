@@ -63,6 +63,12 @@ class User extends Authenticatable
         return User::$title[$this->rol] . ". " . $this->name .' '. $this->apellidos;
     }
 
+    public function isRegistered(){
+        if($this->apellidos == "" && $this->direccion_fisica == "" && $this->telefono =="" && $this->dni =="")
+            return false;
+        return true;
+    }
+
     public function proyectos()
     {
         return $this->hasMany('App\Proyecto', 'id_cliente');

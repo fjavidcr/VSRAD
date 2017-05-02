@@ -21,6 +21,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/', 'RedireccionController');
+    Route::resource('/home', 'RedireccionController');
 
     Route::group(['middleware' => 'rol:administrador'], function () {
         Route::get('administrador/form_crear_usuario', 'AdministradorController@form_crear_usuario')->name('administrador.form_crear_usuario');
@@ -58,11 +59,14 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'rol:cliente'], function () {
+        Route::resource('cliente', 'ClienteController');
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
         Route::get('/cliente/edit/{id}', 'ClienteController@edit')->name('cliente.edit');
         Route::post('/cliente/editar', 'ClienteController@editar')->name('cliente.editar');
+        Route::post('/cliente/destroy', 'ClienteController@destroy')->name('cliente.destroy');
+        Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
 
-        Route::resource('cliente', 'ClienteController');
+
     });
 
     Route::group(['middleware' => 'rol:comercial'], function () {
