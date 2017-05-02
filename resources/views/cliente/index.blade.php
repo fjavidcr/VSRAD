@@ -151,7 +151,9 @@
             var numero
             var letr
             var letra
-            var dni = document.getElementById('dni').getAttribute('value');
+            var dni = document.getElementById('dni').value;
+            dni = dni.toUpperCase();
+            console.log(dni);
 
             numero = dni.substr(0,dni.length-1);
             letr = dni.substr(dni.length-1,1);
