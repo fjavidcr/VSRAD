@@ -9,7 +9,8 @@
             <div class="col-lg-12">
                 <h3>Proyectos de {{ $user->name }}</h3>
 
-                <a href="{{ route('cliente.create') }}" class="btn btn-primary">
+                <a href="{{ route('cliente.create') }}" type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Nuevo proyecto
                 </a>
             </div>
@@ -47,7 +48,7 @@
                                         <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
                                     @else
                                         @if($user->isRegistered())
-                                            <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-xs btn-primary">Pedir validación</a>
+                                            <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-sm btn-primary">Pedir validación</a>
                                         @else
                                             <button id="boton-guardar-proyecto" type="button" class="cambiar_estado btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal">
                                                 Pedir validación
@@ -116,13 +117,14 @@
                                 </td>
                                 <td>
                                     @if($p->getEstado() == "no_pendiente")
-                                        <a class="btn btn-default btn-xs"
+                                        <a class="btn btn-default btn-sm"
                                            href="{{ route('cliente.edit', $p->id) }}">
                                             Editar
                                         </a>
                                     @else
-                                        <a class="btn btn-default btn-xs"
+                                        <a class="btn btn-default btn-sm"
                                            href="{{ route('cliente.show', $p->id) }}">
+                                            <span class="" aria-hidden="true"></span>
                                             Ver
                                         </a>
                                     @endif
@@ -134,7 +136,7 @@
                                             <div class="form-group">
                                                 <input type="hidden" name="id" value="{{$p->id}}">
                                                 <input type="hidden" name="_method" value="delete">
-                                                <input type="submit" class="btn btn-danger btn-xs" value="Eliminar">
+                                                <input type="submit" class="btn btn-danger btn-sm" value="Eliminar">
                                             </div>
                                         </form>
                                     @elseif($p->getEstado() == "validado")

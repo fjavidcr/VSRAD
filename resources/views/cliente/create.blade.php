@@ -63,7 +63,8 @@
                                 <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
                                 <input id="boton-guardar-proyecto" type="submit" class="btn btn-success" value="Guardar proyecto" disabled>
 
-                                <a class="btn btn-default boton-cambiar-plano">Cambiar plano</a>
+                                <a class="btn btn-default boton-cambiar-plano">
+                                    Cambiar plano</a>
                                 <!---<a class="btn btn-default">Limpiar</a>--->
                             </div>
                         </div>

@@ -159,7 +159,7 @@
                             else
                                 document.getElementById('detalles').hidden=true;
 
-                            
+
                             $('#imagen_producto').attr("src","../img/" + prod.imagen);
 
                             document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
