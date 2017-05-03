@@ -296,8 +296,8 @@
                 });
 
         var green = '#B2FF59';
-        var blue = '#81D4FA';
-        var yellow = '#FFEB3B';
+        var blue = '#bce3f2';
+        var g2 = '#aee295';
 
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
