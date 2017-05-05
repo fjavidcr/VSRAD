@@ -140,47 +140,13 @@
                                 if(array[i].key !== "G" ){
                                     costeTotal += parseFloat(array[i].coste);
                                     console.log("coste: " + array[i].coste);
-                                    /*
-                                    $('#det-text').append('<tr>' +
-                                        '<td> <img id="imagen_producto-'+ i + '" src="" alt="Imagen del producto" class="img-responsive img-rounded" style="width: 100%; height: 50px;"> </td>' +
-                                        '<td>' + array[i].nombre + '</td>' +
-                                        '<td>' + array[i].descripcion + '</td>' +
-                                        '<td>' + array[i].restricciones + '</td>' +
-                                        '<td>' + array[i].coste + ' €</td>' +
-                                        '</tr>');
-                                        */
+
                                 }
                             }
-                            /*
-                            for(var i in array){
-                                if(array[i].key == "G" ){}
-                                else
-                                    $('#imagen_producto-'+i).attr("src","../img/" + array[i].imagen);
-                            }
-                            */
 
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
 
-                            /*
-                            var prod = array[array.length-1];
-
-                            console.log(prod);
-
-                            if(costeTotal > 0 || prod.key !== "G" )
-                                document.getElementById('detalles').hidden=false;
-                            else
-                                document.getElementById('detalles').hidden=true;
-
-                            /*
-
-                            $('#imagen_producto').attr("src","../img/" + prod.imagen);
-
-                            document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
-                            document.getElementById('descripcion_p').textContent = "Descripción: " + prod.descripcion;
-                            document.getElementById('restricciones_p').textContent = "Restricciones: " + prod.restricciones;
-                            document.getElementById('coste_p').textContent = "Coste: " + prod.coste +" € (sin IVA)";
-                            */
                         }
                     },
                     "animationManager.isEnabled": true,
@@ -192,14 +158,15 @@
             var icon = node.findObject("SHAPE");
 
             console.log(node.data);
-            //console.log(elem.data);
 
             if (icon !== null) {
                 if (node.isSelected) {
                     icon.fill = "#B2FF59";
                     document.getElementById('detalles').hidden=false;
 
-                    $('#imagen_producto').attr("src", "../img/" + node.data.imagen);
+                    var path = "/img/" + node.data.imagen;
+
+                    $('#imagen_producto').attr("src", path);
 
                     document.getElementById('nombre_p').textContent = "Nombre: " + node.data.nombre;
                     document.getElementById('descripcion_p').textContent = "Descripción: " + node.data.descripcion;

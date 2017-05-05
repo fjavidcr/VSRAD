@@ -159,7 +159,6 @@
             //var elem = node.diagram.selection.first(); //NO FUNCIONA ESTO
             var icon = node.findObject("SHAPE");
 
-            console.log(node.data.imagen);
             //console.log(elem.data);
 
             if (icon !== null) {
@@ -167,7 +166,11 @@
                     icon.fill = "#B2FF59";
                     document.getElementById('detalles').hidden=false;
 
-                    $('#imagen_producto').attr("src", "../img/" + node.data.imagen);
+                    console.log("Nombre: " + node.data.nombre + " Imagen: " + node.data.imagen);
+
+                    var path = "/img/" + node.data.imagen;
+
+                    jQuery('#imagen_producto').attr("src", path);
 
                     document.getElementById('nombre_p').textContent = "Nombre: " + node.data.nombre;
                     document.getElementById('descripcion_p').textContent = "Descripción: " + node.data.descripcion;
