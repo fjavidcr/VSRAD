@@ -54,7 +54,7 @@
                                                 <form action="{{route('comercial.asignar_oferta')}}" method="post">
                                                     {{csrf_field()}}
                                                     <div class="form-inline">
-                                                        <input id="oferta" type="number" min="0" max="99.99" step="0.01" value="0.00" name="oferta"> %
+                                                        <input id="oferta" type="number" min="0" max="{{$user->oferta}}" step="0.01" value="0.00" name="oferta"> %
                                                         <input type="hidden" name="id_proyecto" value="{{$p->id}}">
                                                         <button type="submit" class="btn btn-success btn-xs">Asignar</button>
                                                     </div>
