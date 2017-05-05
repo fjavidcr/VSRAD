@@ -65,6 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cliente/editar', 'ClienteController@editar')->name('cliente.editar');
         Route::post('/cliente/destroy', 'ClienteController@destroy')->name('cliente.destroy');
         Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
+        Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
+        Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
 
 
     });

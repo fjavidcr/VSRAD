@@ -227,4 +227,18 @@ class ClienteController extends Controller
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
         return redirect()->route('cliente.index');
     }
+
+    public function comprar(Request $request){
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->estado = 4;
+        $proyecto->save();
+        return redirect()->route('cliente.index');
+    }
+
+    public function rechazar(Request $request){
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->estado = 5;
+        $proyecto->save();
+        return redirect()->route('cliente.index');
+    }
 }

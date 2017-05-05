@@ -116,6 +116,7 @@
         var myDiagram =
             $$(go.Diagram, "myDiagramDiv",
                 {
+                    scroll: false,
                     /*fixedBounds: Rect(0,0,669,460),*/
                     /*initialContentAlignment: go.Spot.Center,  // center the content*/
                     grid: $$(go.Panel, "Grid",
