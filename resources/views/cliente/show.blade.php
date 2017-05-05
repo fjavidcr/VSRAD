@@ -44,6 +44,33 @@
                     </div>
                 </div>
 
+                <hr>
+
+                <div id="detalles" hidden>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Detalles del producto</h3>
+                            </div>
+                            <div id="det-text" class="panel-body">
+                                <div class="col-lg-4">
+                                    <img id="imagen_producto" src="" alt="Imagen del producto" class="img-thumbnail">
+                                </div>
+                                <div class="col-lg-8">
+                                    <ul>
+                                        <li id="nombre_p"></li>
+                                        <li id="descripcion_p"></li>
+                                        <li id="restricciones_p"></li>
+                                        <li id="coste_p"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                </div>
+
             </div>
             </div>
         </div>
@@ -79,11 +106,41 @@
                     "undoManager.isEnabled": false // enable Ctrl-Z to undo and Ctrl-Y to redo
                 });
 
+        function onSelectionChanged(node) {
+            //var elem = node.diagram.selection.first(); //NO FUNCIONA ESTO
+            var icon = node.findObject("SHAPE");
+
+            //console.log(elem.data);
+
+            if (icon !== null) {
+                if (node.isSelected) {
+                    icon.fill = "#B2FF59";
+                    document.getElementById('detalles').hidden=false;
+
+                    console.log("Nombre: " + node.data.nombre + " Imagen: " + node.data.imagen);
+
+                    var path = "/img/" + node.data.imagen;
+
+                    jQuery('#imagen_producto').attr("src", path);
+
+                    document.getElementById('nombre_p').textContent = "Nombre: " + node.data.nombre;
+                    document.getElementById('descripcion_p').textContent = "Descripción: " + node.data.descripcion;
+                    document.getElementById('restricciones_p').textContent = "Restricciones: " + node.data.restricciones;
+                    document.getElementById('coste_p').textContent = "Coste: " + node.data.coste + " € (sin IVA)";
+                }
+                else{
+                    icon.fill = "lightgray";
+                    document.getElementById('detalles').hidden=true;
+                }
+            }
+        }
+
         // Regular Nodes represent items to be put onto racks.
         // Nodes are currently resizable, but if that is not desired, just set resizable to false.
         myDiagram.nodeTemplate =
             $$(go.Node, "Auto",
                 {
+                    selectionChanged: onSelectionChanged,
                     resizable: false, resizeObjectName: "SHAPE",
                     locationObjectName: "TB",
                     // because the gridSnapCellSpot is Center, offset the Node's location
