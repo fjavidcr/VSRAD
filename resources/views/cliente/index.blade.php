@@ -9,7 +9,8 @@
             <div class="col-lg-12">
                 <h3>Proyectos de {{ $user->name }}</h3>
 
-                <a href="{{ route('cliente.create') }}" class="btn btn-primary">
+                <a href="{{ route('cliente.create') }}" type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Nuevo proyecto
                 </a>
             </div>
@@ -31,6 +32,8 @@
                             <th>#</th>
                             <th>Proyecto</th>
                             <th>Fecha de edición</th>
+                            <th>Coste total (sin IVA)</th>
+                            <th>Promoción</th>
                             <th>Estado</th>
                             <th></th>
                             <th></th>
@@ -42,12 +45,14 @@
                                 <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
                                 <td>{{ $p->fecha_creacion }}</td>
+                                <td>{{ $p->coste }} €</td>
+                                <td>{{ $p->oferta }} % descuento</td>
                                 <td>
                                     @if($p->getEstado() != "no_pendiente")
                                         <p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p>
                                     @else
                                         @if($user->isRegistered())
-                                            <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-xs btn-primary">Pedir validación</a>
+                                            <a href="{{ route('cliente.cambiar_estado', $p->id) }}" data-id="{{$p->id}}" class="cambiar_estado btn btn-sm btn-primary">Pedir validación</a>
                                         @else
                                             <button id="boton-guardar-proyecto" type="button" class="cambiar_estado btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal">
                                                 Pedir validación
@@ -116,33 +121,51 @@
                                 </td>
                                 <td>
                                     @if($p->getEstado() == "no_pendiente")
-                                        <a class="btn btn-default btn-xs"
+                                        <a class="btn btn-default btn-sm"
                                            href="{{ route('cliente.edit', $p->id) }}">
                                             Editar
                                         </a>
                                     @else
-                                        <a class="btn btn-default btn-xs"
+                                        <a class="btn btn-default btn-sm"
                                            href="{{ route('cliente.show', $p->id) }}">
+                                            <span class="" aria-hidden="true"></span>
                                             Ver
                                         </a>
                                     @endif
                                 </td>
-                                <td>
                                     @if($p->puedeEliminar())
+                                        <td>
                                         <form class="form-inline" action="{{ route('cliente.destroy') }}" method="post">
                                             {{ csrf_field() }}
                                             <div class="form-group">
                                                 <input type="hidden" name="id" value="{{$p->id}}">
                                                 <input type="hidden" name="_method" value="delete">
-                                                <input type="submit" class="btn btn-danger btn-xs" value="Eliminar">
+                                                <input type="submit" class="btn btn-danger btn-sm" value="Eliminar">
                                             </div>
                                         </form>
+                                        </td>
                                     @elseif($p->getEstado() == "validado")
-                                        Compra o Rechaza
+                                        <td>
+                                        <form class="form-inline" action="{{ route('cliente.comprar') }}" method="post">
+                                            {{ csrf_field() }}
+                                            <div class="form-group">
+                                                <input type="hidden" name="id" value="{{$p->id}}">
+                                                <input type="submit" class="btn btn-success btn-sm" value="Comprar">
+                                            </div>
+                                        </form>
+                                        </td>
+                                        <td>
+                                        <form class="form-inline" action="{{ route('cliente.rechazar') }}" method="post">
+                                            {{ csrf_field() }}
+                                            <div class="form-group">
+                                                <input type="hidden" name="id" value="{{$p->id}}">
+                                                <input type="submit" class="btn btn-danger btn-sm" value="Rechazar">
+                                            </div>
+                                        </form>
+                                        </td>
                                     @elseif($p->getEstado() == "pendiente")
-                                        Esperando validación...
+                                        <td>Esperando validación...</td>
                                     @endif
-                                </td>
                             </tr>
                         @endforeach
                     </table>

@@ -20,7 +20,8 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                             <th>Proyecto</th>
+                            <th>Proyecto</th>
+                            <th>Fecha de edición</th>
                             <th>Cliente</th>
                             <th>Estado</th>
                         </tr>
@@ -30,13 +31,21 @@
                             <tr>
                                 <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
+                                <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->getCliente()->name }}</td>
                                 <td>{{ $p->getTituloEstado() }}</td>
                                 @if($p->getEstado() == "pendiente")
                                     <td>
-                                        <a class="btn btn-warning btn-xs"
+                                        <a class="btn btn-primary btn-sm"
                                            href="{{ route('tecnico.proyecto', $p->id) }}">
                                             Revisar
+                                        </a>
+                                    </td>
+                                @else
+                                    <td>
+                                        <a class="btn btn-success btn-sm"
+                                           href="{{ route('tecnico.show', $p->id) }}">
+                                            Ver
                                         </a>
                                     </td>
                                 @endif

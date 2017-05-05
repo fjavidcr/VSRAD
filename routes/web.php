@@ -65,6 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cliente/editar', 'ClienteController@editar')->name('cliente.editar');
         Route::post('/cliente/destroy', 'ClienteController@destroy')->name('cliente.destroy');
         Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
+        Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
+        Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
 
 
     });
@@ -79,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'rol:tecnico'], function () {
 
-        Route::get('tecnico/proyecto/{id}', 'TecnicoController@show')->name('tecnico.proyecto');
+        Route::get('tecnico/proyecto/{id}', 'TecnicoController@edit')->name('tecnico.proyecto');
         Route::post('tecnico/cambiar_estado', 'TecnicoController@cambiar_estado')->name('tecnico.cambiar_estado');
         Route::post('tecnico/enviar_mensaje', 'TecnicoController@enviar_mensaje')->name('tecnico.enviar_mensaje');
 

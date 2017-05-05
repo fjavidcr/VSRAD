@@ -28,7 +28,7 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <div>
+                        <div hidden>
                             <textarea id="configuracion" name="configuracion" class="form-control" required>{{ old('configuracion') }}</textarea>
                         </div>
                     </div>
@@ -39,17 +39,12 @@
                                 <div class="col-lg-2">
                                     <h3>Productos</h3>
                                     <div>
-                                      <div id="productos" style="width: 100px; height: 360px"></div>
+                                      <div id="productos" style="width: 100%; height: 360px"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
                                     <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div id="restricciones" hidden>
-                                Restriccciones de los productos añadidos:
-                                <pre id="res-text" style="height:250px"></pre>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -68,12 +63,41 @@
                                 <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
                                 <input id="boton-guardar-proyecto" type="submit" class="btn btn-success" value="Guardar proyecto" disabled>
 
-                                <a class="btn btn-default boton-cambiar-plano">Cambiar plano</a>
+                                <a class="btn btn-default boton-cambiar-plano">
+                                    Cambiar plano</a>
                                 <!---<a class="btn btn-default">Limpiar</a>--->
                             </div>
                         </div>
                     </div>
                 </form>
+
+                <hr>
+
+                <div id="detalles" hidden>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Detalles del producto</h3>
+                            </div>
+                            <div id="det-text" class="panel-body">
+                                <div class="col-lg-4">
+                                    <img id="imagen_producto" src="" alt="Imagen del producto" class="img-thumbnail">
+                                </div>
+                                <div class="col-lg-8">
+                                    <ul>
+                                        <li id="nombre_p"></li>
+                                        <li id="descripcion_p"></li>
+                                        <li id="restricciones_p"></li>
+                                        <li id="coste_p"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                </div>
 
             </div>
         </div>
@@ -89,6 +113,7 @@
         var myDiagram =
             $$(go.Diagram, "myDiagramDiv",
                 {
+                    scroll: false,
                     /*fixedBounds: Rect(0,0,669,460),*/
                     /*initialContentAlignment: go.Spot.Center,  // center the content*/
                     grid: $$(go.Panel, "Grid",
@@ -112,24 +137,55 @@
                             var costeTotal = 0;
 
                             for(var i in array){
-                                costeTotal += parseFloat(array[i].coste);
-                                console.log("coste: " + array[i].coste);
+                                if(array[i].key !== "G" ){
+                                    costeTotal += parseFloat(array[i].coste);
+                                    console.log("coste: " + array[i].coste);
+
+                                }
                             }
+
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
-                            if(costeTotal > 0)
-                                document.getElementById('restricciones').hidden=false;
+
                         }
                     },
                     "animationManager.isEnabled": true,
                     "undoManager.isEnabled": true // enable Ctrl-Z to undo and Ctrl-Y to redo
                 });
 
+        function onSelectionChanged(node) {
+            //var elem = node.diagram.selection.first(); //NO FUNCIONA ESTO
+            var icon = node.findObject("SHAPE");
+
+            console.log(node.data);
+
+            if (icon !== null) {
+                if (node.isSelected) {
+                    icon.fill = "#B2FF59";
+                    document.getElementById('detalles').hidden=false;
+
+                    var path = "/img/" + node.data.imagen;
+
+                    $('#imagen_producto').attr("src", path);
+
+                    document.getElementById('nombre_p').textContent = "Nombre: " + node.data.nombre;
+                    document.getElementById('descripcion_p').textContent = "Descripción: " + node.data.descripcion;
+                    document.getElementById('restricciones_p').textContent = "Restricciones: " + node.data.restricciones;
+                    document.getElementById('coste_p').textContent = "Coste: " + node.data.coste + " € (sin IVA)";
+                }
+                else{
+                    icon.fill = "lightgray";
+                    document.getElementById('detalles').hidden=true;
+                }
+            }
+        }
+
         // Regular Nodes represent items to be put onto racks.
         // Nodes are currently resizable, but if that is not desired, just set resizable to false.
         myDiagram.nodeTemplate =
             $$(go.Node, "Auto",
                 {
+                    selectionChanged: onSelectionChanged,
                     resizable: false, resizeObjectName: "SHAPE",
                     locationObjectName: "TB",
                     // because the gridSnapCellSpot is Center, offset the Node's location
@@ -177,8 +233,8 @@
             grp.isHighlighted = false;
         }
 
-        var groupFill = "rgba(128,128,128,0.2)";
-        var groupStroke = "gray";
+        var groupFill = "rgba(128,128,128,0)";
+        var groupStroke = "white";
         var dropFill = "rgba(128,255,255,0.2)";
         var dropStroke = "red";
 
@@ -245,7 +301,7 @@
 
 
         // start off with four "racks" that are positioned next to each other
-        myDiagram.model = new go.GraphLinksModel([{ key: "G", isGroup: true, coste: 0, pos: "0 0", size: "736 587" }]);
+        myDiagram.model = new go.GraphLinksModel([{ id: 0, key: "G", isGroup: true, coste: 0, pos: "0 0", size: "736 587" }]);
         // this sample does not make use of any links
 
         // initialize the Palette
@@ -257,13 +313,19 @@
                 });
 
         var green = '#B2FF59';
-        var blue = '#81D4FA';
-        var yellow = '#FFEB3B';
+        var blue = '#bce3f2';
+        var gray = 'lightgray';
 
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
                 @foreach($pros as $p)
-            { id: "{{$p->id}}", nombre:"{{$p->nombre}}", color: green, coste:{{$p->coste}}},
+            { id: {{$p->id}},
+                nombre:"{{$p->nombre}}",
+                descripcion: "{{$p->descripcion}}",
+                restricciones: "{{$p->restricciones}}",
+                coste:{{$p->coste}},
+                imagen: "{{$p->imagen}}",
+                color: gray},
             @endforeach
         ]);
 
