@@ -79,7 +79,7 @@
                 <div id="detalles" hidden>
                     <div class="col-lg-1"></div>
                     <div class="col-lg-10">
-                        <div class="panel panel-info">
+                        <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Detalles del producto</h3>
                             </div>
@@ -141,17 +141,20 @@
                             //console.log(array);
 
                             for(var i in array){
-                                costeTotal += parseFloat(array[i].coste);
-
-                                console.log("coste: " + array[i].coste);
+                                if(array[i].key == "G" ){}
+                                else{
+                                    costeTotal += parseFloat(array[i].coste);
+                                    console.log("coste: " + array[i].coste);
+                                }
                             }
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
+                            /*
                             var prod = array[array.length-1];
 
                             console.log(prod);
 
-                            if(costeTotal > 0 || prod.key > 0){
+                            if(costeTotal > 0 || prod.key !== "G"){
                                 cont = cont +1;
                                 if(cont > 1)
                                     document.getElementById('detalles').hidden = false;
@@ -160,24 +163,52 @@
                             else
                                 document.getElementById('detalles').hidden=true;
 
-
+                            /*
                             $('#imagen_producto').attr("src","../img/" + prod.imagen);
 
                             document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
                             document.getElementById('descripcion_p').textContent = "Descripción: " + prod.descripcion;
                             document.getElementById('restricciones_p').textContent = "Restricciones: " + prod.restricciones;
                             document.getElementById('coste_p').textContent = "Coste: " + prod.coste ;
+                            */
                         }
                     },
                     "animationManager.isEnabled": true,
                     "undoManager.isEnabled": true // enable Ctrl-Z to undo and Ctrl-Y to redo
                 });
 
+        function onSelectionChanged(node) {
+            //var elem = node.diagram.selection.first(); //NO FUNCIONA ESTO
+            var icon = node.findObject("SHAPE");
+
+            console.log(node.data);
+            //console.log(elem.data);
+
+            if (icon !== null) {
+                if (node.isSelected) {
+                    icon.fill = "#B2FF59";
+                    document.getElementById('detalles').hidden=false;
+
+                    $('#imagen_producto').attr("src", "../img/" + node.data.imagen);
+
+                    document.getElementById('nombre_p').textContent = "Nombre: " + node.data.nombre;
+                    document.getElementById('descripcion_p').textContent = "Descripción: " + node.data.descripcion;
+                    document.getElementById('restricciones_p').textContent = "Restricciones: " + node.data.restricciones;
+                    document.getElementById('coste_p').textContent = "Coste: " + node.data.coste + " € (sin IVA)";
+                }
+                else{
+                    icon.fill = "lightgray";
+                    document.getElementById('detalles').hidden=true;
+                }
+            }
+        }
+
         // Regular Nodes represent items to be put onto racks.
         // Nodes are currently resizable, but if that is not desired, just set resizable to false.
         myDiagram.nodeTemplate =
             $$(go.Node, "Auto",
                 {
+                    selectionChanged: onSelectionChanged,
                     resizable: false, resizeObjectName: "SHAPE",
                     locationObjectName: "TB",
                     // because the gridSnapCellSpot is Center, offset the Node's location
@@ -309,12 +340,18 @@
 
         var green = '#B2FF59';
         var blue = '#81D4FA';
-        var yellow = '#FFEB3B';
+        var gray = 'lightgray';
 
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
                 @foreach($pros as $p)
-            { id: "{{$p->id}}", nombre:"{{$p->nombre}}", color: green, coste:{{$p->coste}}},
+            { id: {{$p->id}},
+                nombre:"{{$p->nombre}}",
+                descripcion: "{{$p->descripcion}}",
+                restricciones: "{{$p->restricciones}}",
+                coste:{{$p->coste}},
+                imagen: "{{$p->imagen}}",
+                color: gray},
             @endforeach
         ]);
 

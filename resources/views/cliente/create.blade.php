@@ -76,7 +76,7 @@
                 <div id="detalles" hidden>
                     <div class="col-lg-1"></div>
                     <div class="col-lg-10">
-                        <div class="panel panel-info">
+                        <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Detalles del producto</h3>
                             </div>
@@ -94,6 +94,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                     <div class="col-lg-1"></div>
                 </div>
@@ -136,40 +137,89 @@
                             var costeTotal = 0;
 
                             for(var i in array){
-                                costeTotal += parseFloat(array[i].coste);
-                                console.log("coste: " + array[i].coste);
+                                if(array[i].key == "G" ){}
+                                else{
+                                    costeTotal += parseFloat(array[i].coste);
+                                    console.log("coste: " + array[i].coste);
+                                    /*
+                                    $('#det-text').append('<tr>' +
+                                        '<td> <img id="imagen_producto-'+ i + '" src="" alt="Imagen del producto" class="img-responsive img-rounded" style="width: 100%; height: 50px;"> </td>' +
+                                        '<td>' + array[i].nombre + '</td>' +
+                                        '<td>' + array[i].descripcion + '</td>' +
+                                        '<td>' + array[i].restricciones + '</td>' +
+                                        '<td>' + array[i].coste + ' €</td>' +
+                                        '</tr>');
+                                        */
+                                }
                             }
+                            /*
+                            for(var i in array){
+                                if(array[i].key == "G" ){}
+                                else
+                                    $('#imagen_producto-'+i).attr("src","../img/" + array[i].imagen);
+                            }
+                            */
+
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
 
+                            /*
                             var prod = array[array.length-1];
 
                             console.log(prod);
 
-                            if(costeTotal > 0 || prod.key > 0 )
+                            if(costeTotal > 0 || prod.key !== "G" )
                                 document.getElementById('detalles').hidden=false;
                             else
                                 document.getElementById('detalles').hidden=true;
 
-
+                            /*
 
                             $('#imagen_producto').attr("src","../img/" + prod.imagen);
 
                             document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
                             document.getElementById('descripcion_p').textContent = "Descripción: " + prod.descripcion;
                             document.getElementById('restricciones_p').textContent = "Restricciones: " + prod.restricciones;
-                            document.getElementById('coste_p').textContent = "Coste: " + prod.coste ;
+                            document.getElementById('coste_p').textContent = "Coste: " + prod.coste +" € (sin IVA)";
+                            */
                         }
                     },
                     "animationManager.isEnabled": true,
                     "undoManager.isEnabled": true // enable Ctrl-Z to undo and Ctrl-Y to redo
                 });
 
+        function onSelectionChanged(node) {
+            //var elem = node.diagram.selection.first(); //NO FUNCIONA ESTO
+            var icon = node.findObject("SHAPE");
+
+            console.log(node.data);
+            //console.log(elem.data);
+
+            if (icon !== null) {
+                if (node.isSelected) {
+                    icon.fill = "#B2FF59";
+                    document.getElementById('detalles').hidden=false;
+
+                    $('#imagen_producto').attr("src", "../img/" + node.data.imagen);
+
+                    document.getElementById('nombre_p').textContent = "Nombre: " + node.data.nombre;
+                    document.getElementById('descripcion_p').textContent = "Descripción: " + node.data.descripcion;
+                    document.getElementById('restricciones_p').textContent = "Restricciones: " + node.data.restricciones;
+                    document.getElementById('coste_p').textContent = "Coste: " + node.data.coste + " € (sin IVA)";
+                }
+                else{
+                    icon.fill = "lightgray";
+                    document.getElementById('detalles').hidden=true;
+                }
+            }
+        }
+
         // Regular Nodes represent items to be put onto racks.
         // Nodes are currently resizable, but if that is not desired, just set resizable to false.
         myDiagram.nodeTemplate =
             $$(go.Node, "Auto",
                 {
+                    selectionChanged: onSelectionChanged,
                     resizable: false, resizeObjectName: "SHAPE",
                     locationObjectName: "TB",
                     // because the gridSnapCellSpot is Center, offset the Node's location
@@ -298,7 +348,7 @@
 
         var green = '#B2FF59';
         var blue = '#bce3f2';
-        var g2 = '#aee295';
+        var gray = 'lightgray';
 
         // specify the contents of the Palette
         productos.model = new go.GraphLinksModel([
@@ -309,7 +359,7 @@
                 restricciones: "{{$p->restricciones}}",
                 coste:{{$p->coste}},
                 imagen: "{{$p->imagen}}",
-                color: green},
+                color: gray},
             @endforeach
         ]);
 
