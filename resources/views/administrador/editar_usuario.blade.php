@@ -57,7 +57,7 @@
         <div class="form-group">
             <label for="dni" class="col-sm-2 control-label">DNI</label>
             <div class="col-sm-10">
-                <input id="dni" type="text" name="dni" value="{{ $user->dni }}" required>
+                <input id="dni" type="text" name="dni" value="{{ $user->dni }}" onchange="comprobar()" required>
             </div>
         </div>
         <div class="form-group">
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="col-sm-offset-2 col-sm-10">
-            <input type="submit" value="Editar" class="btn btn-success" onclick="comprobar()">
+            <input id="boton" type="submit" value="Editar" class="btn btn-success" disabled>
         </div>
     </form>
 
@@ -84,7 +84,9 @@
             var letr
             var letra
             var expresion_regular_dni
-            var dni = formulario.dni.value;
+            var dni = document.getElementById('dni').value;
+            dni = dni.toUpperCase();
+            console.log(dni);
 
             expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
 
@@ -95,11 +97,11 @@
                 letra='TRWAGMYFPDXBNJZSQVHLCKET';
                 letra=letra.substring(numero,numero+1);
                 if (letra!=letr.toUpperCase()) {
-                    alert('DNI erroneo, la letra del DNI no se corresponde');
+                    document.getElementById('boton').disabled=true;
+                    alert('DNI erroneo');
                 }
-            /*}else{
-                alert('DNI erroneo, formato no válido');
-            }*/
+                else
+                    document.getElementById('boton').disabled=false;
         }
     </script>
 
