@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TecnicoController extends Controller
 {
@@ -36,7 +37,25 @@ class TecnicoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'estado'=> 'required',
+            'configuracion' => 'required'
+        ]);
+
+        $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
+
+        $proyecto->configuracion = $request->input('nueva_configuracion');
+        $fecha = getdate();
+
+        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+
+        $proyecto->fecha_creacion= $fecha_creacion;
+        $proyecto->estado = $request->input('estado');
+        $proyecto->coste = $request->input('coste');
+        $proyecto->save();
+
+        $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
+        return redirect()->route('cliente.index');
     }
 
     /**
@@ -46,11 +65,12 @@ class TecnicoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //FUNCION PARA MOSTAR LOS PROYECTOS ASIGNADOS AL TÉCNICO
+    //FUNCION PARA MOSTAR EL PROYECTOS ASIGNADO
     public function show($id)
     {
         $user = \Auth::user();
         $proyecto = \App\Proyecto::findOrFail($id);
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
         $mensajes = $proyecto->mensajes;
 
         if ($proyecto->id_tecnico != $user->id)
@@ -58,7 +78,7 @@ class TecnicoController extends Controller
             Session::flash('Warning', 'No tienes asginado este proyecto.');
             return redirect()->route('tecnico.index');
         }
-        return view('tecnico.proyecto', compact('proyecto', 'mensajes'));
+        return view('tecnico.show', compact('proyecto', 'pros'));
     }
 
     /**
@@ -69,7 +89,16 @@ class TecnicoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+
+        if ($proyecto->id_tecnico != $user->id)
+        {
+            Session::flash('Warning', 'No tienes asginado este proyecto.');
+            return redirect()->route('tecnico.index');
+        }
+        return view('tecnico.proyecto', compact('proyecto', 'pros'));
     }
 
     /**

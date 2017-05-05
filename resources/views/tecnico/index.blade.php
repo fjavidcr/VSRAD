@@ -20,7 +20,8 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                             <th>Proyecto</th>
+                            <th>Proyecto</th>
+                            <th>Fecha de edición</th>
                             <th>Cliente</th>
                             <th>Estado</th>
                         </tr>
@@ -30,6 +31,7 @@
                             <tr>
                                 <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
+                                <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->getCliente()->name }}</td>
                                 <td>{{ $p->getTituloEstado() }}</td>
                                 @if($p->getEstado() == "pendiente")
