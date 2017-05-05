@@ -141,36 +141,14 @@
                             //console.log(array);
 
                             for(var i in array){
-                                if(array[i].key == "G" ){}
-                                else{
+                                if(array[i].key !== "G" ){
                                     costeTotal += parseFloat(array[i].coste);
                                     console.log("coste: " + array[i].coste);
                                 }
                             }
                             costeTotal = parseFloat(costeTotal).toFixed(2);
                             document.getElementById("coste").setAttribute("value", costeTotal);
-                            /*
-                            var prod = array[array.length-1];
 
-                            console.log(prod);
-
-                            if(costeTotal > 0 || prod.key !== "G"){
-                                cont = cont +1;
-                                if(cont > 1)
-                                    document.getElementById('detalles').hidden = false;
-                            }
-
-                            else
-                                document.getElementById('detalles').hidden=true;
-
-                            /*
-                            $('#imagen_producto').attr("src","../img/" + prod.imagen);
-
-                            document.getElementById('nombre_p').textContent = "Nombre: " + prod.nombre;
-                            document.getElementById('descripcion_p').textContent = "Descripción: " + prod.descripcion;
-                            document.getElementById('restricciones_p').textContent = "Restricciones: " + prod.restricciones;
-                            document.getElementById('coste_p').textContent = "Coste: " + prod.coste ;
-                            */
                         }
                     },
                     "animationManager.isEnabled": true,
@@ -181,7 +159,7 @@
             //var elem = node.diagram.selection.first(); //NO FUNCIONA ESTO
             var icon = node.findObject("SHAPE");
 
-            console.log(node.data);
+            console.log(node.data.imagen);
             //console.log(elem.data);
 
             if (icon !== null) {
@@ -217,6 +195,7 @@
                     mouseDragEnter: function (e, node) {
                         e.handled = true;
                         node.findObject("SHAPE").fill = "red";
+                        highlightGroup(node.containingGroup, false);
                     },
                     mouseDragLeave: function (e, node) {
                         node.updateTargetBindings();
@@ -324,8 +303,8 @@
         // start off with four "racks" that are positioned next to each other
         var configuracion = JSON.parse(document.getElementById("configuracion").textContent);
 
-        console.log("tipo: "+ typeof(configuracion));
-        console.log("contenido: "+ configuracion);
+        //console.log("tipo: "+ typeof(configuracion));
+        //console.log("contenido: "+ configuracion);
 
         myDiagram.model = go.Model.fromJson(configuracion);
 

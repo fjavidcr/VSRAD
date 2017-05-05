@@ -137,8 +137,7 @@
                             var costeTotal = 0;
 
                             for(var i in array){
-                                if(array[i].key == "G" ){}
-                                else{
+                                if(array[i].key !== "G" ){
                                     costeTotal += parseFloat(array[i].coste);
                                     console.log("coste: " + array[i].coste);
                                     /*
