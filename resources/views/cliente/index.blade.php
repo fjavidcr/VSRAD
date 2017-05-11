@@ -164,12 +164,43 @@
                                         </td>
                                     @elseif($p->getEstado() == "pendiente")
                                         <td>Esperando validación...</td>
+                                    @else
+                                        <td></td>
                                     @endif
                             </tr>
                         @endforeach
                     </table>
                 @endif
 
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_mensajes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Selecciona un proyecto</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table able table-responsive table-striped">
+                        <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Fecha de edición</th>
+                        </tr>
+                        </thead>
+                        @foreach($proyectos as $p)
+                            <tr>
+                                <td>{{ $p->nombre }}</td>
+                                <td>{{ $p->fecha_creacion }}</td>
+                                <td><a href="{{ route('cliente.mensajes', $p->id) }}"> Seleccionar</a></td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
             </div>
         </div>
     </div>

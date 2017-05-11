@@ -242,15 +242,32 @@ class ClienteController extends Controller
         return redirect()->route('cliente.index');
     }
 
-    public function mensajes(){
+    public function mensajes($id){
         $user = \Auth::user();
-        $prots = $user->proyectos;
-        $proyectos = array();
-        foreach ($prots as $p)
-            if($p->oculto == 0)
-                array_push($proyectos, $p);
-        $mensajes = $proyectos->mensajes;
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $mensajes = $proyecto->mensajes;
 
-        return view('cliente.mensajes', compact('mensajes', 'user'));
+        return view('cliente.mensajes', compact('proyecto','mensajes', 'user'));
+    }
+
+
+    public function enviar_mensaje(Request $request)
+    {
+        $user = \Auth::user();
+        $id_proyecto = $request->input('id_proyecto');
+
+        //Guardo el mensaje
+        $mensaje = new \App\Mensaje();
+        $mensaje->texto =  $request->input('texto');
+
+        $fecha = getdate();
+        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+
+        //0 hace referencia al cliente
+        $mensaje->remitente = 0;
+        $mensaje->id_proyecto = $id_proyecto;
+        $mensaje->save();
+        $request->session()->flash('alert-success', 'Mensaje enviado.');
+        return redirect()->route('cliente.mensajes', $id_proyecto);
     }
 }

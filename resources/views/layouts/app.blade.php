@@ -52,7 +52,15 @@
                             <li>  </li>
                         @elseif (Auth::user()->hasRol("cliente"))
                             <li><a href="{{ route('cliente.index') }}">Mis proyectos</a></li>
-                            <li><a href="{{ route('cliente.mensajes') }}">Mensajes</a></li>
+                            <li><a id="boton-guardar-proyecto" type="button" class="btn" data-toggle="modal" data-target="#modal_mensajes">
+                                Mensajes
+                            </a></li>
+
+                        @elseif (Auth::user()->hasRol("tecnico"))
+                            <li><a href="{{ route('tecnico.mensajes') }}">Mensajes</a></li>
+
+                        @elseif (Auth::user()->hasRol("comercial"))
+                            <li><a href="{{ route('comercial.mensajes') }}">Mensajes</a></li>
                             &nbsp;
                         @endif
                     </ul>
