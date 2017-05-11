@@ -38,7 +38,7 @@
         <div class="form-group">
             <label for="password" class="col-sm-2 control-label">Contraseña</label>
             <div class="col-sm-10">
-                <input id="password" type="password" name="password" required>
+                <input id="password" type="password" name="password">
                 ( Si el campo se deja vacío no se modificará la contraseña )
             </div>
         </div>
