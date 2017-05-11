@@ -128,4 +128,48 @@ class ComercialController extends Controller
         $request->session()->flash('alert-success', 'Oferta asignada con éxito.');
         return redirect()->route('comercial.index');
     }
+
+    public function mensajes($id){
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $mensajes = $proyecto->mensajes;
+
+        return view('comercial.mensajes', compact('proyecto','mensajes', 'user'));
+    }
+
+    public function enviar_mensaje(Request $request)
+    {
+        $user = \Auth::user();
+        $id_proyecto = $request->input('id_proyecto');
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+
+        //Guardo el mensaje
+        $mensaje = new \App\Mensaje();
+        $texto = $request->input('texto');
+        $texto[0] = strtoupper($texto[0]);
+        $mensaje->texto =  $texto;
+
+        $fecha = getdate();
+        if($fecha["hours"] == 23)
+            $hora = 1;
+        elseif ($fecha["hours"] == 24)
+            $hora = 2;
+        elseif ($fecha["hours"] == 22)
+            $hora = 0;
+        else
+            $hora = $fecha["hours"]+2;
+        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
+            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+
+        //2 hace referencia al comercial
+        $mensaje->remitente = 2;
+        $mensaje->id_proyecto = $id_proyecto;
+        $mensaje->id_tecnico = $proyecto->id_tecnico;
+        $mensaje->id_cliente = $proyecto->id_cliente;
+        $mensaje->id_comercial = $user->id;
+
+        $mensaje->save();
+        $request->session()->flash('alert-success', 'Mensaje enviado.');
+        return redirect()->route('comercial.mensajes', $id_proyecto);
+    }
 }

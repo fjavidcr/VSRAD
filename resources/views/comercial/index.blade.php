@@ -16,7 +16,7 @@
                     </a>
                     @foreach($clientes as $c)
                         <table class="table table-responsive table-condensed table-striped">
-                            <caption><h4>{{ $c->name }}</h4></caption>
+                            <caption><h4>{{ $c->getName() }}</h4></caption>
                             <thead>
                                 <th>#</th>
                                 <th>Nombre</th>
@@ -86,16 +86,20 @@
                     <table class="table able table-responsive table-striped">
                         <thead>
                         <tr>
+                            <th>Cliente</th>
                             <th>Proyecto</th>
                             <th>Fecha de edición</th>
                         </tr>
                         </thead>
-                        @foreach($proyectos as $p)
-                            <tr>
-                                <td>{{ $p->nombre }}</td>
-                                <td>{{ $p->fecha_creacion }}</td>
-                                <td><a href="{{ route('comercial.mensajes', $p->id) }}"> Seleccionar</a></td>
-                            </tr>
+                        @foreach($clientes as $c)
+                            @foreach($c->proyectos as $p)
+                                <tr>
+                                    <td>{{ $c->getName() }}</td>
+                                    <td>{{ $p->nombre }}</td>
+                                    <td>{{ $p->fecha_creacion }}</td>
+                                    <td><a href="{{ route('comercial.mensajes', $p->id) }}"> Seleccionar</a></td>
+                                </tr>
+                            @endforeach
                         @endforeach
                     </table>
                 </div>

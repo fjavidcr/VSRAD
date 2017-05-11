@@ -77,6 +77,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('comercial/asignar_tecnico', 'ComercialController@asignar_tecnico')->name('comercial.asignar_tecnico');
         Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
+        Route::get('comercial/mensajes/{id}', 'ComercialController@mensajes')->name('comercial.mensajes');
+        Route::post('comercial/enviar_mensaje', 'ComercialController@enviar_mensaje')->name('comercial.enviar_mensaje');
 
         Route::resource('comercial', 'ComercialController');
     });
