@@ -31,10 +31,10 @@
                                     <li class="left clearfix">
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <strong class="primary-font">Cliente</strong>
+                                                <strong class="primary-font">{{$m->nombre_cliente()}}</strong>
                                                 <small class="pull-right text-muted">{{$m->fecha_creacion}}</small>
                                             </div>
-                                            <p>{{$m->texto}}</p>
+                                            <p class="mensaje_cliente">{{$m->texto}}</p>
                                         </div>
                                     </li>
                                 @elseif($m->remitente == 1)
@@ -42,9 +42,19 @@
                                         <div class="chat-body clearfix">
                                             <div class="header">
                                                 <small class=" text-muted">{{$m->fecha_creacion}}</small>
-                                                <strong class="pull-right primary-font">Técnico</strong>
+                                                <strong class="pull-right primary-font">{{$m->nombre_tecnico()}}</strong>
                                             </div>
-                                            <p>{{$m->texto}}</p>
+                                            <p class="mensaje_tecnico">{{$m->texto}}</p>
+                                        </div>
+                                    </li>
+                                @elseif($m->remitente == 1)
+                                    <li class="right clearfix">
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <small class=" text-muted">{{$m->fecha_creacion}}</small>
+                                                <strong class="pull-right primary-font">{{$m->nombre_comercial()}}</strong>
+                                            </div>
+                                            <p class="mensaje_comercial">{{$m->texto}}</p>
                                         </div>
                                     </li>
                                 @endif

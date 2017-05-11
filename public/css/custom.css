@@ -65,10 +65,12 @@
 .chat li.left .chat-body
 {
     margin-left: 60px;
+    margin-right: 40px;
 }
 
 .chat li.right .chat-body
 {
+    margin-left: 40px;
     margin-right: 60px;
 }
 
@@ -88,4 +90,25 @@
 {
     overflow-y: scroll;
     height: 500px;
+}
+
+.mensaje_cliente {
+    background: #dfece7 none repeat scroll 0 0;
+    border: 1px solid #dfece7;
+    border-radius: 2px;
+    color: #1f2121;
+}
+
+.mensaje_tecnico {
+    background: #d8da71 none repeat scroll 0 0;
+    border: 1px solid #d8da71;
+    border-radius: 2px;
+    color: #1f2121;
+}
+
+.mensaje_comercial {
+    background: #86ceec none repeat scroll 0 0;
+    border: 1px solid #86ceec;
+    border-radius: 2px;
+    color: #1f2121;
 }
