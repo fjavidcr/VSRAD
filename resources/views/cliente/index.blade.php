@@ -10,7 +10,6 @@
                 <h3>Proyectos de {{ $user->name }}</h3>
 
                 <a href="{{ route('cliente.create') }}" type="button" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Nuevo proyecto
                 </a>
             </div>

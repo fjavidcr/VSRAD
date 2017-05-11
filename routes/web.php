@@ -67,6 +67,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
         Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
         Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
+        Route::get('/cliente/mensajes', 'ClienteController@mensajes')->name('cliente.mensajes');
 
 
     });

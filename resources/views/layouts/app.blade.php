@@ -52,6 +52,7 @@
                             <li>  </li>
                         @elseif (Auth::user()->hasRol("cliente"))
                             <li><a href="{{ route('cliente.index') }}">Mis proyectos</a></li>
+                            <li><a href="{{ route('cliente.mensajes') }}">Mensajes</a></li>
                             &nbsp;
                         @endif
                     </ul>

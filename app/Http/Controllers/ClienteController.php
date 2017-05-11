@@ -241,4 +241,16 @@ class ClienteController extends Controller
         $proyecto->save();
         return redirect()->route('cliente.index');
     }
+
+    public function mensajes(){
+        $user = \Auth::user();
+        $prots = $user->proyectos;
+        $proyectos = array();
+        foreach ($prots as $p)
+            if($p->oculto == 0)
+                array_push($proyectos, $p);
+        $mensajes = $proyectos->mensajes;
+
+        return view('cliente.mensajes', compact('mensajes', 'user'));
+    }
 }
