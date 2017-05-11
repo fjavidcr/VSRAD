@@ -8,10 +8,16 @@
         <div class="row">
             <div class="col-lg-12">
                 <h3>Proyectos de {{ $user->name }}</h3>
+                    <div  class="btn-group" role="group">
+                    <a href="{{ route('cliente.create') }}" type="button" class="btn btn-primary">
+                        Nuevo proyecto
+                    </a>
 
-                <a href="{{ route('cliente.create') }}" type="button" class="btn btn-primary">
-                    Nuevo proyecto
-                </a>
+                    <a id="boton-guardar-proyecto" type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_mensajes">
+                            Mensajes
+                    </a>
+                    </div>
+                </ul>
             </div>
         </div>
 
