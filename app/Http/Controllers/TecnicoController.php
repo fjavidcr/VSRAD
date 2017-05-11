@@ -144,25 +144,48 @@ class TecnicoController extends Controller
         return redirect()->route('tecnico.index');
     }
 
+    public function mensajes($id){
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $mensajes = $proyecto->mensajes;
+
+        return view('tecnico.mensajes', compact('proyecto','mensajes', 'user'));
+    }
+
     public function enviar_mensaje(Request $request)
     {
         $user = \Auth::user();
         $id_proyecto = $request->input('id_proyecto');
         $proyecto = \App\Proyecto::findOrFail($id_proyecto);
-        if ($proyecto->id_tecnico != $user->id)
-        {
-            $request->session()->flash('alert-warning', 'No tienes asginado este proyecto, no tienes permiso.');
-            return redirect()->route('tecnico.index');
-        }
+
         //Guardo el mensaje
         $mensaje = new \App\Mensaje();
-        $mensaje->texto =  $request->input('texto');
-        $mensaje->fecha_creacion = "01/01/01";
+        $texto = $request->input('texto');
+        $texto[0] = strtoupper($texto[0]);
+        $mensaje->texto =  $texto;
+
+        $fecha = getdate();
+        if($fecha["hours"] == 23)
+            $hora = 1;
+        elseif ($fecha["hours"] == 24)
+            $hora = 2;
+        elseif ($fecha["hours"] == 22)
+            $hora = 0;
+        else
+            $hora = $fecha["hours"]+2;
+        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
+            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+
         //1 hace referencia al tecnico
         $mensaje->remitente = 1;
         $mensaje->id_proyecto = $id_proyecto;
+        $mensaje->id_tecnico = $user->id;
+        $mensaje->id_cliente = $proyecto->id_cliente;
+        $cliente = \App\User::findOrFail($proyecto->id_cliente);
+        $mensaje->id_comercial = $cliente->id_comercial;
+
         $mensaje->save();
         $request->session()->flash('alert-success', 'Mensaje enviado.');
-        return redirect()->route('tecnico.proyecto', $id_proyecto);
+        return redirect()->route('tecnico.mensajes', $id_proyecto);
     }
 }

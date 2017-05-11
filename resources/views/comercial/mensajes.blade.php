@@ -37,24 +37,24 @@
                                             <p class="mensaje_cliente">{{$m->texto}}</p>
                                         </div>
                                     </li>
-                                @elseif($m->remitente == 1)
+                                @elseif($m->remitente == 2)
                                     <li class="left clearfix">
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <strong class="primary-font">{{$m->nombre_tecnico()}}</strong>
+                                                <strong class="primary-font">{{$m->nombre_comercial()}}</strong>
                                                 <small class="pull-right text-muted"><strong>{{$m->fecha_creacion}}</strong></small>
                                             </div>
-                                            <p class="mensaje_tecnico">{{$m->texto}}</p>
+                                            <p class="mensaje_comercial">{{$m->texto}}</p>
                                         </div>
                                     </li>
-                                @elseif($m->remitente == 2)
+                                @elseif($m->remitente == 1)
                                     <li class="right clearfix">
                                         <div class="chat-body clearfix">
                                             <div class="header">
                                                 <small class=" text-muted"><strong>{{$m->fecha_creacion}}</strong></small>
-                                                <strong class="pull-right primary-font">{{$m->nombre_comercial()}}</strong>
+                                                <strong class="pull-right primary-font">{{$m->nombre_tecnico()}}</strong>
                                             </div>
-                                            <p class="mensaje_comercial">{{$m->texto}}</p>
+                                            <p class="mensaje_tecnico">{{$m->texto}}</p>
                                         </div>
                                     </li>
                                 @endif
@@ -62,7 +62,7 @@
                         </ul>
                     </div>
                     <div class="panel-footer">
-                        <form action="{{ route('tecnico.enviar_mensaje') }}" method="post">
+                        <form action="{{ route('comercial.enviar_mensaje') }}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="id_proyecto" value="{{$proyecto->id}}">
                             <div class="input-group">

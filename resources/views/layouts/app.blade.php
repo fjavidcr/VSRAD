@@ -52,6 +52,12 @@
                             <li>  </li>
                         @elseif (Auth::user()->hasRol("cliente"))
                             <li><a href="{{ route('cliente.index') }}">Mis proyectos</a></li>
+
+                        @elseif (Auth::user()->hasRol("tecnico"))
+                            <li><a href="{{ route('tecnico.index') }}">Mis proyectos</a></li>
+
+                        @elseif (Auth::user()->hasRol("comercial"))
+                            <li><a href="{{ route('comercial.index') }}">Mis clientes</a></li>
                             &nbsp;
                         @endif
                     </ul>
@@ -61,7 +67,7 @@
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            {{--<li><a href="{{ route('register') }}">Registrar</a></li>--}}
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -74,7 +80,7 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            Salir
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
