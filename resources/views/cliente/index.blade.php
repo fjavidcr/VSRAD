@@ -8,11 +8,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <h3>Proyectos de {{ $user->name }}</h3>
-
+                <div  class="btn-group" role="group">
                 <a href="{{ route('cliente.create') }}" type="button" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Nuevo proyecto
                 </a>
+
+                <a id="boton-guardar-proyecto" type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_mensajes">
+                        Mensajes
+                </a>
+                </div>
             </div>
         </div>
 
@@ -165,12 +169,43 @@
                                         </td>
                                     @elseif($p->getEstado() == "pendiente")
                                         <td>Esperando validación...</td>
+                                    @else
+                                        <td></td>
                                     @endif
                             </tr>
                         @endforeach
                     </table>
                 @endif
 
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_mensajes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Selecciona un proyecto</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table able table-responsive table-striped">
+                        <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Fecha de edición</th>
+                        </tr>
+                        </thead>
+                        @foreach($proyectos as $p)
+                            <tr>
+                                <td>{{ $p->nombre }}</td>
+                                <td>{{ $p->fecha_creacion }}</td>
+                                <td><a href="{{ route('cliente.mensajes', $p->id) }}"> Seleccionar</a></td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -241,4 +241,51 @@ class ClienteController extends Controller
         $proyecto->save();
         return redirect()->route('cliente.index');
     }
+
+    public function mensajes($id){
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $mensajes = $proyecto->mensajes;
+
+        return view('cliente.mensajes', compact('proyecto','mensajes', 'user'));
+    }
+
+
+    public function enviar_mensaje(Request $request)
+    {
+        $user = \Auth::user();
+        $id_proyecto = $request->input('id_proyecto');
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+
+        //Guardo el mensaje
+        $mensaje = new \App\Mensaje();
+        $texto = $request->input('texto');
+        $texto[0] = strtoupper($texto[0]);
+        $mensaje->texto =  $texto;
+
+        $fecha = getdate();
+        if($fecha["hours"] == 23)
+            $hora = 1;
+        elseif ($fecha["hours"] == 24)
+            $hora = 2;
+        elseif ($fecha["hours"] == 22)
+            $hora = 0;
+        else
+            $hora = $fecha["hours"]+2;
+        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
+            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+
+
+        //0 hace referencia al cliente
+        $mensaje->remitente = 0;
+        $mensaje->id_proyecto = $id_proyecto;
+
+        $mensaje->id_tecnico = $proyecto->id_tecnico;
+        $mensaje->id_cliente = $user->id;
+        $mensaje->id_comercial = $user->id_comercial;
+
+        $mensaje->save();
+        $request->session()->flash('alert-success', 'Mensaje enviado.');
+        return redirect()->route('cliente.mensajes', $id_proyecto);
+    }
 }
