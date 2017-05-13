@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DirectorComercialController extends Controller
 {
@@ -265,8 +266,7 @@ class DirectorComercialController extends Controller
         return view('director_comercial.informes', compact('user', 'comerciales', 'clientes'));
     }
 
-    public function informe_todos_comerciales($id){
-        $c = \App\User::findOrFail($id);
+    public function informe_todos_comerciales(){
         $users = \App\User::all();
         $comerciales = DB::table('users')->where('rol', '=', 1)->get();
         $clientes = DB::table('users')->where('rol', '=', 0)->get();
@@ -305,12 +305,13 @@ class DirectorComercialController extends Controller
             $media_rechazados = "0";
 
         $pdf = \App::make('dompdf.wrapper');
+
         $contenido =
 
 
             "<head>
     <meta charset=\"utf-8\">
-    <title>Informe " . $c->name . "</title>
+    <title>Informe de comerciales </title>
     <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
   </head>
   <body>
@@ -371,9 +372,10 @@ class DirectorComercialController extends Controller
           </tr>        
         </tbody>        
       </table>      
-    </main>    
-  </body>";
+    ";
         }
+
+        $contenido += "</main></body>";
 
         $pdf->loadHTML($contenido);
         return $pdf->stream();
