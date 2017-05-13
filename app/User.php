@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 
 class User extends Authenticatable
@@ -83,13 +84,13 @@ class User extends Authenticatable
         return $this->hasMany('App\Proyecto', 'id_tecnico');
     }
 
-    public function numero_clientes_comercial($id){
+    public static function numero_clientes_comercial($id){
 
         $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
         return count($clientes);
     }
 
-    public function numero_clientes_resgistrados($id){
+    public static function numero_clientes_resgistrados($id){
         $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
         $num = 0;
         foreach ($clientes as $c)
@@ -98,7 +99,7 @@ class User extends Authenticatable
         return $num;
     }
 
-    public function numero_clientes_invitados($id){
+    public static function numero_clientes_invitados($id){
         $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
         $num = 0;
         foreach ($clientes as $c)
@@ -107,22 +108,24 @@ class User extends Authenticatable
         return $num;
     }
 
-    public function numero_proyectos_no_validados($id){
+    public static function numero_proyectos_no_validados($id){
         $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 3)->get();
         $num = 0;
         foreach ($clientes as $c)
-            foreach ($c->proyectos as $p)
-                if($p->getEstado() == "no_validado")
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente)
                     $num++;
         return $num;
     }
 
-    public function numero_proyectos_validados($id){
+    public static function numero_proyectos_validados($id){
         $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 2)->get();
         $num = 0;
         foreach ($clientes as $c)
-            foreach ($c->proyectos as $p)
-                if($p->isValidado())
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente)
                     $num++;
         return $num;
     }

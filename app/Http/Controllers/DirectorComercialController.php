@@ -188,7 +188,7 @@ class DirectorComercialController extends Controller
       <div id=\"details\" class=\"clearfix\">
         <div id=\"client\">
           <div class=\"to\">Nombre: </div>
-          <h2 class=\"name\">". $c->name. "</h2>
+          <h2 class=\"name\">". $c->name. " ". $c->apellidos."</h2>
           <a href=\"mailto:".$c->email."\">".$c->email."</a>
         </div>        
       </div>
@@ -274,19 +274,7 @@ class DirectorComercialController extends Controller
         $comprados = array();
         $rechazados = array();
         $hoy = date("d/m/Y");
-        foreach ($users as $u) {
-            if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
-                array_push($clientes, $u);
-                foreach ($u->proyectos() as $p) {
-                    if ($p->getEstado() == "pendiente")
-                        array_push($pendientes, $p);
-                    elseif ($p->getEstado() == "comprado")
-                        array_push($comprados, $p);
-                    elseif ($p->getEstado() == "rechazado")
-                        array_push($rechazados, $p);
-                }
-            }
-        }
+
         $media_comprados = 0;
         foreach ($comprados as $c)
             $media_comprados += $c->coste;
@@ -324,10 +312,10 @@ class DirectorComercialController extends Controller
     <main>";
 
         foreach ($comerciales as $c){
-            $contenido += "<div id=\"details\" class=\"clearfix\">
+            $contenido .= "<div id=\"details\" class=\"clearfix\">
         <div id=\"client\">
           <div class=\"to\">Nombre: </div>
-          <h2 class=\"name\">" . $c->getName() . "</h2>
+          <h2 class=\"name\">" . $c->name . " ". $c->apellidos."</h2>
           <a href=\"mailto:" . $c->email . "\">" . $c->email . "</a>
         </div>        
       </div>;
@@ -343,30 +331,35 @@ class DirectorComercialController extends Controller
           <tr>
             <td class=\"no\">01</td>
             <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
-            <td class=\"unit\">" . count($clientes) . "</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_comercial($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
-            <td class=\"desc\"><h3>Número Proyectos pendientes: </h3>Descripcion</td>
-            <td class=\"unit\">" . count($pendientes) . "</td>
+            <td class=\"desc\"><h3>Número Clientes registrados: </h3>Descripcion</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_resgistrados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">03</td>
-            <td class=\"desc\"><h3>Número Proyectos comprados: </h3>Descripcion</td>
-            <td class=\"unit\">" . count($comprados) . "</td>
+            <td class=\"desc\"><h3>Número Clientes invitados: </h3>Descripcion</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_invitados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">04</td>
-            <td class=\"desc\"><h3>Número Proyectos rechazados: </h3>Descripcion</td>
-            <td class=\"unit\">" . count($rechazados) . "</td>
+            <td class=\"desc\"><h3>Número Proyectos no validados: </h3>Descripcion</td>
+            <td class=\"unit\">" . \App\User::numero_proyectos_no_validados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">05</td>
+            <td class=\"desc\"><h3>Número Proyectos validados: </h3>Descripcion</td>
+            <td class=\"unit\">" . \App\User::numero_proyectos_validados($c->id) . "</td>
+          </tr>         
+          <tr>
+            <td class=\"no\">06</td>
             <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Descripcion</td>
             <td class=\"unit\">" . $media_rechazados . "</td>
           </tr>
           <tr>
-            <td class=\"no\">06</td>
+            <td class=\"no\">07</td>
             <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Descripcion</td>
             <td class=\"unit\">" . $media_comprados . "</td>
           </tr>        
@@ -375,7 +368,7 @@ class DirectorComercialController extends Controller
     ";
         }
 
-        $contenido += "</main></body>";
+        $contenido .= "</main></body>";
 
         $pdf->loadHTML($contenido);
         return $pdf->stream();
