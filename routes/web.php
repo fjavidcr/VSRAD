@@ -21,6 +21,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/', 'RedireccionController');
+    Route::resource('/home', 'RedireccionController');
 
     Route::group(['middleware' => 'rol:administrador'], function () {
         Route::get('administrador/form_crear_usuario', 'AdministradorController@form_crear_usuario')->name('administrador.form_crear_usuario');
@@ -58,25 +59,35 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'rol:cliente'], function () {
+        Route::resource('cliente', 'ClienteController');
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
         Route::get('/cliente/edit/{id}', 'ClienteController@edit')->name('cliente.edit');
         Route::post('/cliente/editar', 'ClienteController@editar')->name('cliente.editar');
+        Route::post('/cliente/destroy', 'ClienteController@destroy')->name('cliente.destroy');
+        Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
+        Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
+        Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
+        Route::get('/cliente/mensajes/{id}', 'ClienteController@mensajes')->name('cliente.mensajes');
+        Route::post('/cliente/enviar_mensaje', 'ClienteController@enviar_mensaje')->name('cliente.enviar_mensaje');
 
-        Route::resource('cliente', 'ClienteController');
+
     });
 
     Route::group(['middleware' => 'rol:comercial'], function () {
 
         Route::post('comercial/asignar_tecnico', 'ComercialController@asignar_tecnico')->name('comercial.asignar_tecnico');
         Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
+        Route::get('comercial/mensajes/{id}', 'ComercialController@mensajes')->name('comercial.mensajes');
+        Route::post('comercial/enviar_mensaje', 'ComercialController@enviar_mensaje')->name('comercial.enviar_mensaje');
 
         Route::resource('comercial', 'ComercialController');
     });
 
     Route::group(['middleware' => 'rol:tecnico'], function () {
 
-        Route::get('tecnico/proyecto/{id}', 'TecnicoController@show')->name('tecnico.proyecto');
+        Route::get('tecnico/proyecto/{id}', 'TecnicoController@edit')->name('tecnico.proyecto');
         Route::post('tecnico/cambiar_estado', 'TecnicoController@cambiar_estado')->name('tecnico.cambiar_estado');
+        Route::get('tecnico/mensajes/{id}', 'TecnicoController@mensajes')->name('tecnico.mensajes');
         Route::post('tecnico/enviar_mensaje', 'TecnicoController@enviar_mensaje')->name('tecnico.enviar_mensaje');
 
         Route::resource('tecnico', 'TecnicoController');

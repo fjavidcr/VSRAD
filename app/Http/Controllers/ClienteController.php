@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
 
 class ClienteController extends Controller
 {
@@ -14,7 +16,11 @@ class ClienteController extends Controller
     public function index()
     {
         $user = \Auth::user();
-        $proyectos = $user->proyectos;
+        $prots = $user->proyectos;
+        $proyectos = array();
+        foreach ($prots as $p)
+            if($p->oculto == 0)
+                array_push($proyectos, $p);
 
         return view('cliente.index', compact('proyectos', 'user'));
     }
@@ -26,7 +32,10 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        return view('cliente.create');
+
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+        $user = \Auth::user();
+        return view('cliente.create', compact('pros', 'user'));
     }
 
     /**
@@ -46,15 +55,21 @@ class ClienteController extends Controller
 
         $proyecto->nombre = $request->input('nombre');
         $proyecto->configuracion = $request->input('configuracion');
-        $proyecto->fecha_creacion= "01/01/01";
+        $fecha = getdate();
+
+        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+
+        $proyecto->fecha_creacion= $fecha_creacion;
         $proyecto->id_cliente = \Auth::user()->id;
-        $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
+        $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
         $proyecto->estado = 0;
+        $proyecto->coste = $request->input('coste');
         $proyecto->save();
 
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
         return redirect()->route('cliente.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -82,7 +97,8 @@ class ClienteController extends Controller
     public function edit($id)
     {
         $proyecto = \App\Proyecto::findOrFail($id);
-        return view('cliente.edit', compact('proyecto'));
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+        return view('cliente.edit', compact('proyecto', 'pros'));
     }
 
     /**
@@ -103,11 +119,13 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request)
     {
         // Mandar un mensaje de confirmacion
 
-        \App\Proyecto::destroy($id);
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->oculto = 1;
+        $proyecto->save();
 
         // Mensaje de feeback. Un alert de bootstrap
 
@@ -124,6 +142,66 @@ class ClienteController extends Controller
         return redirect()->route('cliente.index');
     }
 
+    public function completar_registro(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3|max:16',
+            'email' => 'required|min:8',
+            'apellidos' => 'required|max:32',
+            'direccion_fisica' => 'required',
+            'telefono' => 'required|min:9',
+            'dni' => 'required|min:9'
+        ]);
+
+        $user = \Auth::user();
+        $user->name = $request->input('name');
+        $user->apellidos = $request->input('apellidos');
+        $user->email = $request->input('email');
+        /*
+        $pass = $request->input('password');
+        if(isset($pass))
+            $user->password =  Hash::make($pass);
+        */
+        $user->direccion_fisica = $request->input('direccion_fisica');
+        $user->telefono = $request->input('telefono');
+
+        $fecha = getdate();
+        $fecha_registro = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+        $user->fecha_registro = $fecha_registro;
+
+        $dni = $request->input('dni');
+
+        /*
+         * Comprobación de la letra del DNI
+         * */
+
+        $dni = strtoupper($dni);
+        $letra = substr($dni, -1, 1);
+        $numero = substr($dni, 0, 8);
+
+        // Si es un NIE hay que cambiar la primera letra por 0, 1 ó 2 dependiendo de si es X, Y o Z.
+        $numero = str_replace(array('X', 'Y', 'Z'), array(0, 1, 2), $numero);
+
+        $modulo = $numero % 23;
+        $letras_validas = "TRWAGMYFPDXBNJZSQVHLCKE";
+        $letra_correcta = substr($letras_validas, $modulo, 1);
+
+        if($letra_correcta==$letra) {
+            $user->dni = $dni;
+            $user->save();
+            $request->session()->flash('alert-success', 'Usuario editado con éxito.');
+            $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
+            $proyecto->estado = 1;
+            $proyecto->save();
+        }
+        else{
+            $request->session()->flash('alert-warning', 'DNI incorrecto.');
+            return redirect()->back();
+        }
+
+        return redirect()->route('cliente.index');
+    }
+
     public function editar(Request $request)
     {
         $this->validate($request, [
@@ -131,19 +209,83 @@ class ClienteController extends Controller
             'configuracion' => 'required'
         ]);
 
-        $proyecto = new \App\Proyecto();
+        $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
 
         $proyecto->nombre = $request->input('nombre');
-        $proyecto->configuracion = $request->input('configuracion');
-        $hoy = getdate();
-        return $hoy;
-        $proyecto->fecha_creacion= $hoy;
+        $proyecto->configuracion = $request->input('nueva_configuracion');
+        $fecha = getdate();
+
+        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+
+        $proyecto->fecha_creacion= $fecha_creacion;
         $proyecto->id_cliente = \Auth::user()->id;
-        $proyecto->id_plano = 0; // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
+        $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
         $proyecto->estado = 0;
+        $proyecto->coste = $request->input('coste');
         $proyecto->save();
 
         $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
         return redirect()->route('cliente.index');
+    }
+
+    public function comprar(Request $request){
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->estado = 4;
+        $proyecto->save();
+        return redirect()->route('cliente.index');
+    }
+
+    public function rechazar(Request $request){
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->estado = 5;
+        $proyecto->save();
+        return redirect()->route('cliente.index');
+    }
+
+    public function mensajes($id){
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $mensajes = $proyecto->mensajes;
+
+        return view('cliente.mensajes', compact('proyecto','mensajes', 'user'));
+    }
+
+
+    public function enviar_mensaje(Request $request)
+    {
+        $user = \Auth::user();
+        $id_proyecto = $request->input('id_proyecto');
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+
+        //Guardo el mensaje
+        $mensaje = new \App\Mensaje();
+        $texto = $request->input('texto');
+        $texto[0] = strtoupper($texto[0]);
+        $mensaje->texto =  $texto;
+
+        $fecha = getdate();
+        if($fecha["hours"] == 23)
+            $hora = 1;
+        elseif ($fecha["hours"] == 24)
+            $hora = 2;
+        elseif ($fecha["hours"] == 22)
+            $hora = 0;
+        else
+            $hora = $fecha["hours"]+2;
+        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
+            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+
+
+        //0 hace referencia al cliente
+        $mensaje->remitente = 0;
+        $mensaje->id_proyecto = $id_proyecto;
+
+        $mensaje->id_tecnico = $proyecto->id_tecnico;
+        $mensaje->id_cliente = $user->id;
+        $mensaje->id_comercial = $user->id_comercial;
+
+        $mensaje->save();
+        $request->session()->flash('alert-success', 'Mensaje enviado.');
+        return redirect()->route('cliente.mensajes', $id_proyecto);
     }
 }

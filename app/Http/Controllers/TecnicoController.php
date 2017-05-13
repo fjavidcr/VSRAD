@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TecnicoController extends Controller
 {
@@ -36,7 +37,25 @@ class TecnicoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'estado'=> 'required',
+            'configuracion' => 'required'
+        ]);
+
+        $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
+
+        $proyecto->configuracion = $request->input('nueva_configuracion');
+        $fecha = getdate();
+
+        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+
+        $proyecto->fecha_creacion= $fecha_creacion;
+        $proyecto->estado = $request->input('estado');
+        $proyecto->coste = $request->input('coste');
+        $proyecto->save();
+
+        $request->session()->flash('alert-success', 'Proyecto creado con éxito.');
+        return redirect()->route('cliente.index');
     }
 
     /**
@@ -46,11 +65,12 @@ class TecnicoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //FUNCION PARA MOSTAR LOS PROYECTOS ASIGNADOS AL TÉCNICO
+    //FUNCION PARA MOSTAR EL PROYECTOS ASIGNADO
     public function show($id)
     {
         $user = \Auth::user();
         $proyecto = \App\Proyecto::findOrFail($id);
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
         $mensajes = $proyecto->mensajes;
 
         if ($proyecto->id_tecnico != $user->id)
@@ -58,7 +78,7 @@ class TecnicoController extends Controller
             Session::flash('Warning', 'No tienes asginado este proyecto.');
             return redirect()->route('tecnico.index');
         }
-        return view('tecnico.proyecto', compact('proyecto', 'mensajes'));
+        return view('tecnico.show', compact('proyecto', 'pros'));
     }
 
     /**
@@ -69,7 +89,16 @@ class TecnicoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+
+        if ($proyecto->id_tecnico != $user->id)
+        {
+            Session::flash('Warning', 'No tienes asginado este proyecto.');
+            return redirect()->route('tecnico.index');
+        }
+        return view('tecnico.proyecto', compact('proyecto', 'pros'));
     }
 
     /**
@@ -115,25 +144,48 @@ class TecnicoController extends Controller
         return redirect()->route('tecnico.index');
     }
 
+    public function mensajes($id){
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $mensajes = $proyecto->mensajes;
+
+        return view('tecnico.mensajes', compact('proyecto','mensajes', 'user'));
+    }
+
     public function enviar_mensaje(Request $request)
     {
         $user = \Auth::user();
         $id_proyecto = $request->input('id_proyecto');
         $proyecto = \App\Proyecto::findOrFail($id_proyecto);
-        if ($proyecto->id_tecnico != $user->id)
-        {
-            $request->session()->flash('alert-warning', 'No tienes asginado este proyecto, no tienes permiso.');
-            return redirect()->route('tecnico.index');
-        }
+
         //Guardo el mensaje
         $mensaje = new \App\Mensaje();
-        $mensaje->texto =  $request->input('texto');
-        $mensaje->fecha_creacion = "01/01/01";
+        $texto = $request->input('texto');
+        $texto[0] = strtoupper($texto[0]);
+        $mensaje->texto =  $texto;
+
+        $fecha = getdate();
+        if($fecha["hours"] == 23)
+            $hora = 1;
+        elseif ($fecha["hours"] == 24)
+            $hora = 2;
+        elseif ($fecha["hours"] == 22)
+            $hora = 0;
+        else
+            $hora = $fecha["hours"]+2;
+        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
+            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+
         //1 hace referencia al tecnico
         $mensaje->remitente = 1;
         $mensaje->id_proyecto = $id_proyecto;
+        $mensaje->id_tecnico = $user->id;
+        $mensaje->id_cliente = $proyecto->id_cliente;
+        $cliente = \App\User::findOrFail($proyecto->id_cliente);
+        $mensaje->id_comercial = $cliente->id_comercial;
+
         $mensaje->save();
         $request->session()->flash('alert-success', 'Mensaje enviado.');
-        return redirect()->route('tecnico.proyecto', $id_proyecto);
+        return redirect()->route('tecnico.mensajes', $id_proyecto);
     }
 }
