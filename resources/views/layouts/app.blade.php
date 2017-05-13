@@ -58,6 +58,9 @@
 
                         @elseif (Auth::user()->hasRol("comercial"))
                             <li><a href="{{ route('comercial.index') }}">Mis clientes</a></li>
+
+                        @elseif (Auth::user()->hasRol("director_comercial"))
+                            <li><a href="{{ route('director_comercial.informes') }}">Informes</a></li>
                             &nbsp;
                         @endif
                     </ul>

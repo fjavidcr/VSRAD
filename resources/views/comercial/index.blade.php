@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container container-page">
         <h3> Clientes de {{$user->name}}</h3>
         <div class="row">
             <div class="col-lg-12">

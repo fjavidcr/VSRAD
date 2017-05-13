@@ -249,4 +249,19 @@ class DirectorComercialController extends Controller
         $pdf->loadHTML($contenido);
         return $pdf->stream();
     }
+
+    public function informes()
+    {
+        $user = \Auth::user();
+        $users = \App\User::all();
+        $comerciales = array();
+        $clientes = array();
+        foreach ( $users as $u) {
+            if ($u->hasRol("comercial"))
+                array_push($comerciales, $u);
+            elseif ($u->hasRol("cliente"))
+                array_push($clientes, $u);
+        }
+        return view('director_comercial.informes', compact('user', 'comerciales', 'clientes'));
+    }
 }
