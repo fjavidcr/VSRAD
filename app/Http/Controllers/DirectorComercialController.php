@@ -129,46 +129,46 @@ class DirectorComercialController extends Controller
     }
 
     public function informe_comercial($id){
-        $c = \App\User::findOrFail($id);
-        $users = \App\User::all();
-        $clientes = array();
-        $pendientes = array();
-        $comprados = array();
-        $rechazados = array();
-        $hoy = date("d/m/Y");
-        foreach ( $users as $u) {
-            if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
-                array_push($clientes, $u);
-                foreach ( $u->proyectos() as $p) {
-                    if ($p->getEstado() == "pendiente")
-                        array_push($pendientes, $p);
-                    elseif ($p->getEstado() == "comprado")
-                        array_push($comprados, $p);
-                    elseif ($p->getEstado() == "rechazado")
-                        array_push($rechazados, $p);
-                }
+    $c = \App\User::findOrFail($id);
+    $users = \App\User::all();
+    $clientes = array();
+    $pendientes = array();
+    $comprados = array();
+    $rechazados = array();
+    $hoy = date("d/m/Y");
+    foreach ( $users as $u) {
+        if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
+            array_push($clientes, $u);
+            foreach ( $u->proyectos() as $p) {
+                if ($p->getEstado() == "pendiente")
+                    array_push($pendientes, $p);
+                elseif ($p->getEstado() == "comprado")
+                    array_push($comprados, $p);
+                elseif ($p->getEstado() == "rechazado")
+                    array_push($rechazados, $p);
             }
         }
-        $media_comprados=0;
-        foreach ($comprados as $c)
-            $media_comprados += $c->coste;
+    }
+    $media_comprados=0;
+    foreach ($comprados as $c)
+        $media_comprados += $c->coste;
 
-        if(count($comprados)>0)
+    if(count($comprados)>0)
         $media_comprados = $media_comprados/count($comprados);
-        else
-            $media_comprados = "0";
+    else
+        $media_comprados = "0";
 
-        $media_rechazados=0;
-        foreach ($rechazados as $c)
-            $media_rechazados += $c->coste;
-        if(count($rechazados)>0)
+    $media_rechazados=0;
+    foreach ($rechazados as $c)
+        $media_rechazados += $c->coste;
+    if(count($rechazados)>0)
         $media_rechazados = $media_rechazados/count($rechazados);
-        else
-            $media_rechazados = "0";
+    else
+        $media_rechazados = "0";
 
-        $pdf = \App::make('dompdf.wrapper');
+    $pdf = \App::make('dompdf.wrapper');
 
-        $contenido =
+    $contenido =
 
 
         "<head>
@@ -244,7 +244,121 @@ class DirectorComercialController extends Controller
     </footer>
   </body>"
 
-        ;
+    ;
+
+    $pdf->loadHTML($contenido);
+    return $pdf->stream();
+}
+
+    public function informe_todos_comerciales($id){
+    $c = \App\User::findOrFail($id);
+    $users = \App\User::all();
+    $comerciales = DB::table('users')->where('rol', '=', 1)->get();
+    $clientes = DB::table('users')->where('rol', '=', 0)->get();
+    $pendientes = array();
+    $comprados = array();
+    $rechazados = array();
+    $hoy = date("d/m/Y");
+    foreach ($users as $u) {
+        if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
+            array_push($clientes, $u);
+            foreach ($u->proyectos() as $p) {
+                if ($p->getEstado() == "pendiente")
+                    array_push($pendientes, $p);
+                elseif ($p->getEstado() == "comprado")
+                    array_push($comprados, $p);
+                elseif ($p->getEstado() == "rechazado")
+                    array_push($rechazados, $p);
+            }
+        }
+    }
+    $media_comprados = 0;
+    foreach ($comprados as $c)
+        $media_comprados += $c->coste;
+
+    if (count($comprados) > 0)
+        $media_comprados = $media_comprados / count($comprados);
+    else
+        $media_comprados = "0";
+
+    $media_rechazados = 0;
+    foreach ($rechazados as $c)
+        $media_rechazados += $c->coste;
+    if (count($rechazados) > 0)
+        $media_rechazados = $media_rechazados / count($rechazados);
+    else
+        $media_rechazados = "0";
+
+    $pdf = \App::make('dompdf.wrapper');
+    $contenido =
+
+
+        "<head>
+    <meta charset=\"utf-8\">
+    <title>Informe " . $c->name . "</title>
+    <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
+  </head>
+  <body>
+    <header class=\"clearfix\">
+      <div id=\"logo\">
+        <img src=\"LogoActioris.png\"><h2>Actioris " . $hoy . "</h2>   
+      </div>      
+      </div>
+    </header>
+    <main>";
+
+    foreach ($comerciales as $c){
+        $contenido += "<div id=\"details\" class=\"clearfix\">
+        <div id=\"client\">
+          <div class=\"to\">Nombre: </div>
+          <h2 class=\"name\">" . $c->getName() . "</h2>
+          <a href=\"mailto:" . $c->email . "\">" . $c->email . "</a>
+        </div>        
+      </div>;
+     <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+        <thead>
+          <tr>
+            <th class=\"no\">#</th>
+            <th class=\"desc\">DESCRIPTION</th>
+            <th class=\"unit\">TOTAL</th>          
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class=\"no\">01</td>
+            <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
+            <td class=\"unit\">" . count($clientes) . "</td>
+          </tr>
+          <tr>
+            <td class=\"no\">02</td>
+            <td class=\"desc\"><h3>Número Proyectos pendientes: </h3>Descripcion</td>
+            <td class=\"unit\">" . count($pendientes) . "</td>
+          </tr>
+          <tr>
+            <td class=\"no\">03</td>
+            <td class=\"desc\"><h3>Número Proyectos comprados: </h3>Descripcion</td>
+            <td class=\"unit\">" . count($comprados) . "</td>
+          </tr>
+          <tr>
+            <td class=\"no\">04</td>
+            <td class=\"desc\"><h3>Número Proyectos rechazados: </h3>Descripcion</td>
+            <td class=\"unit\">" . count($rechazados) . "</td>
+          </tr>
+          <tr>
+            <td class=\"no\">05</td>
+            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Descripcion</td>
+            <td class=\"unit\">" . $media_rechazados . "</td>
+          </tr>
+          <tr>
+            <td class=\"no\">06</td>
+            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Descripcion</td>
+            <td class=\"unit\">" . $media_comprados . "</td>
+          </tr>        
+        </tbody>        
+      </table>      
+    </main>    
+  </body>";
+    }
 
         $pdf->loadHTML($contenido);
         return $pdf->stream();
