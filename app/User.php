@@ -83,4 +83,48 @@ class User extends Authenticatable
         return $this->hasMany('App\Proyecto', 'id_tecnico');
     }
 
+    public function numero_clientes_comercial($id){
+
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        return count($clientes);
+    }
+
+    public function numero_clientes_resgistrados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            if(isset($c->dni))
+                $num++;
+        return $num;
+    }
+
+    public function numero_clientes_invitados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            if(!isset($c->dni))
+                $num++;
+        return $num;
+    }
+
+    public function numero_proyectos_no_validados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            foreach ($c->proyectos as $p)
+                if($p->getEstado() == "no_validado")
+                    $num++;
+        return $num;
+    }
+
+    public function numero_proyectos_validados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            foreach ($c->proyectos as $p)
+                if($p->isValidado())
+                    $num++;
+        return $num;
+    }
+
 }
