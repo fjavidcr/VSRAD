@@ -38,7 +38,7 @@
                                                     <select name="id_tecnico">
                                                         <option>Seleccionar un técnico</option>
                                                         @foreach($tecnicos as $t)
-                                                            <option value="{{$t->id}}">{{$t->name}}</option>
+                                                            <option value="{{$t->id}}">{{$t->getName()}}</option>
                                                         @endforeach
                                                     </select>
                                                     <input type="hidden" name="id_proyecto" value="{{$p->id}}">
@@ -46,7 +46,7 @@
                                                 </div>
                                             </form>
                                         @else
-                                            {{$p->getTecnico()->name}}
+                                            {{$p->getTecnico()->getName()}}
                                         @endif
                                     </td>
                                     <td>
