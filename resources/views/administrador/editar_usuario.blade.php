@@ -38,7 +38,7 @@
         <div class="form-group">
             <label for="password" class="col-sm-2 control-label">Contraseña</label>
             <div class="col-sm-10">
-                <input id="password" type="password" name="password" required>
+                <input id="password" type="password" name="password">
                 ( Si el campo se deja vacío no se modificará la contraseña )
             </div>
         </div>
@@ -57,7 +57,7 @@
         <div class="form-group">
             <label for="dni" class="col-sm-2 control-label">DNI</label>
             <div class="col-sm-10">
-                <input id="dni" type="text" name="dni" value="{{ $user->dni }}" onchange="comprobar()" required>
+                <input id="dni" type="text" name="dni" value="{{ $user->dni }}" onload="comprobar()" onchange="comprobar()" required>
             </div>
         </div>
         <div class="form-group">
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="col-sm-offset-2 col-sm-10">
-            <input id="boton" type="submit" value="Editar" class="btn btn-success" disabled>
+            <input id="boton" type="submit" value="Editar" class="btn btn-success" >
         </div>
     </form>
 
@@ -97,7 +97,7 @@
                 letra='TRWAGMYFPDXBNJZSQVHLCKET';
                 letra=letra.substring(numero,numero+1);
                 if (letra!=letr.toUpperCase()) {
-                    document.getElementById('boton').disabled=true;
+                    //document.getElementById('boton').disabled=true;
                     alert('DNI erroneo');
                 }
                 else

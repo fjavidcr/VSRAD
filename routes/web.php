@@ -54,6 +54,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('director_comercial/asignar_oferta', 'DirectorComercialController@asignar_oferta')->name('director_comercial.asignar_oferta');
         Route::post('director_comercial/añadir_cliente', 'DirectorComercialController@añadir_cliente')->name('director_comercial.añadir_cliente');
         Route::get('director_comercial/informe_comercial/{id}', 'DirectorComercialController@informe_comercial')->name('director_comercial.informe_comercial');
+        Route::get('director_comercial/informes', 'DirectorComercialController@informes')->name('director_comercial.informes');
+        Route::get('director_comercial/informe_cliente', 'DirectorComercialController@informe_cliente')->name('director_comercial.informe_cliente');
+        Route::get('director_comercial/informe_todos_comerciales', 'DirectorComercialController@informe_todos_comerciales')->name('director_comercial.informe_todos_comerciales');
+
 
         Route::resource('director_comercial', 'DirectorComercialController');
     });
@@ -67,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
         Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
         Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
+        Route::get('/cliente/mensajes/{id}', 'ClienteController@mensajes')->name('cliente.mensajes');
+        Route::post('/cliente/enviar_mensaje', 'ClienteController@enviar_mensaje')->name('cliente.enviar_mensaje');
 
 
     });
@@ -75,6 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('comercial/asignar_tecnico', 'ComercialController@asignar_tecnico')->name('comercial.asignar_tecnico');
         Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
+        Route::get('comercial/mensajes/{id}', 'ComercialController@mensajes')->name('comercial.mensajes');
+        Route::post('comercial/enviar_mensaje', 'ComercialController@enviar_mensaje')->name('comercial.enviar_mensaje');
 
         Route::resource('comercial', 'ComercialController');
     });
@@ -83,6 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('tecnico/proyecto/{id}', 'TecnicoController@edit')->name('tecnico.proyecto');
         Route::post('tecnico/cambiar_estado', 'TecnicoController@cambiar_estado')->name('tecnico.cambiar_estado');
+        Route::get('tecnico/mensajes/{id}', 'TecnicoController@mensajes')->name('tecnico.mensajes');
         Route::post('tecnico/enviar_mensaje', 'TecnicoController@enviar_mensaje')->name('tecnico.enviar_mensaje');
 
         Route::resource('tecnico', 'TecnicoController');
