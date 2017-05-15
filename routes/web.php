@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('director_comercial/informes', 'DirectorComercialController@informes')->name('director_comercial.informes');
         Route::get('director_comercial/informe_cliente', 'DirectorComercialController@informe_cliente')->name('director_comercial.informe_cliente');
         Route::get('director_comercial/informe_todos_comerciales', 'DirectorComercialController@informe_todos_comerciales')->name('director_comercial.informe_todos_comerciales');
+        Route::get('director_comercial/ver_informe/{id}', 'DirectorComercialController@ver_informe')->name('director_comercial.ver_informe');
+        Route::get('director_comercial/informe_todos_clientes', 'DirectorComercialController@informe_todos_clientes')->name('director_comercial.informe_todos_clientes');
 
 
         Route::resource('director_comercial', 'DirectorComercialController');
