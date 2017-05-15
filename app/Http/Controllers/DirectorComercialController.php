@@ -247,6 +247,30 @@ class DirectorComercialController extends Controller
 
         ;
 
+        $user = \Auth::user();
+        $informe = new \App\Informe();
+
+        $informe->id_director = $user->id;
+        $informe->texto = $contenido;
+        $fecha = getdate();
+        if($fecha["hours"] == 23)
+            $hora = 1;
+        elseif ($fecha["hours"] == 24)
+            $hora = 2;
+        elseif ($fecha["hours"] == 22)
+            $hora = 0;
+        else
+            $hora = $fecha["hours"]+2;
+
+        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
+            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+
+        $informe->fecha_creacion = $fecha_creacion;
+
+        $informe->nombre =  'Informe - ' .$c->getCompleteName();
+
+        $informe->save();
+
         $pdf->loadHTML($contenido);
         return $pdf->stream();
     }
@@ -255,6 +279,7 @@ class DirectorComercialController extends Controller
     {
         $user = \Auth::user();
         $users = \App\User::all();
+        $informes = DB::table('informes')->where('id_director', '=', $user->id)->get();
         $comerciales = array();
         $clientes = array();
         foreach ( $users as $u) {
@@ -263,7 +288,16 @@ class DirectorComercialController extends Controller
             elseif ($u->hasRol("cliente"))
                 array_push($clientes, $u);
         }
-        return view('director_comercial.informes', compact('user', 'comerciales', 'clientes'));
+        return view('director_comercial.informes', compact('user', 'comerciales', 'clientes', 'informes'));
+    }
+
+    public function ver_informe($id)
+    {
+        $informe = \App\Informe::findOrFail($id);
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($informe->texto);
+
+        return $pdf->stream();
     }
 
     public function informe_todos_comerciales(){
