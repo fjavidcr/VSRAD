@@ -74,6 +74,11 @@ class User extends Authenticatable
         return true;
     }
 
+    public function informes()
+    {
+        return $this->hasMany('App\Informe', 'id_director');
+    }
+
     public function proyectos()
     {
         return $this->hasMany('App\Proyecto', 'id_cliente');
