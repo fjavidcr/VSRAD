@@ -60,18 +60,20 @@
                 <input id="dni" type="text" name="dni" value="{{ $user->dni }}" onload="comprobar()" onchange="comprobar()" required>
             </div>
         </div>
-        <div class="form-group">
-            <label for="rol" class="col-sm-2 control-label">Rol</label>
-            <div class="col-sm-10">
-                <select name="rol" required>
-                    <option>Seleccione una opción</option>
-                    <option value="1" @if($user->rol == 1) echo selected @endif>Comercial</option>
-                    <option value="2" @if($user->rol == 2) echo selected @endif>Técnico</option>
-                    <option value="3" @if($user->rol == 3) echo selected @endif>Director comercial</option>
-                    <option value="4" @if($user->rol == 4) echo selected @endif>Administrador</option>
-                </select>
+        @if (!$user->hasRol("cliente"))
+            <div class="form-group">
+                <label for="rol" class="col-sm-2 control-label">Rol</label>
+                <div class="col-sm-10">
+                    <select name="rol" required>
+                        <option>Seleccione una opción</option>
+                        <option value="1" @if($user->rol == 1) echo selected @endif>Comercial</option>
+                        <option value="2" @if($user->rol == 2) echo selected @endif>Técnico</option>
+                        <option value="3" @if($user->rol == 3) echo selected @endif>Director comercial</option>
+                        <option value="4" @if($user->rol == 4) echo selected @endif>Administrador</option>
+                    </select>
+                </div>
             </div>
-        </div>
+        @endif
         <div class="col-sm-offset-2 col-sm-10">
             <input id="boton" type="submit" value="Editar" class="btn btn-success" >
         </div>

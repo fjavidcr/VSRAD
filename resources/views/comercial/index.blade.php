@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container container-page">
-        <h3> Clientes de {{$user->name}}</h3>
+        <h3> Clientes de {{ Auth::user()->getName() }}</h3>
         <div class="row">
             <div class="col-lg-12">
 

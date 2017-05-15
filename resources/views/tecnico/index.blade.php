@@ -5,7 +5,7 @@
     <div class="container container-page">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Proyectos asignados a  {{ $user->name }}</h3>
+                <h3>Proyectos asignados a  {{ Auth::user()->getName() }}</h3>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
                                 <td>{{ ++$cont }}</td>
                                 <td>{{ $p->nombre }}</td>
                                 <td>{{ $p->fecha_creacion }}</td>
-                                <td>{{ $p->getCliente()->name }}</td>
+                                <td>{{ $p->getCliente()->getName() }}</td>
                                 <td>{{ $p->getTituloEstado() }}</td>
                                 @if($p->getEstado() == "pendiente")
                                     <td>

@@ -93,7 +93,7 @@
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Restricciones</th>
-                    <th>Coste</th>
+                    <th>Coste (sin IVA)</th>
                     <th>Imagen</th>
                     </thead>
                     <input type="hidden" value="{{ $cont = 0 }}">
