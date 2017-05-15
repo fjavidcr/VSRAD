@@ -54,6 +54,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('director_comercial/asignar_oferta', 'DirectorComercialController@asignar_oferta')->name('director_comercial.asignar_oferta');
         Route::post('director_comercial/añadir_cliente', 'DirectorComercialController@añadir_cliente')->name('director_comercial.añadir_cliente');
         Route::get('director_comercial/informe_comercial/{id}', 'DirectorComercialController@informe_comercial')->name('director_comercial.informe_comercial');
+        Route::get('director_comercial/informes', 'DirectorComercialController@informes')->name('director_comercial.informes');
+        Route::get('director_comercial/informe_cliente', 'DirectorComercialController@informe_cliente')->name('director_comercial.informe_cliente');
+        Route::get('director_comercial/informe_todos_comerciales', 'DirectorComercialController@informe_todos_comerciales')->name('director_comercial.informe_todos_comerciales');
+
 
         Route::resource('director_comercial', 'DirectorComercialController');
     });

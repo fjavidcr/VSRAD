@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 
 class User extends Authenticatable
@@ -81,6 +82,52 @@ class User extends Authenticatable
     public function proyectos_tecnico()
     {
         return $this->hasMany('App\Proyecto', 'id_tecnico');
+    }
+
+    public static function numero_clientes_comercial($id){
+
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        return count($clientes);
+    }
+
+    public static function numero_clientes_resgistrados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            if(isset($c->dni))
+                $num++;
+        return $num;
+    }
+
+    public static function numero_clientes_invitados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            if(!isset($c->dni))
+                $num++;
+        return $num;
+    }
+
+    public static function numero_proyectos_no_validados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 3)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente)
+                    $num++;
+        return $num;
+    }
+
+    public static function numero_proyectos_validados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 2)->get();
+        $num = 0;
+        foreach ($clientes as $c)
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente)
+                    $num++;
+        return $num;
     }
 
 }
