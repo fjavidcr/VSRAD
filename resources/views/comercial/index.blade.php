@@ -16,57 +16,71 @@
                     </a>
                     @foreach($clientes as $c)
                         <table class="table table-responsive table-condensed table-striped">
-                            <caption><h4>{{ $c->getName() }}</h4></caption>
-                            <thead>
-                                <th>#</th>
-                                <th>Nombre</th>
-                                <th>Estado </th>
-                                <th>Ténico </th>
-                                <th>Oferta </th>
-                            </thead>
-                            <input type="hidden" value="{{ $cont = 0 }}">
+
+                            <input type="hidden" value="{{ $existe = 0 }}">
                             @foreach($c->proyectos as $p)
                                 @if($p->oculto == 0)
-                                    <tr>
-                                        <td>{{ ++$cont }}</td>
-                                        <td>{{ $p->nombre }}</td>
-                                        <td>{{ $p->getTituloEstado() }}</td>
-                                        <td>
-                                            @if(!isset($p->id_tecnico))
-                                                <form action="{{route('comercial.asignar_tecnico')}}" method="post">
-                                                    {{csrf_field()}}
-                                                    <div class="form-inline">
-                                                        <select name="id_tecnico">
-                                                            <option>Seleccionar un técnico</option>
-                                                            @foreach($tecnicos as $t)
-                                                                <option value="{{$t->id}}">{{$t->getName()}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
-                                                        <button type="submit" class="btn btn-success btn-xs">Asignar</button>
-                                                    </div>
-                                                </form>
-                                            @else
-                                                {{$p->getTecnico()->getName()}}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($p->oferta == 0 && $p->getEstado() == "validado" )
-                                                <form action="{{route('comercial.asignar_oferta')}}" method="post">
-                                                    {{csrf_field()}}
-                                                    <div class="form-inline">
-                                                        <input id="oferta" type="number" min="0" max="{{$user->oferta}}" step="0.01" value="0.00" name="oferta"> %
-                                                        <input type="hidden" name="id_proyecto" value="{{$p->id}}">
-                                                        <button type="submit" class="btn btn-success btn-xs">Asignar</button>
-                                                    </div>
-                                                </form>
-                                            @else
-                                                {{$p->oferta}} %
-                                            @endif
-                                        </td>
-                                    </tr>
+                                    <input type="hidden" value="{{ $existe = 1 }}">
                                 @endif
                             @endforeach
+
+                            @if($existe == 0)
+                                <div class="alert alert-info">
+                                    <b> No existen proyectos del cliente {{ $c->getName() }}.</b>
+                                </div>
+                            @else
+                                <caption><h4>{{ $c->getName() }}</h4></caption>
+                                <thead>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Estado </th>
+                                    <th>Ténico </th>
+                                    <th>Oferta </th>
+                                </thead>
+                                <input type="hidden" value="{{ $cont = 0 }}">
+                                @foreach($c->proyectos as $p)
+                                    @if($p->oculto == 0)
+                                        <tr>
+                                            <td>{{ ++$cont }}</td>
+                                            <td>{{ $p->nombre }}</td>
+                                            <td>{{ $p->getTituloEstado() }}</td>
+                                            <td>
+                                                @if(!isset($p->id_tecnico))
+                                                    <form action="{{route('comercial.asignar_tecnico')}}" method="post">
+                                                        {{csrf_field()}}
+                                                        <div class="form-inline">
+                                                            <select name="id_tecnico">
+                                                                <option>Seleccionar un técnico</option>
+                                                                @foreach($tecnicos as $t)
+                                                                    <option value="{{$t->id}}">{{$t->getName()}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                            <button type="submit" class="btn btn-success btn-xs">Asignar</button>
+                                                        </div>
+                                                    </form>
+                                                @else
+                                                    {{$p->getTecnico()->getName()}}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($p->oferta == 0 && $p->getEstado() == "validado" )
+                                                    <form action="{{route('comercial.asignar_oferta')}}" method="post">
+                                                        {{csrf_field()}}
+                                                        <div class="form-inline">
+                                                            <input id="oferta" type="number" min="0" max="{{$user->oferta}}" step="0.01" value="0.00" name="oferta"> %
+                                                            <input type="hidden" name="id_proyecto" value="{{$p->id}}">
+                                                            <button type="submit" class="btn btn-success btn-xs">Asignar</button>
+                                                        </div>
+                                                    </form>
+                                                @else
+                                                    {{$p->oferta}} %
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
                         </table>
                     @endforeach
 
