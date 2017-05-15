@@ -31,28 +31,30 @@
                         </thead>
                         <input type="hidden" value="{{ $cont = 0 }}">
                         @foreach($proyectos as $p)
-                            <tr>
-                                <td>{{ ++$cont }}</td>
-                                <td>{{ $p->nombre }}</td>
-                                <td>{{ $p->fecha_creacion }}</td>
-                                <td>{{ $p->getCliente()->getName() }}</td>
-                                <td>{{ $p->getTituloEstado() }}</td>
-                                @if($p->getEstado() == "pendiente")
-                                    <td>
-                                        <a class="btn btn-primary btn-sm"
-                                           href="{{ route('tecnico.proyecto', $p->id) }}">
-                                            Revisar
-                                        </a>
-                                    </td>
-                                @else
-                                    <td>
-                                        <a class="btn btn-success btn-sm"
-                                           href="{{ route('tecnico.show', $p->id) }}">
-                                            Ver
-                                        </a>
-                                    </td>
-                                @endif
-                            </tr>
+                            @if($p->oculto == 0)
+                                <tr>
+                                    <td>{{ ++$cont }}</td>
+                                    <td>{{ $p->nombre }}</td>
+                                    <td>{{ $p->fecha_creacion }}</td>
+                                    <td>{{ $p->getCliente()->getName() }}</td>
+                                    <td>{{ $p->getTituloEstado() }}</td>
+                                    @if($p->getEstado() == "pendiente")
+                                        <td>
+                                            <a class="btn btn-primary btn-sm"
+                                               href="{{ route('tecnico.proyecto', $p->id) }}">
+                                                Revisar
+                                            </a>
+                                        </td>
+                                    @else
+                                        <td>
+                                            <a class="btn btn-success btn-sm"
+                                               href="{{ route('tecnico.show', $p->id) }}">
+                                                Ver
+                                            </a>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @endif
                         @endforeach
                     </table>
                 @endif
@@ -77,11 +79,13 @@
                         </tr>
                         </thead>
                         @foreach($proyectos as $p)
-                            <tr>
-                                <td>{{ $p->nombre }}</td>
-                                <td>{{ $p->fecha_creacion }}</td>
-                                <td><a href="{{ route('tecnico.mensajes', $p->id) }}"> Seleccionar</a></td>
-                            </tr>
+                            @if($p->oculto == 0)
+                                <tr>
+                                    <td>{{ $p->nombre }}</td>
+                                    <td>{{ $p->fecha_creacion }}</td>
+                                    <td><a href="{{ route('tecnico.mensajes', $p->id) }}"> Seleccionar</a></td>
+                                </tr>
+                            @endif
                         @endforeach
                     </table>
                 </div>
