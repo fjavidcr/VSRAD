@@ -168,7 +168,7 @@ class DirectorComercialController extends Controller
             $media_rechazados = "0";
 
         $pdf = \App::make('dompdf.wrapper');
-
+        $cont = 1;
         $contenido =
 
 
@@ -180,7 +180,7 @@ class DirectorComercialController extends Controller
   <body>
     <header class=\"clearfix\">
       <div id=\"logo\">
-        <img src=\"LogoActioris.png\"><h2>Actioris ".$hoy."</h2>   
+        <img src=\"logo_ufv.png\"><h2>Actioris ".$hoy."</h2>   
       </div>      
       </div>
     </header>
@@ -204,46 +204,42 @@ class DirectorComercialController extends Controller
         <tbody>
           <tr>
             <td class=\"no\">01</td>
-            <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Clientes: </h3>Número de clientes que tiene asignado el comercial.</td>
             <td class=\"unit\">".count($clientes)."</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
-            <td class=\"desc\"><h3>Número Proyectos pendientes: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Proyectos pendientes: </h3>Número de proyectos que han pedido validación y todavía no han sido validados por el técnico.</td>
             <td class=\"unit\">".count($pendientes)."</td>
           </tr>
           <tr>
             <td class=\"no\">03</td>
-            <td class=\"desc\"><h3>Número Proyectos comprados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Proyectos comprados: </h3>Número de proyectos comprados por los clientes.</td>
             <td class=\"unit\">". count($comprados)."</td>
           </tr>
           <tr>
             <td class=\"no\">04</td>
-            <td class=\"desc\"><h3>Número Proyectos rechazados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Proyectos rechazados: </h3>Número de proyectos que han rechazado los clientes.</td>
             <td class=\"unit\">". count($rechazados)."</td>
           </tr>
           <tr>
             <td class=\"no\">05</td>
-            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Descripcion</td>
-            <td class=\"unit\">". $media_rechazados."</td>
+            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Coste medio de los proyectos rechazados.</td>
+            <td class=\"unit\">". $media_rechazados." &#8364;</td>
           </tr>
           <tr>
             <td class=\"no\">06</td>
-            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Descripcion</td>
-            <td class=\"unit\">". $media_comprados."</td>
+            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Coste medio de los proyectos comprados..</td>
+            <td class=\"unit\">". $media_comprados."  &#8364;</td>
           </tr>        
         </tbody>        
       </table>
-      <div id=\"thanks\">Muchas Gracias!!</div>
-      <div id=\"notices\">
-        <div>Advertencia:</div>
-        <div class=\"notice\">No se devuelve nada!</div>
-      </div>
+      <footer>
+        pág ". $cont . "
+       </footer>
     </main>
-    <footer>
-      Gracias.
-    </footer>
-  </body>"
+  </body>
+  "
 
         ;
 
@@ -328,31 +324,32 @@ class DirectorComercialController extends Controller
 
         $pdf = \App::make('dompdf.wrapper');
 
-        $contenido =
+        $cont = 1;
 
+        $contenido =
 
             "<head>
     <meta charset=\"utf-8\">
     <title>Informe de comerciales </title>
     <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
+    <link href=\"/css/app.css\" rel=\"stylesheet\"/>
   </head>
-  <body>
-    <header class=\"clearfix\">
-      <div id=\"logo\">
-        <img src=\"LogoActioris.png\"><h2>Actioris " . $hoy . "</h2>   
-      </div>      
-      </div>
-    </header>
+  <body>    
     <main>";
 
         foreach ($comerciales as $c){
-            $contenido .= "<div id=\"details\" class=\"clearfix\">
+            $contenido .= "
+    <div class='row'>
+      <div id=\"logo\">
+        <img src=\"logo_ufv.png\"><h2>Actioris " . $hoy . "</h2>
+      </div>
+      <div id=\"details\" class=\"clearfix\">
         <div id=\"client\">
           <div class=\"to\">Nombre: </div>
           <h2 class=\"name\">" . $c->name . " ". $c->apellidos."</h2>
           <a href=\"mailto:" . $c->email . "\">" . $c->email . "</a>
         </div>        
-      </div>;
+      </div>
      <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
         <thead>
           <tr>
@@ -364,43 +361,51 @@ class DirectorComercialController extends Controller
         <tbody>
           <tr>
             <td class=\"no\">01</td>
-            <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Clientes: </h3>Número de clientes que tiene asignado el comercial.</td>
             <td class=\"unit\">" . \App\User::numero_clientes_comercial($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
-            <td class=\"desc\"><h3>Número Clientes registrados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Clientes registrados: </h3>Número de clientes que se han completado su registro en la aplicación.</td>
             <td class=\"unit\">" . \App\User::numero_clientes_resgistrados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">03</td>
-            <td class=\"desc\"><h3>Número Clientes invitados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Clientes invitados: </h3>Número de clientes que no han completado su registro en la aplicación.</td>
             <td class=\"unit\">" . \App\User::numero_clientes_invitados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">04</td>
-            <td class=\"desc\"><h3>Número Proyectos no validados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Proyectos no validados: </h3>Número de proyectos rechazados por los técnicos.</td>
             <td class=\"unit\">" . \App\User::numero_proyectos_no_validados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">05</td>
-            <td class=\"desc\"><h3>Número Proyectos validados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número Proyectos validados: </h3>Número de proyectos validados por los técnicos.</td>
             <td class=\"unit\">" . \App\User::numero_proyectos_validados($c->id) . "</td>
           </tr>         
           <tr>
             <td class=\"no\">06</td>
-            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Descripcion</td>
-            <td class=\"unit\">" . $media_rechazados . "</td>
+            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Coste medio de los proyectos rechazados.</td>
+            <td class=\"unit\">" . $media_rechazados . " &#8364;</td>
           </tr>
           <tr>
             <td class=\"no\">07</td>
-            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Descripcion</td>
-            <td class=\"unit\">" . $media_comprados . "</td>
-          </tr>        
-        </tbody>        
-      </table>      
+            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Coste medio de los proyectos comprados.</td>
+            <td class=\"unit\">" . $media_comprados . " &#8364;</td>
+          </tr>
+        </table>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <footer>
+        pág ". $cont . "
+       </footer>
+       
     ";
-        }
+        $cont++;}
 
         $contenido .= "</main></body>";
 
