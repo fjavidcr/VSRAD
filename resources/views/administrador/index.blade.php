@@ -40,7 +40,7 @@
                                 </a>
                             </td>
                             <td>
-                                @if(!$u->hasRol("administrador"))
+                                @if($u->id != \Auth::user()->id)
                                     <div class="form-inline">
                                     @if($u->oculto == 0)
                                         <form action="{{ route('administrador.deshabilitar_usuario') }}" method="post">

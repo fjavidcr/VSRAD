@@ -60,7 +60,7 @@
                 <input id="dni" type="text" name="dni" value="{{ $user->dni }}" onload="comprobar()" onchange="comprobar()" required>
             </div>
         </div>
-        @if (!$user->hasRol("cliente") && !$user->hasRol("administrador"))
+        @if (!$user->hasRol("cliente") && $user->id != \Auth::user()->id)
             <div class="form-group">
                 <label for="rol" class="col-sm-2 control-label">Rol</label>
                 <div class="col-sm-10">
