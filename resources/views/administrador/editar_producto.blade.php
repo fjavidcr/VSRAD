@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="coste" class="col-sm-2 control-label">Coste</label>
+            <label for="coste" class="col-sm-2 control-label">Coste (sin IVA)</label>
             <div class="col-sm-10">
                 <input type="number" min="0" max="10000" step="0.01" value="{{ $pro->coste }}" name="coste" required>
             </div>

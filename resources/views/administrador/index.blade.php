@@ -40,43 +40,45 @@
                                 </a>
                             </td>
                             <td>
-                                <div class="form-inline">
-                                @if($u->oculto == 0)
-                                    <form action="{{ route('administrador.deshabilitar_usuario') }}" method="post">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="id" value="{{$u->id}}">
-                                        <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
-                                    </form>
-                                @elseif($u->oculto ==1)
+                                @if(!$u->hasRol("administrador"))
+                                    <div class="form-inline">
+                                    @if($u->oculto == 0)
+                                        <form action="{{ route('administrador.deshabilitar_usuario') }}" method="post">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="id" value="{{$u->id}}">
+                                            <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
+                                        </form>
+                                    @elseif($u->oculto ==1)
 
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
-                                        Habilitar
-                                    </button>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">Habilitar Usuario</h4>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
+                                            Habilitar
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title" id="myModalLabel">Habilitar Usuario</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
+                                                            {{ csrf_field() }}
+                                                            <input type="hidden" name="id" value="{{$u->id}}">
+                                                            <label for="password" class="control-label">Nueva contraseña  </label>
+                                                            <input type="password" name="password">
+                                                            <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">Para habilitar de nuevo a {{ $u->name .' '. $u->apellidos}} es necesario establecer una nueva contraseña.</div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="id" value="{{$u->id}}">
-                                                        <label for="password" class="control-label">Nueva contraseña  </label>
-                                                        <input type="password" name="password">
-                                                        <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">Para habilitar de nuevo a {{ $u->name .' '. $u->apellidos}} es necesario establecer una nueva contraseña.</div>
                                             </div>
                                         </div>
-                                    </div>
 
+                                    @endif
+                                    </div>
                                 @endif
-                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -93,7 +95,7 @@
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Restricciones</th>
-                    <th>Coste</th>
+                    <th>Coste (sin IVA)</th>
                     <th>Imagen</th>
                     </thead>
                     <input type="hidden" value="{{ $cont = 0 }}">

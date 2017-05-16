@@ -4,7 +4,7 @@
     <div class="container">
 
         <div class="panel panel-default">
-        <div class="panel-heading"><h4><b> Comerciales de {{$user->name}}</b></h4></div>
+        <div class="panel-heading"><h4><b> Comerciales </b></h4></div>
         <div class="panel-body">
         <div class="row">
             <div class="col-lg-12">
@@ -28,7 +28,7 @@
                         @foreach($comerciales as $c)
                             <tr>
                                 <td>{{ ++$cont }}</td>
-                                <td>{{ $c->name .' '. $c->apellidos }}</td>
+                                <td>{{ $c->getName() }}</td>
                                 <td> @if($c->oculto == 0) Habilitado @else Deshabilitado @endif </td>
                                 <td>
                                     <form action="{{route('director_comercial.asignar_oferta')}}" method="post">
