@@ -112,3 +112,7 @@
     border-radius: 2px;
     color: #1f2121;
 }
+
+textarea {
+    resize: none;
+}
