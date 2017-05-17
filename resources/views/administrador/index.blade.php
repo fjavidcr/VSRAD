@@ -40,7 +40,7 @@
                                 </a>
                             </td>
                             <td>
-                                @if(!$u->hasRol("administrador"))
+                                @if($u->id != \Auth::user()->id)
                                     <div class="form-inline">
                                     @if($u->oculto == 0)
                                         <form action="{{ route('administrador.deshabilitar_usuario') }}" method="post">
@@ -71,7 +71,7 @@
                                                             <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
                                                         </form>
                                                     </div>
-                                                    <div class="modal-footer">Para habilitar de nuevo a {{ $u->name .' '. $u->apellidos}} es necesario establecer una nueva contraseña.</div>
+                                                    <div class="modal-footer">Para habilitar de nuevo a {{ $u->getName() }} es necesario establecer una nueva contraseña.</div>
                                                 </div>
                                             </div>
                                         </div>
