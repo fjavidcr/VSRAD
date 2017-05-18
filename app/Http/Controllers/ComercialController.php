@@ -149,17 +149,9 @@ class ComercialController extends Controller
         $texto[0] = strtoupper($texto[0]);
         $mensaje->texto =  $texto;
 
-        $fecha = getdate();
-        if($fecha["hours"] == 23)
-            $hora = 1;
-        elseif ($fecha["hours"] == 24)
-            $hora = 2;
-        elseif ($fecha["hours"] == 22)
-            $hora = 0;
-        else
-            $hora = $fecha["hours"]+2;
-        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
-            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("Y-m-d H:i:s");
+        $mensaje->fecha_creacion = $fecha;
 
         //2 hace referencia al comercial
         $mensaje->remitente = 2;

@@ -55,11 +55,15 @@ class ClienteController extends Controller
 
         $proyecto->nombre = $request->input('nombre');
         $proyecto->configuracion = $request->input('configuracion');
-        $fecha = getdate();
 
-        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
 
-        $proyecto->fecha_creacion= $fecha_creacion;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+
+        $proyecto->fecha_creacion= $fecha;
+        $proyecto->tiempo_transcurrido= $fecha;
+
+
         $proyecto->id_cliente = \Auth::user()->id;
         $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
         $proyecto->estado = 0;
@@ -165,9 +169,10 @@ class ClienteController extends Controller
         $user->direccion_fisica = $request->input('direccion_fisica');
         $user->telefono = $request->input('telefono');
 
-        $fecha = getdate();
-        $fecha_registro = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
-        $user->fecha_registro = $fecha_registro;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+
+        $user->fecha_registro = $fecha;
 
         $dni = $request->input('dni');
 
@@ -213,11 +218,10 @@ class ClienteController extends Controller
 
         $proyecto->nombre = $request->input('nombre');
         $proyecto->configuracion = $request->input('nueva_configuracion');
-        $fecha = getdate();
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
 
-        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
-
-        $proyecto->fecha_creacion= $fecha_creacion;
+        $proyecto->fecha_creacion= $fecha;
         $proyecto->id_cliente = \Auth::user()->id;
         $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');
         $proyecto->estado = 0;
@@ -250,7 +254,6 @@ class ClienteController extends Controller
         return view('cliente.mensajes', compact('proyecto','mensajes', 'user'));
     }
 
-
     public function enviar_mensaje(Request $request)
     {
         $user = \Auth::user();
@@ -263,18 +266,9 @@ class ClienteController extends Controller
         $texto[0] = strtoupper($texto[0]);
         $mensaje->texto =  $texto;
 
-        $fecha = getdate();
-        if($fecha["hours"] == 23)
-            $hora = 1;
-        elseif ($fecha["hours"] == 24)
-            $hora = 2;
-        elseif ($fecha["hours"] == 22)
-            $hora = 0;
-        else
-            $hora = $fecha["hours"]+2;
-        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
-            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
-
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+        $mensaje->fecha_creacion = $fecha;
 
         //0 hace referencia al cliente
         $mensaje->remitente = 0;

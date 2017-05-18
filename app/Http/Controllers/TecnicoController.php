@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,11 +46,23 @@ class TecnicoController extends Controller
         $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
 
         $proyecto->configuracion = $request->input('nueva_configuracion');
-        $fecha = getdate();
+        $fecha_solicitud = $proyecto->tiempo_transcurrido;
+        $formato = "d-m-Y H:i:s";
+        $fecha_solicitud->format($formato);
 
-        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+        
 
-        $proyecto->fecha_creacion= $fecha_creacion;
+        return $fecha_solicitud;
+
+        //date_default_timezone_set('Europe/Madrid');
+        //$fecha = new DateTime('now');
+        //$fecha->format("Y-m-d H:i:s");
+        $proyecto->fecha_creacion= $fecha_respuesta;
+
+        $tiempo_transcurrido = $fecha_solicitud->diff($fecha_respuesta);
+
+        return $tiempo_transcurrido;
+
         $proyecto->estado = $request->input('estado');
         $proyecto->coste = $request->input('coste');
         $proyecto->save();
@@ -164,17 +177,10 @@ class TecnicoController extends Controller
         $texto[0] = strtoupper($texto[0]);
         $mensaje->texto =  $texto;
 
-        $fecha = getdate();
-        if($fecha["hours"] == 23)
-            $hora = 1;
-        elseif ($fecha["hours"] == 24)
-            $hora = 2;
-        elseif ($fecha["hours"] == 22)
-            $hora = 0;
-        else
-            $hora = $fecha["hours"]+2;
-        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
-            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = new DateTime('now');
+        $fecha->format("d-m-Y H:i:s");
+        $mensaje->fecha_creacion = $fecha;
 
         //1 hace referencia al tecnico
         $mensaje->remitente = 1;

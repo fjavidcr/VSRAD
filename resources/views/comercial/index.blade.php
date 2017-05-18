@@ -44,7 +44,9 @@
                                                 class="success"
                                             @elseif($p->getEstado() == "rechazado")
                                                 class="danger"
-                                                @endif>
+                                            @elseif(!isset($p->id_tecnico))
+                                                class="warning"
+                                            @endif>
                                             <td>{{ ++$cont }}</td>
                                             <td>{{ $p->nombre }}</td>
                                             <td>{{ $p->getTituloEstado() }}</td>

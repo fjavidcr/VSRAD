@@ -136,7 +136,9 @@ class DirectorComercialController extends Controller
         $pendientes = array();
         $comprados = array();
         $rechazados = array();
-        $hoy = date("d/m/Y");
+        date_default_timezone_set('Europe/Madrid');
+        $hoy = date("d-m-Y H:i:s");
+
         foreach ( $users as $u) {
             if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
                 array_push($clientes, $u);
@@ -232,20 +234,10 @@ class DirectorComercialController extends Controller
 
         $informe->id_director = $user->id;
         $informe->texto = $contenido;
-        $fecha = getdate();
-        if($fecha["hours"] == 23)
-            $hora = 1;
-        elseif ($fecha["hours"] == 24)
-            $hora = 2;
-        elseif ($fecha["hours"] == 22)
-            $hora = 0;
-        else
-            $hora = $fecha["hours"]+2;
 
-        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
-            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
-
-        $informe->fecha_creacion = $fecha_creacion;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+        $informe->fecha_creacion = $fecha;
 
         $informe->nombre =  'Informe - ' .$c->getCompleteName();
 
@@ -282,7 +274,8 @@ class DirectorComercialController extends Controller
 
     public function informe_todos_comerciales(){
         $comerciales = DB::table('users')->where('rol', '=', 1)->get();
-        $hoy = date("d/m/Y");
+        date_default_timezone_set('Europe/Madrid');
+        $hoy = date("d-m-Y H:i:s");
         $pdf = \App::make('dompdf.wrapper');
         $cont = 1;
         $contenido =
@@ -376,20 +369,10 @@ class DirectorComercialController extends Controller
 
         $informe->id_director = $user->id;
         $informe->texto = $contenido;
-        $fecha = getdate();
-        if($fecha["hours"] == 23)
-            $hora = 1;
-        elseif ($fecha["hours"] == 24)
-            $hora = 2;
-        elseif ($fecha["hours"] == 22)
-            $hora = 0;
-        else
-            $hora = $fecha["hours"]+2;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
 
-        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
-            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
-
-        $informe->fecha_creacion = $fecha_creacion;
+        $informe->fecha_creacion = $fecha;
 
         $informe->nombre =  'Informe - Comerciales'; //CAMBIAR EL NOMBRE DEL INFORME SEGUN CORRESPONDA
 
