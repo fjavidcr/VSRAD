@@ -51,11 +51,11 @@
                                     @elseif($u->oculto ==1)
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
+                                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal-{{$u->id}}">
                                             Habilitar
                                         </button>
                                         <!-- Modal -->
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal fade" id="myModal-{{$u->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">

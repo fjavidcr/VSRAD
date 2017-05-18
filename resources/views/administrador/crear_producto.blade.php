@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3>Crear producto</h3>
+    <div class="container container-page">
+
+        <div class="page-header">
+            <h3>Crear producto</h3>
+        </div>
 
     @if(count($errors))
         <div class="alert alert-danger">
@@ -25,13 +29,13 @@
         <div class="form-group">
             <label for="descripcion" class="col-sm-2 control-label">Descripción</label>
             <div class="col-sm-10">
-                <input id="descripcion" type="text" name="descripcion" required>
+                <textarea id="descripcion" type="text" rows="5" cols="50" name="descripcion" required></textarea>
             </div>
         </div>
         <div class="form-group">
             <label for="restricciones" class="col-sm-2 control-label">Restricciones</label>
             <div class="col-sm-10">
-                <input id="restricciones" type="text" name="restricciones">
+                <textarea id="restricciones" type="text" rows="5" cols="50" name="restricciones" required></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -51,4 +55,5 @@
             <input type="submit" value="Crear" class="btn btn-success">
         </div>
     </form>
+    </div>
 @endsection
