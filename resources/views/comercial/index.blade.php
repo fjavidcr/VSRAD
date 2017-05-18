@@ -40,7 +40,11 @@
                                 <input type="hidden" value="{{ $cont = 0 }}">
                                 @foreach($c->proyectos as $p)
                                     @if($p->oculto == 0)
-                                        <tr>
+                                        <tr @if($p->getEstado() == "comprado")
+                                                class="success"
+                                            @elseif($p->getEstado() == "rechazado")
+                                                class="danger"
+                                                @endif>
                                             <td>{{ ++$cont }}</td>
                                             <td>{{ $p->nombre }}</td>
                                             <td>{{ $p->getTituloEstado() }}</td>
