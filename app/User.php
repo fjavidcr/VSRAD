@@ -174,4 +174,33 @@ class User extends Authenticatable
         return $media;
     }
 
+
+    public static function tiempo_medio_comercial($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = \App\Proyecto::all();
+        $cont = 0;
+        $tiempo_medio = 0;
+        foreach ($clientes as $c){
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente)
+                    if(isset($p->tiempo_transcurrido)){
+                        $cont++;
+                        $tiempo_medio += $p->tiempo_transcurrido;
+                    }
+        }
+        if ($cont > 0){
+            $tiempo_en_segundos = $tiempo_medio / $cont;
+
+            $horas = floor($tiempo_en_segundos / 3600);
+            $minutos = floor(($tiempo_en_segundos - ($horas * 3600)) / 60);
+            $segundos = $tiempo_en_segundos - ($horas * 3600) - ($minutos * 60);
+
+            return $horas . ':' . $minutos . ":" . $segundos;
+        }
+        else{
+            return 0;
+        }
+
+    }
+
 }

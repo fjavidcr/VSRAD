@@ -313,41 +313,50 @@ class DirectorComercialController extends Controller
         <tbody>
           <tr>
             <td class=\"no\">01</td>
-            <td class=\"desc\"><h3>Número Clientes: </h3>Número de clientes que tiene asignado el comercial.</td>
+            <td class=\"desc\"><h3>Número de clientes asignados: </h3>Número de clientes que tiene asignado el comercial.</td>
             <td class=\"unit\">" . \App\User::numero_clientes_comercial($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
-            <td class=\"desc\"><h3>Número Clientes registrados: </h3>Número de clientes que se han completado su registro en la aplicación.</td>
-            <td class=\"unit\">" . \App\User::numero_clientes_resgistrados($c->id) . "</td>
-          </tr>
-          <tr>
-            <td class=\"no\">03</td>
-            <td class=\"desc\"><h3>Número Clientes invitados: </h3>Número de clientes que no han completado su registro en la aplicación.</td>
+            <td class=\"desc\"><h3>Número de clientes invitados: </h3>Número de clientes que no han completado su registro en la aplicación.</td>
             <td class=\"unit\">" . \App\User::numero_clientes_invitados($c->id) . "</td>
           </tr>
           <tr>
+            <td class=\"no\">03</td>
+            <td class=\"desc\"><h3>Número de clientes registrados: </h3>Número de clientes que han completado su registro en la aplicación.</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_resgistrados($c->id) . "</td>
+          </tr>
+          <tr>
             <td class=\"no\">04</td>
-            <td class=\"desc\"><h3>Número Proyectos no validados: </h3>Número de proyectos rechazados por los técnicos.</td>
+            <td class=\"desc\"><h3>Número de clientes con proyectos pendientes de validación: </h3>Número de clientes que tienen al menos un proyecto de validación.</td>
             <td class=\"unit\">" . \App\User::numero_proyectos_no_validados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">05</td>
-            <td class=\"desc\"><h3>Número Proyectos validados: </h3>Número de proyectos validados por los técnicos.</td>
+            <td class=\"desc\"><h3>Número de clientes con todos sus proyectos validados: </h3>Número de clientes que tienen todos sus proyectos validados.</td>
             <td class=\"unit\">" . \App\User::numero_proyectos_validados($c->id) . "</td>
           </tr>         
           <tr>
             <td class=\"no\">06</td>
-            <td class=\"desc\"><h3>Coste medio Proyectos rechazados: </h3>Coste medio de los proyectos rechazados.</td>
+            <td class=\"desc\"><h3>Coste medio de los proyectos rechazados: </h3>Coste medio de los proyectos rechazados, pertenecientes a los clientes asignados a este comercial.</td>
             <td class=\"unit\">" . \App\User::media_proyectos_rechazados($c->id) . " &#8364;</td>
           </tr>
           <tr>
             <td class=\"no\">07</td>
-            <td class=\"desc\"><h3>Coste medio Proyectos comprados: </h3>Coste medio de los proyectos comprados.</td>
+            <td class=\"desc\"><h3>Coste medio de los proyectos comprados: </h3>Coste medio de los proyectos comprados, pertenecientes a los clientes asignados a este comercial.</td>
             <td class=\"unit\">" . \App\User::media_proyectos_comprados($c->id) . " &#8364;</td>
+          </tr>
+          <tr>
+            <td class=\"no\">08</td>
+            <td class=\"desc\"><h3>Tiempo medio desde que se pide la validación hasta que se da respuesta: </h3>Tiempo medio desde que cada uno de los proyectos de los clientes asignados al comercial pide la validación hasta que obtiene respuesta del técnico.</td>
+            <td class=\"unit\">" . \App\User::tiempo_medio_comercial($c->id) . "</td>
           </tr>
         </table>
         </div>
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
         <br>
         <br>

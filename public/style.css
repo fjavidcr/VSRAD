@@ -94,7 +94,7 @@ table {
 
 table th,
 table td {
-  padding: 20px;
+  padding: 10px;
   background: #EEEEEE;
   text-align: center;
   border-bottom: 1px solid #FFFFFF;
@@ -144,6 +144,7 @@ table td.unit,
 table td.qty,
 table td.total {
   font-size: 1.2em;
+  text-align: center;
 }
 
 table tbody tr:last-child td {
