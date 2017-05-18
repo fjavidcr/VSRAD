@@ -13,7 +13,7 @@ class Proyecto extends Model
     ];
 
     public static $tituloEstados = [
-        'No pendiente', 'Pendiente', 'Validado', 'No validado', 'Comprado', 'Rechazado'
+        'No pendiente', 'Pendiente', 'Validado', 'No validado', 'Intención de compra positiva', 'Intención de compra negativa'
     ];
 
     public function getEstado() {
