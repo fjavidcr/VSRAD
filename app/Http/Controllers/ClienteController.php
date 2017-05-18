@@ -61,8 +61,6 @@ class ClienteController extends Controller
         $fecha = date("d-m-Y H:i:s");
 
         $proyecto->fecha_creacion= $fecha;
-        $proyecto->tiempo_transcurrido= $fecha;
-
 
         $proyecto->id_cliente = \Auth::user()->id;
         $proyecto->id_plano = $request->input('id_plano'); // Hay que meter el plano con $proyecto->id_plano = $request->input('id_plano');

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
+use \DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TecnicoController extends Controller
 {
@@ -43,26 +44,23 @@ class TecnicoController extends Controller
             'configuracion' => 'required'
         ]);
 
+        date_default_timezone_set('Europe/Madrid');
+
         $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
 
         $proyecto->configuracion = $request->input('nueva_configuracion');
-        $fecha_solicitud = $proyecto->tiempo_transcurrido;
-        $formato = "d-m-Y H:i:s";
-        $fecha_solicitud->format($formato);
 
-        
+        //$fecha_solicitud = DateTime::createFromFormat("d-m-Y H:i:s", $fecha);
+        //var_dump($fecha_solicitud);
 
-        return $fecha_solicitud;
+        $fecha_solicitud = new DateTime($proyecto->fecha_creacion);
+        $fecha_respuesta = new DateTime(date("d-m-Y H:i:s"));
 
-        //date_default_timezone_set('Europe/Madrid');
-        //$fecha = new DateTime('now');
-        //$fecha->format("Y-m-d H:i:s");
+        $dif = date_diff($fecha_solicitud, $fecha_respuesta);
+        $intervalo = $dif->s + $dif->i*60 + $dif->h*60*60 + $dif->d*24*60*60 + $dif->m*30*24*60*60 + $dif->y*365*24*60*60;
+
+        $proyecto->tiempo_transcurrido = $intervalo;
         $proyecto->fecha_creacion= $fecha_respuesta;
-
-        $tiempo_transcurrido = $fecha_solicitud->diff($fecha_respuesta);
-
-        return $tiempo_transcurrido;
-
         $proyecto->estado = $request->input('estado');
         $proyecto->coste = $request->input('coste');
         $proyecto->save();
