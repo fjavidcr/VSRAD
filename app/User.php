@@ -135,4 +135,43 @@ class User extends Authenticatable
         return $num;
     }
 
+    public static function media_proyectos_rechazados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 5)->get();
+        $cont = 0;
+        $media = 0;
+        foreach ($clientes as $c)
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente){
+                    $cont++;
+                    $media += $p->coste;
+                }
+        if ($cont > 0)
+            $media = $media / $cont;
+        else
+            $media = 0;
+
+        return $media;
+    }
+
+    public static function media_proyectos_comprados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 4)->get();
+        $cont = 0;
+        $media = 0;
+        foreach ($clientes as $c)
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente){
+                    $cont++;
+                    $media += $p->coste;
+                }
+
+        if ($cont > 0)
+            $media = $media / $cont;
+        else
+            $media = 0;
+
+        return $media;
+    }
+
 }

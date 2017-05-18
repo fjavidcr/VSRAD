@@ -141,12 +141,14 @@ class DirectorComercialController extends Controller
             if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
                 array_push($clientes, $u);
                 foreach ( $u->proyectos() as $p) {
-                    if ($p->getEstado() == "pendiente")
-                        array_push($pendientes, $p);
-                    elseif ($p->getEstado() == "comprado")
-                        array_push($comprados, $p);
-                    elseif ($p->getEstado() == "rechazado")
-                        array_push($rechazados, $p);
+                    if($p->oculto == 0){
+                        if ($p->getEstado() == "pendiente")
+                            array_push($pendientes, $p);
+                        elseif ($p->getEstado() == "comprado")
+                            array_push($comprados, $p);
+                        elseif ($p->getEstado() == "rechazado")
+                            array_push($rechazados, $p);
+                    }
                 }
             }
         }
@@ -297,35 +299,10 @@ class DirectorComercialController extends Controller
     }
 
     public function informe_todos_comerciales(){
-        $users = \App\User::all();
         $comerciales = DB::table('users')->where('rol', '=', 1)->get();
-        $clientes = DB::table('users')->where('rol', '=', 0)->get();
-        $pendientes = array();
-        $comprados = array();
-        $rechazados = array();
         $hoy = date("d/m/Y");
-
-        $media_comprados = 0;
-        foreach ($comprados as $c)
-            $media_comprados += $c->coste;
-
-        if (count($comprados) > 0)
-            $media_comprados = $media_comprados / count($comprados);
-        else
-            $media_comprados = "0";
-
-        $media_rechazados = 0;
-        foreach ($rechazados as $c)
-            $media_rechazados += $c->coste;
-        if (count($rechazados) > 0)
-            $media_rechazados = $media_rechazados / count($rechazados);
-        else
-            $media_rechazados = "0";
-
         $pdf = \App::make('dompdf.wrapper');
-
         $cont = 1;
-
         $contenido =
 
             "<head>
@@ -341,7 +318,7 @@ class DirectorComercialController extends Controller
             $contenido .= "
     <div class='row'>
       <div id=\"logo\">
-        <img src=\"logo_ufv.png\"><h2>Actioris " . $hoy . "</h2>
+        <img src=\"logo_ufv.png\"><h2>Fecha: " . $hoy . "</h2>
       </div>
       <div id=\"details\" class=\"clearfix\">
         <div id=\"client\">
@@ -386,13 +363,13 @@ class DirectorComercialController extends Controller
           </tr>         
           <tr>
             <td class=\"no\">06</td>
-            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Coste medio de los proyectos rechazados.</td>
-            <td class=\"unit\">" . $media_rechazados . " &#8364;</td>
+            <td class=\"desc\"><h3>Coste medio Proyectos rechazados: </h3>Coste medio de los proyectos rechazados.</td>
+            <td class=\"unit\">" . \App\User::media_proyectos_rechazados($c->id) . " &#8364;</td>
           </tr>
           <tr>
             <td class=\"no\">07</td>
-            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Coste medio de los proyectos comprados.</td>
-            <td class=\"unit\">" . $media_comprados . " &#8364;</td>
+            <td class=\"desc\"><h3>Coste medio Proyectos comprados: </h3>Coste medio de los proyectos comprados.</td>
+            <td class=\"unit\">" . \App\User::media_proyectos_comprados($c->id) . " &#8364;</td>
           </tr>
         </table>
         </div>
@@ -405,7 +382,8 @@ class DirectorComercialController extends Controller
        </footer>
        
     ";
-        $cont++;}
+        $cont++;
+        }
 
         $contenido .= "</main></body>";
 
