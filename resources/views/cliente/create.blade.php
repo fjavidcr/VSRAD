@@ -50,7 +50,7 @@
                         <div class="col-lg-2">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Coste total aproximado</h3>
+                                    <h3 class="panel-title">Coste total de los productos</h3>
                                 </div>
                                 <div class="panel-body">
                                     <div class="input-group-addon col-xs-2">€</div>

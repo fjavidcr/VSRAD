@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3>Editar producto</h3>
+    <div class="container container-page">
+
+        <div class="page-header">
+            <h3>Editar producto</h3>
+        </div>
 
     @if(count($errors))
         <div class="alert alert-danger">
@@ -26,17 +30,17 @@
         <div class="form-group">
             <label for="descripcion" class="col-sm-2 control-label">Descripción</label>
             <div class="col-sm-10">
-                <input id="descripcion" type="text" name="descripcion" value="{{ $pro->descripcion }}" required>
+                <textarea id="descripcion" type="text" rows="5" cols="50" name="descripcion" required>{{ $pro->descripcion }}</textarea>
             </div>
         </div>
         <div class="form-group">
             <label for="restricciones" class="col-sm-2 control-label">Restricciones</label>
             <div class="col-sm-10">
-                <input id="restricciones" type="text" name="restricciones" value="{{ $pro->restricciones }}">
+                <textarea id="restricciones" type="text" rows="5" cols="50" name="restricciones" required>{{ $pro->restricciones }}</textarea>
             </div>
         </div>
         <div class="form-group">
-            <label for="coste" class="col-sm-2 control-label">Coste</label>
+            <label for="coste" class="col-sm-2 control-label">Coste (sin IVA)</label>
             <div class="col-sm-10">
                 <input type="number" min="0" max="10000" step="0.01" value="{{ $pro->coste }}" name="coste" required>
             </div>
@@ -53,4 +57,5 @@
             <input type="submit" value="Editar" class="btn btn-success">
         </div>
     </form>
+    </div>
 @endsection

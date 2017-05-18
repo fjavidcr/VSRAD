@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3>Editar plano</h3>
+    <div class="container container-page">
+
+        <div class="page-header">
+            <h3>Editar plano</h3>
+        </div>
 
     @if(count($errors))
         <div class="alert alert-danger">
@@ -35,4 +39,5 @@
             <input type="submit" value="Editar" class="btn btn-success">
         </div>
     </form>
+    </div>
 @endsection
