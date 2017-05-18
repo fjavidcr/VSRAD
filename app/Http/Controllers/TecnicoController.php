@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use \DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TecnicoController extends Controller
 {
@@ -42,14 +44,23 @@ class TecnicoController extends Controller
             'configuracion' => 'required'
         ]);
 
+        date_default_timezone_set('Europe/Madrid');
+
         $proyecto = \App\Proyecto::findOrFail($request->input('id_proyecto'));
 
         $proyecto->configuracion = $request->input('nueva_configuracion');
-        $fecha = getdate();
 
-        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"];
+        //$fecha_solicitud = DateTime::createFromFormat("d-m-Y H:i:s", $fecha);
+        //var_dump($fecha_solicitud);
 
-        $proyecto->fecha_creacion= $fecha_creacion;
+        $fecha_solicitud = new DateTime($proyecto->fecha_creacion);
+        $fecha_respuesta = new DateTime(date("d-m-Y H:i:s"));
+
+        $dif = date_diff($fecha_solicitud, $fecha_respuesta);
+        $intervalo = $dif->s + $dif->i*60 + $dif->h*60*60 + $dif->d*24*60*60 + $dif->m*30*24*60*60 + $dif->y*365*24*60*60;
+
+        $proyecto->tiempo_transcurrido = $intervalo;
+        $proyecto->fecha_creacion= $fecha_respuesta;
         $proyecto->estado = $request->input('estado');
         $proyecto->coste = $request->input('coste');
         $proyecto->save();
@@ -164,17 +175,10 @@ class TecnicoController extends Controller
         $texto[0] = strtoupper($texto[0]);
         $mensaje->texto =  $texto;
 
-        $fecha = getdate();
-        if($fecha["hours"] == 23)
-            $hora = 1;
-        elseif ($fecha["hours"] == 24)
-            $hora = 2;
-        elseif ($fecha["hours"] == 22)
-            $hora = 0;
-        else
-            $hora = $fecha["hours"]+2;
-        $mensaje->fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
-            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = new DateTime('now');
+        $fecha->format("d-m-Y H:i:s");
+        $mensaje->fecha_creacion = $fecha;
 
         //1 hace referencia al tecnico
         $mensaje->remitente = 1;
