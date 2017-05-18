@@ -141,33 +141,15 @@ class DirectorComercialController extends Controller
             if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
                 array_push($clientes, $u);
                 foreach ( $u->proyectos() as $p) {
-                    if($p->oculto == 0){
-                        if ($p->getEstado() == "pendiente")
-                            array_push($pendientes, $p);
-                        elseif ($p->getEstado() == "comprado")
-                            array_push($comprados, $p);
-                        elseif ($p->getEstado() == "rechazado")
-                            array_push($rechazados, $p);
-                    }
+                    if ($p->getEstado() == "pendiente")
+                        array_push($pendientes, $p);
+                    elseif ($p->getEstado() == "comprado")
+                        array_push($comprados, $p);
+                    elseif ($p->getEstado() == "rechazado")
+                        array_push($rechazados, $p);
                 }
             }
         }
-        $media_comprados=0;
-        foreach ($comprados as $c)
-            $media_comprados += $c->coste;
-
-        if(count($comprados)>0)
-        $media_comprados = $media_comprados/count($comprados);
-        else
-            $media_comprados = "0";
-
-        $media_rechazados=0;
-        foreach ($rechazados as $c)
-            $media_rechazados += $c->coste;
-        if(count($rechazados)>0)
-        $media_rechazados = $media_rechazados/count($rechazados);
-        else
-            $media_rechazados = "0";
 
         $pdf = \App::make('dompdf.wrapper');
         $cont = 1;
@@ -182,7 +164,7 @@ class DirectorComercialController extends Controller
   <body>
     <header class=\"clearfix\">
       <div id=\"logo\">
-        <img src=\"logo_ufv.png\"><h2>Actioris ".$hoy."</h2>   
+        <img src=\"logo_ufv.png\"><h2>Fecha: ".$hoy."</h2>   
       </div>      
       </div>
     </header>
@@ -206,33 +188,33 @@ class DirectorComercialController extends Controller
         <tbody>
           <tr>
             <td class=\"no\">01</td>
-            <td class=\"desc\"><h3>Número Clientes: </h3>Número de clientes que tiene asignado el comercial.</td>
+            <td class=\"desc\"><h3>Número clientes: </h3>Número de clientes que tiene asignado el comercial.</td>
             <td class=\"unit\">".count($clientes)."</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
-            <td class=\"desc\"><h3>Número Proyectos pendientes: </h3>Número de proyectos que han pedido validación y todavía no han sido validados por el técnico.</td>
+            <td class=\"desc\"><h3>Número proyectos pendientes: </h3>Número de proyectos que han pedido validación y todavía no han sido validados por el técnico.</td>
             <td class=\"unit\">".count($pendientes)."</td>
           </tr>
           <tr>
             <td class=\"no\">03</td>
-            <td class=\"desc\"><h3>Número Proyectos comprados: </h3>Número de proyectos comprados por los clientes.</td>
+            <td class=\"desc\"><h3>Número proyectos comprados: </h3>Número de proyectos comprados por los clientes.</td>
             <td class=\"unit\">". count($comprados)."</td>
           </tr>
           <tr>
             <td class=\"no\">04</td>
-            <td class=\"desc\"><h3>Número Proyectos rechazados: </h3>Número de proyectos que han rechazado los clientes.</td>
+            <td class=\"desc\"><h3>Número proyectos rechazados: </h3>Número de proyectos que han rechazado los clientes.</td>
             <td class=\"unit\">". count($rechazados)."</td>
           </tr>
           <tr>
             <td class=\"no\">05</td>
-            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Coste medio de los proyectos rechazados.</td>
-            <td class=\"unit\">". $media_rechazados." &#8364;</td>
+            <td class=\"desc\"><h3>Coste medio proyectos rechazados: </h3>Coste medio de los proyectos rechazados.</td>
+            <td class=\"unit\">". \App\User::media_proyectos_rechazados($c->id)." &#8364;</td>
           </tr>
           <tr>
             <td class=\"no\">06</td>
-            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Coste medio de los proyectos comprados..</td>
-            <td class=\"unit\">". $media_comprados."  &#8364;</td>
+            <td class=\"desc\"><h3>Coste medio proyectos comprados: </h3>Coste medio de los proyectos comprados.</td>
+            <td class=\"unit\">". \App\User::media_proyectos_comprados($c->id)."  &#8364;</td>
           </tr>        
         </tbody>        
       </table>
@@ -386,6 +368,34 @@ class DirectorComercialController extends Controller
         }
 
         $contenido .= "</main></body>";
+
+        //PARA GUARDAR EL INFORME
+
+        $user = \Auth::user();
+        $informe = new \App\Informe();
+
+        $informe->id_director = $user->id;
+        $informe->texto = $contenido;
+        $fecha = getdate();
+        if($fecha["hours"] == 23)
+            $hora = 1;
+        elseif ($fecha["hours"] == 24)
+            $hora = 2;
+        elseif ($fecha["hours"] == 22)
+            $hora = 0;
+        else
+            $hora = $fecha["hours"]+2;
+
+        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
+            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
+
+        $informe->fecha_creacion = $fecha_creacion;
+
+        $informe->nombre =  'Informe - Comerciales'; //CAMBIAR EL NOMBRE DEL INFORME SEGUN CORRESPONDA
+
+        $informe->save();
+
+        //FIN DE GUARDAR EL INFORME
 
         $pdf->loadHTML($contenido);
         return $pdf->stream();
