@@ -139,6 +139,9 @@ class ClienteController extends Controller
     {
         $proyecto = \App\Proyecto::findOrFail($id);
         $proyecto->estado = 1;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+        $proyecto->fecha_creacion= $fecha;
         $proyecto->save();
 
         return redirect()->route('cliente.index');
