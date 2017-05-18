@@ -200,3 +200,7 @@ footer {
   text-align: center;
 }
 
+p.saltodepagina
+{
+  page-break-after: always;
+}
