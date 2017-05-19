@@ -133,54 +133,29 @@ class DirectorComercialController extends Controller
         $c = \App\User::findOrFail($id);
         $users = \App\User::all();
         $clientes = array();
-        $pendientes = array();
-        $comprados = array();
-        $rechazados = array();
-        $hoy = date("d/m/Y");
+        date_default_timezone_set('Europe/Madrid');
+        $hoy = date("d-m-Y H:i:s");
+
         foreach ( $users as $u) {
             if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
                 array_push($clientes, $u);
-                foreach ( $u->proyectos() as $p) {
-                    if ($p->getEstado() == "pendiente")
-                        array_push($pendientes, $p);
-                    elseif ($p->getEstado() == "comprado")
-                        array_push($comprados, $p);
-                    elseif ($p->getEstado() == "rechazado")
-                        array_push($rechazados, $p);
-                }
             }
         }
-        $media_comprados=0;
-        foreach ($comprados as $c)
-            $media_comprados += $c->coste;
-
-        if(count($comprados)>0)
-        $media_comprados = $media_comprados/count($comprados);
-        else
-            $media_comprados = "0";
-
-        $media_rechazados=0;
-        foreach ($rechazados as $c)
-            $media_rechazados += $c->coste;
-        if(count($rechazados)>0)
-        $media_rechazados = $media_rechazados/count($rechazados);
-        else
-            $media_rechazados = "0";
 
         $pdf = \App::make('dompdf.wrapper');
-
+        $cont = 1;
         $contenido =
 
 
         "<head>
     <meta charset=\"utf-8\">
-    <title>Informe ". $c->name. "</title>
+    <title>Informe - Comercial: ". $c->name. ' '. $c->apellidos."</title>
     <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
   </head>
   <body>
     <header class=\"clearfix\">
       <div id=\"logo\">
-        <img src=\"LogoActioris.png\"><h2>Actioris ".$hoy."</h2>   
+        <img src=\"logo_ufv.png\"><h4>Fecha: ".$hoy."</h4>   
       </div>      
       </div>
     </header>
@@ -196,7 +171,7 @@ class DirectorComercialController extends Controller
         <thead>
           <tr>
             <th class=\"no\">#</th>
-            <th class=\"desc\">DESCRIPTION</th>
+            <th class=\"desc\">DESCRIPCIÓN</th>
             <th class=\"unit\">TOTAL</th>
           
           </tr>
@@ -204,46 +179,52 @@ class DirectorComercialController extends Controller
         <tbody>
           <tr>
             <td class=\"no\">01</td>
-            <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
-            <td class=\"unit\">".count($clientes)."</td>
+            <td class=\"desc\"><h3>Número de clientes asignados: </h3>Número de clientes que tiene asignado el comercial.</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_comercial($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
-            <td class=\"desc\"><h3>Número Proyectos pendientes: </h3>Descripcion</td>
-            <td class=\"unit\">".count($pendientes)."</td>
+            <td class=\"desc\"><h3>Número de clientes invitados: </h3>Número de clientes que no han completado su registro en la aplicación.</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_invitados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">03</td>
-            <td class=\"desc\"><h3>Número Proyectos comprados: </h3>Descripcion</td>
-            <td class=\"unit\">". count($comprados)."</td>
+            <td class=\"desc\"><h3>Número de clientes registrados: </h3>Número de clientes que han completado su registro en la aplicación.</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_resgistrados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">04</td>
-            <td class=\"desc\"><h3>Número Proyectos rechazados: </h3>Descripcion</td>
-            <td class=\"unit\">". count($rechazados)."</td>
+            <td class=\"desc\"><h3>Número de clientes con proyectos pendientes de validación: </h3>Número de clientes que tienen al menos un proyecto de validación.</td>
+            <td class=\"unit\">" . \App\User::numero_proyectos_no_validados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">05</td>
-            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Descripcion</td>
-            <td class=\"unit\">". $media_rechazados."</td>
-          </tr>
+            <td class=\"desc\"><h3>Número de clientes con todos sus proyectos validados: </h3>Número de clientes que tienen todos sus proyectos validados.</td>
+            <td class=\"unit\">" . \App\User::numero_proyectos_validados($c->id) . "</td>
+          </tr>         
           <tr>
             <td class=\"no\">06</td>
-            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Descripcion</td>
-            <td class=\"unit\">". $media_comprados."</td>
+            <td class=\"desc\"><h3>Coste medio de los proyectos rechazados: </h3>Coste medio de los proyectos rechazados, pertenecientes a los clientes asignados a este comercial.</td>
+            <td class=\"unit\">" . \App\User::media_proyectos_rechazados($c->id) . " &#8364;</td>
+          </tr>
+          <tr>
+            <td class=\"no\">07</td>
+            <td class=\"desc\"><h3>Coste medio de los proyectos comprados: </h3>Coste medio de los proyectos comprados, pertenecientes a los clientes asignados a este comercial.</td>
+            <td class=\"unit\">" . \App\User::media_proyectos_comprados($c->id) . " &#8364;</td>
+          </tr>
+          <tr>
+            <td class=\"no\">08</td>
+            <td class=\"desc\"><h3>Tiempo medio desde que se pide la validación hasta que se da respuesta: </h3>Tiempo medio desde que cada uno de los proyectos de los clientes asignados al comercial pide la validación hasta que obtiene respuesta del técnico.</td>
+            <td class=\"unit\">" . \App\User::tiempo_medio_comercial($c->id) . "</td>
           </tr>        
         </tbody>        
       </table>
-      <div id=\"thanks\">Muchas Gracias!!</div>
-      <div id=\"notices\">
-        <div>Advertencia:</div>
-        <div class=\"notice\">No se devuelve nada!</div>
-      </div>
+      <footer>
+        pág ". $cont . "
+       </footer>
     </main>
-    <footer>
-      Gracias.
-    </footer>
-  </body>"
+  </body>
+  "
 
         ;
 
@@ -252,20 +233,10 @@ class DirectorComercialController extends Controller
 
         $informe->id_director = $user->id;
         $informe->texto = $contenido;
-        $fecha = getdate();
-        if($fecha["hours"] == 23)
-            $hora = 1;
-        elseif ($fecha["hours"] == 24)
-            $hora = 2;
-        elseif ($fecha["hours"] == 22)
-            $hora = 0;
-        else
-            $hora = $fecha["hours"]+2;
 
-        $fecha_creacion = $fecha["mday"] .'/'. $fecha["mon"] .'/'. $fecha["year"] .' - '.
-            $hora .':'.$fecha["minutes"] .':'.$fecha["seconds"];
-
-        $informe->fecha_creacion = $fecha_creacion;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+        $informe->fecha_creacion = $fecha;
 
         $informe->nombre =  'Informe - ' .$c->getCompleteName();
 
@@ -301,108 +272,302 @@ class DirectorComercialController extends Controller
     }
 
     public function informe_todos_comerciales(){
-        $users = \App\User::all();
         $comerciales = DB::table('users')->where('rol', '=', 1)->get();
-        $clientes = DB::table('users')->where('rol', '=', 0)->get();
-        $pendientes = array();
-        $comprados = array();
-        $rechazados = array();
-        $hoy = date("d/m/Y");
-
-        $media_comprados = 0;
-        foreach ($comprados as $c)
-            $media_comprados += $c->coste;
-
-        if (count($comprados) > 0)
-            $media_comprados = $media_comprados / count($comprados);
-        else
-            $media_comprados = "0";
-
-        $media_rechazados = 0;
-        foreach ($rechazados as $c)
-            $media_rechazados += $c->coste;
-        if (count($rechazados) > 0)
-            $media_rechazados = $media_rechazados / count($rechazados);
-        else
-            $media_rechazados = "0";
-
+        date_default_timezone_set('Europe/Madrid');
+        $hoy = date("d-m-Y H:i:s");
         $pdf = \App::make('dompdf.wrapper');
-
+        $cont = 1;
         $contenido =
-
 
             "<head>
     <meta charset=\"utf-8\">
     <title>Informe de comerciales </title>
     <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
+    <link href=\"/css/app.css\" rel=\"stylesheet\"/>
   </head>
-  <body>
-    <header class=\"clearfix\">
-      <div id=\"logo\">
-        <img src=\"LogoActioris.png\"><h2>Actioris " . $hoy . "</h2>   
-      </div>      
-      </div>
-    </header>
+  <body>    
     <main>";
 
         foreach ($comerciales as $c){
-            $contenido .= "<div id=\"details\" class=\"clearfix\">
+            $contenido .= "
+    <div class='row'>
+      <div id=\"logo\">
+        <img src=\"logo_ufv.png\"><h4>Fecha: " . $hoy . "</h4>
+      </div>
+      <div id=\"details\" class=\"clearfix\">
         <div id=\"client\">
           <div class=\"to\">Nombre: </div>
           <h2 class=\"name\">" . $c->name . " ". $c->apellidos."</h2>
           <a href=\"mailto:" . $c->email . "\">" . $c->email . "</a>
         </div>        
-      </div>;
+      </div>
      <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
         <thead>
           <tr>
             <th class=\"no\">#</th>
-            <th class=\"desc\">DESCRIPTION</th>
+            <th class=\"desc\">DESCRIPCIÓN</th>
             <th class=\"unit\">TOTAL</th>          
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class=\"no\">01</td>
-            <td class=\"desc\"><h3>Número Clientes: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número de clientes asignados: </h3>Número de clientes que tiene asignado el comercial.</td>
             <td class=\"unit\">" . \App\User::numero_clientes_comercial($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">02</td>
-            <td class=\"desc\"><h3>Número Clientes registrados: </h3>Descripcion</td>
-            <td class=\"unit\">" . \App\User::numero_clientes_resgistrados($c->id) . "</td>
-          </tr>
-          <tr>
-            <td class=\"no\">03</td>
-            <td class=\"desc\"><h3>Número Clientes invitados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número de clientes invitados: </h3>Número de clientes que no han completado su registro en la aplicación.</td>
             <td class=\"unit\">" . \App\User::numero_clientes_invitados($c->id) . "</td>
           </tr>
           <tr>
+            <td class=\"no\">03</td>
+            <td class=\"desc\"><h3>Número de clientes registrados: </h3>Número de clientes que han completado su registro en la aplicación.</td>
+            <td class=\"unit\">" . \App\User::numero_clientes_resgistrados($c->id) . "</td>
+          </tr>
+          <tr>
             <td class=\"no\">04</td>
-            <td class=\"desc\"><h3>Número Proyectos no validados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número de clientes con proyectos pendientes de validación: </h3>Número de clientes que tienen al menos un proyecto de validación.</td>
             <td class=\"unit\">" . \App\User::numero_proyectos_no_validados($c->id) . "</td>
           </tr>
           <tr>
             <td class=\"no\">05</td>
-            <td class=\"desc\"><h3>Número Proyectos validados: </h3>Descripcion</td>
+            <td class=\"desc\"><h3>Número de clientes con todos sus proyectos validados: </h3>Número de clientes que tienen todos sus proyectos validados.</td>
             <td class=\"unit\">" . \App\User::numero_proyectos_validados($c->id) . "</td>
           </tr>         
           <tr>
             <td class=\"no\">06</td>
-            <td class=\"desc\"><h3>Media Proyectos rechazados: </h3>Descripcion</td>
-            <td class=\"unit\">" . $media_rechazados . "</td>
+            <td class=\"desc\"><h3>Coste medio de los proyectos rechazados: </h3>Coste medio de los proyectos rechazados, pertenecientes a los clientes asignados a este comercial.</td>
+            <td class=\"unit\">" . \App\User::media_proyectos_rechazados($c->id) . " &#8364;</td>
           </tr>
           <tr>
             <td class=\"no\">07</td>
-            <td class=\"desc\"><h3>Media Proyectos comprados: </h3>Descripcion</td>
-            <td class=\"unit\">" . $media_comprados . "</td>
-          </tr>        
-        </tbody>        
-      </table>      
+            <td class=\"desc\"><h3>Coste medio de los proyectos comprados: </h3>Coste medio de los proyectos comprados, pertenecientes a los clientes asignados a este comercial.</td>
+            <td class=\"unit\">" . \App\User::media_proyectos_comprados($c->id) . " &#8364;</td>
+          </tr>
+          <tr>
+            <td class=\"no\">08</td>
+            <td class=\"desc\"><h3>Tiempo medio desde que se pide la validación hasta que se da respuesta: </h3>Tiempo medio desde que cada uno de los proyectos de los clientes asignados al comercial pide la validación hasta que obtiene respuesta del técnico.</td>
+            <td class=\"unit\">" . \App\User::tiempo_medio_comercial($c->id) . "</td>
+          </tr>
+        </table>
+        </div>
+        <footer>
+        pág ". $cont . "
+       </footer>
+       
     ";
+        if($c !== end($comerciales))
+            $contenido .= "<p class=\"saltodepagina\" />";
+        $cont++;
         }
 
         $contenido .= "</main></body>";
+
+        //PARA GUARDAR EL INFORME
+
+        $user = \Auth::user();
+        $informe = new \App\Informe();
+
+        $informe->id_director = $user->id;
+        $informe->texto = $contenido;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+
+        $informe->fecha_creacion = $fecha;
+
+        $informe->nombre =  'Informe - Comerciales'; //CAMBIAR EL NOMBRE DEL INFORME SEGUN CORRESPONDA
+
+        $informe->save();
+
+        //FIN DE GUARDAR EL INFORME
+
+        $pdf->loadHTML($contenido);
+        return $pdf->stream();
+    }
+
+    public function informe_cliente(Request $request){
+        $c = \App\User::findOrFail($request->input('id_cliente'));
+
+        date_default_timezone_set('Europe/Madrid');
+        $hoy = date("d-m-Y H:i:s");
+
+        $pdf = \App::make('dompdf.wrapper');
+        $cont = 1;
+        $contenido =
+
+
+            "<head>
+    <meta charset=\"utf-8\">
+    <title>Informe - Cliente: ". $c->name. ' '. $c->apellidos."</title>
+    <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
+  </head>
+  <body>
+    <header class=\"clearfix\">
+      <div id=\"logo\">
+        <img src=\"logo_ufv.png\"><h4>Fecha: ".$hoy."</h4>   
+      </div>      
+      </div>
+    </header>
+    <main>
+      <div id=\"details\" class=\"clearfix\">
+        <div id=\"client\">
+          <div class=\"to\">Nombre: </div>
+          <h2 class=\"name\">". $c->name. " ". $c->apellidos."</h2>
+          <a href=\"mailto:".$c->email."\">".$c->email."</a>
+        </div>        
+      </div>
+      <h3>Datos del cliente</h3>
+      <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+          <tr>
+            <td class=\"desc\"><h3>Dirección postal: </h3></td>
+            <td class=\"unit\">" . $c->direccion_fisica . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>DNI: </h3></td>
+            <td class=\"unit\">" . $c->dni . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>Fecha de registro: </h3></td>
+            <td class=\"unit\">" . $c->fecha_registro . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>Teléfono: </h3></td>
+            <td class=\"unit\">" . $c->telefono . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>Comercial: </h3></td>
+            <td class=\"unit\">" . \App\User::getComercial($c->id_comercial) . "</td>
+          </tr>    
+          <tr>
+            <td class=\"desc\"><h3>Tiempo medio desde que se pide la validación hasta que se da respuesta: </h3>Tiempo medio desde que se pide la validación de cada uno de los proyectos hasta que obtiene respuesta del técnico.</td>
+            <td class=\"unit\">" . \App\User::tiempo_medio_cliente($c->id) . "</td>
+          </tr>
+        </tbody>        
+      </table>
+      <footer>
+        pág ". $cont . "
+       </footer>
+    </main>
+  </body>
+  "
+
+        ;
+
+        $user = \Auth::user();
+        $informe = new \App\Informe();
+
+        $informe->id_director = $user->id;
+        $informe->texto = $contenido;
+
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+        $informe->fecha_creacion = $fecha;
+
+        $informe->nombre =  'Informe - ' .$c->getCompleteName();
+
+        $informe->save();
+
+        $pdf->loadHTML($contenido);
+        return $pdf->stream();
+    }
+
+    public function informe_todos_clientes(){
+        $clientes = DB::table('users')->where('rol', '=', 0)->get();
+        date_default_timezone_set('Europe/Madrid');
+        $hoy = date("d-m-Y H:i:s");
+        $pdf = \App::make('dompdf.wrapper');
+        $cont = 1;
+        $contenido =
+
+            "<head>
+    <meta charset=\"utf-8\">
+    <title>Informe de clientes </title>
+    <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
+    <link href=\"/css/app.css\" rel=\"stylesheet\"/>
+  </head>
+  <body>    
+    <main>";
+
+        foreach ($clientes as $c){
+            $contenido .= "
+    <div class='row'>
+      <div id=\"logo\">
+        <img src=\"logo_ufv.png\"><h4>Fecha: " . $hoy . "</h4>
+      </div>
+      <div id=\"details\" class=\"clearfix\">
+        <div id=\"client\">
+          <div class=\"to\">Nombre: </div>
+          <h2 class=\"name\">" . $c->name . " ". $c->apellidos."</h2>
+          <a href=\"mailto:" . $c->email . "\">" . $c->email . "</a>
+        </div>        
+      </div>
+     <h3>Datos del cliente</h3>
+      <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+            if(isset($c->dni))
+                $contenido.="<tr>
+            <td class=\"desc\"><h3>Dirección postal: </h3></td>
+            <td class=\"unit\">" . $c->direccion_fisica . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>DNI: </h3></td>
+            <td class=\"unit\">" . $c->dni . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>Fecha de registro: </h3></td>
+            <td class=\"unit\">" . $c->fecha_registro . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>Teléfono: </h3></td>
+            <td class=\"unit\">" . $c->telefono . "</td>
+          </tr>
+          <tr>
+            <td class=\"desc\"><h3>Comercial: </h3></td>
+            <td class=\"unit\">" . \App\User::getComercial($c->id_comercial) . "</td>
+          </tr>    
+          <tr>
+            <td class=\"desc\"><h3>Tiempo medio desde que se pide la validación hasta que se da respuesta: </h3>Tiempo medio desde que se pide la validación de cada uno de los proyectos hasta que obtiene respuesta del técnico.</td>
+            <td class=\"unit\">" . \App\User::tiempo_medio_cliente($c->id) . "</td>
+          </tr>";
+            else
+                $contenido .= "<tr>
+            <td class=\"desc\"><h3>Comercial: </h3></td>
+            <td class=\"unit\">" . \App\User::getComercial($c->id_comercial) . "</td>
+          </tr>
+          <p>* El cliente no se ha registrado por completo en la aplicación.</p>
+          ";
+
+            $contenido .="</table>
+        </div>
+        <footer>
+        pág ". $cont . "
+       </footer>
+       
+    ";
+            if($c !== end($clientes))
+                $contenido .= "<p class=\"saltodepagina\" />";
+            $cont++;
+        }
+
+        $contenido .= "</main></body>";
+
+        //PARA GUARDAR EL INFORME
+
+        $user = \Auth::user();
+        $informe = new \App\Informe();
+
+        $informe->id_director = $user->id;
+        $informe->texto = $contenido;
+        date_default_timezone_set('Europe/Madrid');
+        $fecha = date("d-m-Y H:i:s");
+
+        $informe->fecha_creacion = $fecha;
+
+        $informe->nombre =  'Informe - Clientes'; //CAMBIAR EL NOMBRE DEL INFORME SEGUN CORRESPONDA
+
+        $informe->save();
+
+        //FIN DE GUARDAR EL INFORME
 
         $pdf->loadHTML($contenido);
         return $pdf->stream();

@@ -32,7 +32,7 @@
                         <form class="form-inline" action="{{route('director_comercial.informe_cliente')}}" method="post">
                             {{csrf_field()}}
                             <div class="form-group">
-                                <select name="id_comercial" required>
+                                <select id="id_cliente" name="id_cliente" onchange="comprobar_cliente()" onload="comprobar_cliente()" required>
                                     <option>Seleccionar un cliente</option>
                                     @foreach($clientes as $u)
                                         <option value="{{$u->id}}">{{$u->getName()}}</option>
@@ -40,7 +40,7 @@
                                 </select>
                             </div>
                             &nbsp;
-                            <input type="submit" value="Pedir Informe" class="btn btn-success btn-sm">
+                            <input id="boton_informe_cliente" type="submit" value="Pedir Informe" class="btn btn-success btn-sm" disabled>
                         </form>
                     </div>
                     </div>
@@ -95,5 +95,20 @@
         </div>
 
     </div>
+
+    <script>
+
+        function comprobar_cliente() {
+            var value = document.getElementById('id_cliente').value;
+            console.log(value);
+
+            if (value > 0) {
+                document.getElementById('boton_informe_cliente').disabled=false;
+            }
+            else
+                document.getElementById('boton_informe_cliente').disabled=true;
+        }
+
+    </script>
 
 @endsection

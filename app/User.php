@@ -61,7 +61,7 @@ class User extends Authenticatable
     }
 
     public function getCompleteName() {
-        return User::$title[$this->rol] . ". " . $this->name .' '. $this->apellidos;
+        return User::$title[$this->rol] . ": " . $this->name .' '. $this->apellidos;
     }
 
     public function getName() {
@@ -133,6 +133,105 @@ class User extends Authenticatable
                 if($c->id == $p->id_cliente)
                     $num++;
         return $num;
+    }
+
+    public static function media_proyectos_rechazados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 5)->get();
+        $cont = 0;
+        $media = 0;
+        foreach ($clientes as $c)
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente){
+                    $cont++;
+                    $media += $p->coste;
+                }
+        if ($cont > 0)
+            $media = $media / $cont;
+        else
+            $media = 0;
+
+        return $media;
+    }
+
+    public static function media_proyectos_comprados($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = DB::table('proyectos')->where('estado', '=', 4)->get();
+        $cont = 0;
+        $media = 0;
+        foreach ($clientes as $c)
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente){
+                    $cont++;
+                    $media += $p->coste;
+                }
+
+        if ($cont > 0)
+            $media = $media / $cont;
+        else
+            $media = 0;
+
+        return $media;
+    }
+
+
+    public static function tiempo_medio_comercial($id){
+        $clientes = DB::table('users')->where('id_comercial', '=', $id)->get();
+        $proyectos = \App\Proyecto::all();
+        $cont = 0;
+        $tiempo_medio = 0;
+        foreach ($clientes as $c){
+            foreach ($proyectos as $p)
+                if($c->id == $p->id_cliente)
+                    if(isset($p->tiempo_transcurrido)){
+                        $cont++;
+                        $tiempo_medio += $p->tiempo_transcurrido;
+                    }
+        }
+        if ($cont > 0){
+            $tiempo_en_segundos = $tiempo_medio / $cont;
+
+            $horas = floor($tiempo_en_segundos / 3600);
+            $minutos = floor(($tiempo_en_segundos - ($horas * 3600)) / 60);
+            $segundos = $tiempo_en_segundos - ($horas * 3600) - ($minutos * 60);
+
+            return $horas . ':' . $minutos . ":" . $segundos;
+        }
+        else{
+            return 0;
+        }
+
+    }
+
+    public static function tiempo_medio_cliente($id){
+        $proyectos = \App\Proyecto::all();
+        $cont = 0;
+        $tiempo_medio = 0;
+        foreach ($proyectos as $p)
+            if($id == $p->id_cliente)
+                if(isset($p->tiempo_transcurrido)){
+                    $cont++;
+                    $tiempo_medio += $p->tiempo_transcurrido;
+                }
+
+        if ($cont > 0){
+            $tiempo_en_segundos = $tiempo_medio / $cont;
+
+            $horas = floor($tiempo_en_segundos / 3600);
+            $minutos = floor(($tiempo_en_segundos - ($horas * 3600)) / 60);
+            $segundos = $tiempo_en_segundos - ($horas * 3600) - ($minutos * 60);
+
+            return $horas . ':' . $minutos . ":" . $segundos;
+        }
+        else{
+            return 0;
+        }
+
+    }
+
+    public static function getComercial($id){
+        $comercial = \App\User::findOrFail($id);
+        return $comercial->getName();
     }
 
 }

@@ -150,7 +150,6 @@ class AdministradorController extends Controller
             'apellidos' => 'required|max:32',
             'direccion_fisica' => 'required',
             'telefono' => 'required|min:9',
-            'rol' => 'required',
             'dni' => 'required|min:9'
         ]);
 
@@ -164,7 +163,9 @@ class AdministradorController extends Controller
             $user->password =  Hash::make($pass);
         $user->direccion_fisica = $request->input('direccion_fisica');
         $user->telefono = $request->input('telefono');
-        $user->rol = $request->input('rol');
+        $rol = $request->input('rol');
+        if(isset($rol))
+            $user->rol =$rol;
         $dni = $request->input('dni');
 
         /*
