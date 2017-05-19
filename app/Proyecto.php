@@ -9,11 +9,11 @@ class Proyecto extends Model
     protected $table = "proyectos";
 
     public static $estados = [
-        'no_pendiente', 'pendiente', 'validado', 'no_validado', 'comprado', 'rechazado'
+        'no_pendiente', 'pendiente', 'validado', 'no_validado', 'comprado', 'rechazado', 'solicitud_presupuesto_final', 'presupuesto_final'
     ];
 
     public static $tituloEstados = [
-        'No pendiente', 'Pendiente', 'Validado', 'No validado', 'Intención de compra positiva', 'Intención de compra negativa'
+        'No pendiente', 'Pendiente', 'Validado', 'No validado', 'Comprado', 'Rechazado', 'Solicitud de presupuesto final','Presupuesto final enviado'
     ];
 
     public function getEstado() {

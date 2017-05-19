@@ -23,6 +23,7 @@
                                         <li class="list-group-item list-group-item-success">Proyectos con intención de compra positiva.</li>
                                         <li class="list-group-item list-group-item-info">Proyectos nuevos del cliente.</li>
                                         <li class="list-group-item list-group-item-warning">Proyectos pendiente de validación sin técnico asignado.</li>
+                                        <li class="list-group-item list-group-item-warning">Proyectos en los que el cliente solicita presupuesto final.</li>
                                         <li class="list-group-item list-group-item-danger">Proyectos con intención de compra negativa.</li>
                                     </ul>
                                 </div>
@@ -57,6 +58,7 @@
                                     <th>Estado </th>
                                     <th>Ténico </th>
                                     <th>Oferta </th>
+                                    <th> </th>
                                 </thead>
                                 <input type="hidden" value="{{ $cont = 0 }}">
                                 @foreach($c->proyectos as $p)
@@ -67,6 +69,8 @@
                                                 class="danger"
                                             @elseif($p->getEstado() == "no_pendiente")
                                                 class="info"
+                                            @elseif($p->getEstado() == "solicitud_presupuesto_final")
+                                                class="warning"
                                             @elseif(!isset($p->id_tecnico))
                                                 class="warning"
                                             @endif>
@@ -105,6 +109,17 @@
                                                 @else
                                                     {{$p->oferta}} %
                                                 @endif
+                                            </td>
+                                            <td>
+                                            @if($p->getEstado()=="solicitud_presupuesto_final")
+                                                <form class="form-inline" action="{{ route('comercial.enviar_presupuesto') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="id" value="{{$p->id}}">
+                                                        <input type="submit" class="btn btn-success btn-sm" value="Enviar presupuesto final">
+                                                    </div>
+                                                </form>
+                                            @endif
                                             </td>
                                         </tr>
                                     @endif

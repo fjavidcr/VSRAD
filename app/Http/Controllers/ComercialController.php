@@ -142,26 +142,35 @@ class ComercialController extends Controller
         $user = \Auth::user();
         $id_proyecto = $request->input('id_proyecto');
         $proyecto = \App\Proyecto::findOrFail($id_proyecto);
-
-        //Guardo el mensaje
-        $mensaje = new \App\Mensaje();
         $texto = $request->input('texto');
-        $texto[0] = strtoupper($texto[0]);
-        $mensaje->texto =  $texto;
+        if($texto != ""){
+            //Guardo el mensaje
+            $mensaje = new \App\Mensaje();
 
-        date_default_timezone_set('Europe/Madrid');
-        $fecha = date("Y-m-d H:i:s");
-        $mensaje->fecha_creacion = $fecha;
+            $texto[0] = strtoupper($texto[0]);
+            $mensaje->texto =  $texto;
 
-        //2 hace referencia al comercial
-        $mensaje->remitente = 2;
-        $mensaje->id_proyecto = $id_proyecto;
-        $mensaje->id_tecnico = $proyecto->id_tecnico;
-        $mensaje->id_cliente = $proyecto->id_cliente;
-        $mensaje->id_comercial = $user->id;
+            date_default_timezone_set('Europe/Madrid');
+            $fecha = date("Y-m-d H:i:s");
+            $mensaje->fecha_creacion = $fecha;
 
-        $mensaje->save();
-        $request->session()->flash('alert-success', 'Mensaje enviado.');
+            //2 hace referencia al comercial
+            $mensaje->remitente = 2;
+            $mensaje->id_proyecto = $id_proyecto;
+            $mensaje->id_tecnico = $proyecto->id_tecnico;
+            $mensaje->id_cliente = $proyecto->id_cliente;
+            $mensaje->id_comercial = $user->id;
+
+            $mensaje->save();
+            $request->session()->flash('alert-success', 'Mensaje enviado.');
+        }
         return redirect()->route('comercial.mensajes', $id_proyecto);
+    }
+
+    public function enviar_presupuesto(Request $request){
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->estado = 7;
+        $proyecto->save();
+        return redirect()->route('cliente.index');
     }
 }

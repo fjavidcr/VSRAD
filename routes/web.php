@@ -65,16 +65,22 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'rol:cliente'], function () {
+
         Route::resource('cliente', 'ClienteController');
         Route::get('/cliente/cambiar_estado/{id}', 'ClienteController@cambiar_estado')->name('cliente.cambiar_estado');
         Route::get('/cliente/edit/{id}', 'ClienteController@edit')->name('cliente.edit');
         Route::post('/cliente/editar', 'ClienteController@editar')->name('cliente.editar');
         Route::post('/cliente/destroy', 'ClienteController@destroy')->name('cliente.destroy');
         Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
+        Route::post('/cliente/pedir_presupuesto', 'ClienteController@pedir_presupuesto')->name('cliente.pedir_presupuesto');
         Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
         Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
         Route::get('/cliente/mensajes/{id}', 'ClienteController@mensajes')->name('cliente.mensajes');
         Route::post('/cliente/enviar_mensaje', 'ClienteController@enviar_mensaje')->name('cliente.enviar_mensaje');
+
+        Route::get('/movil', 'ClienteController@movil')->name('movil');
+        Route::get('/mensajes_movil/{id}', 'ClienteController@mensajes_movil')->name('mensajes_movil');
+        Route::post('/enviar_mensaje_movil', 'ClienteController@enviar_mensaje_movil')->name('enviar_mensaje_movil');
 
 
     });
@@ -85,6 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
         Route::get('comercial/mensajes/{id}', 'ComercialController@mensajes')->name('comercial.mensajes');
         Route::post('comercial/enviar_mensaje', 'ComercialController@enviar_mensaje')->name('comercial.enviar_mensaje');
+        Route::post('comercial/enviar_presupuesto', 'ComercialController@enviar_presupuesto')->name('comercial.enviar_presupuesto');
 
         Route::resource('comercial', 'ComercialController');
     });
