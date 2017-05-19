@@ -164,4 +164,11 @@ class ComercialController extends Controller
         $request->session()->flash('alert-success', 'Mensaje enviado.');
         return redirect()->route('comercial.mensajes', $id_proyecto);
     }
+
+    public function enviar_presupuesto(Request $request){
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->estado = 7;
+        $proyecto->save();
+        return redirect()->route('cliente.index');
+    }
 }

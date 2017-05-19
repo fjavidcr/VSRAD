@@ -240,6 +240,13 @@ class ClienteController extends Controller
         return redirect()->route('cliente.index');
     }
 
+    public function pedir_presupuesto(Request $request){
+        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto->estado = 6;
+        $proyecto->save();
+        return redirect()->route('cliente.index');
+    }
+
     public function rechazar(Request $request){
         $proyecto = \App\Proyecto::findOrFail($request->input('id'));
         $proyecto->estado = 5;

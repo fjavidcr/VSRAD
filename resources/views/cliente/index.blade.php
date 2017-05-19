@@ -150,22 +150,47 @@
                                         </td>
                                     @elseif($p->getEstado() == "validado")
                                         <td>
-                                        <form class="form-inline" action="{{ route('cliente.comprar') }}" method="post">
-                                            {{ csrf_field() }}
-                                            <div class="form-group">
-                                                <input type="hidden" name="id" value="{{$p->id}}">
-                                                <input type="submit" class="btn btn-success btn-sm" value="Comprar">
+                                            <div class="col-lg-6">
+                                                <form class="form-inline" action="{{ route('cliente.pedir_presupuesto') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="id" value="{{$p->id}}">
+                                                        <input type="submit" class="btn btn-success btn-sm" value="Pedir presupuesto">
+                                                    </div>
+                                                </form>
                                             </div>
-                                        </form>
+                                            <div class="col-lg-4">
+                                                <form class="form-inline" action="{{ route('cliente.rechazar') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="id" value="{{$p->id}}">
+                                                        <input type="submit" class="btn btn-danger btn-sm" value="Rechazar">
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </td>
+                                    @elseif($p->getEstado() == "solicitud_presupuesto_final")
+                                        <td>Esperando presupuesto final...</td>
+                                    @elseif($p->getEstado() == "presupuesto_final")
                                         <td>
-                                        <form class="form-inline" action="{{ route('cliente.rechazar') }}" method="post">
-                                            {{ csrf_field() }}
-                                            <div class="form-group">
-                                                <input type="hidden" name="id" value="{{$p->id}}">
-                                                <input type="submit" class="btn btn-danger btn-sm" value="Rechazar">
+                                            <div class="col-lg-4">
+                                                <form class="form-inline" action="{{ route('cliente.comprar') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="id" value="{{$p->id}}">
+                                                        <input type="submit" class="btn btn-success btn-sm" value="Comprar">
+                                                    </div>
+                                                </form>
                                             </div>
-                                        </form>
+                                            <div class="col-lg-4">
+                                                <form class="form-inline" action="{{ route('cliente.rechazar') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="id" value="{{$p->id}}">
+                                                        <input type="submit" class="btn btn-danger btn-sm" value="Rechazar">
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </td>
                                     @elseif($p->getEstado() == "pendiente")
                                         <td>Esperando validación...</td>

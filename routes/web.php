@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cliente/editar', 'ClienteController@editar')->name('cliente.editar');
         Route::post('/cliente/destroy', 'ClienteController@destroy')->name('cliente.destroy');
         Route::post('/cliente/completar_registro', 'ClienteController@completar_registro')->name('cliente.completar_registro');
+        Route::post('/cliente/pedir_presupuesto', 'ClienteController@pedir_presupuesto')->name('cliente.pedir_presupuesto');
         Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
         Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
         Route::get('/cliente/mensajes/{id}', 'ClienteController@mensajes')->name('cliente.mensajes');
@@ -85,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('comercial/asignar_oferta', 'ComercialController@asignar_oferta')->name('comercial.asignar_oferta');
         Route::get('comercial/mensajes/{id}', 'ComercialController@mensajes')->name('comercial.mensajes');
         Route::post('comercial/enviar_mensaje', 'ComercialController@enviar_mensaje')->name('comercial.enviar_mensaje');
+        Route::post('comercial/enviar_presupuesto', 'ComercialController@enviar_presupuesto')->name('comercial.enviar_presupuesto');
 
         Route::resource('comercial', 'ComercialController');
     });
