@@ -164,18 +164,7 @@
     </div>
 
     <script>
-        $(document).ready( function() {
-            var height = $(window).height();
-            var width = $(window).width();
-            $.ajax({
-                url: 'body.php',
-                type: 'post',
-                data: { 'width' : width, 'height' : height, 'recordSize' : 'true' },
-                success: function(response) {
-                    $("body").html(response);
-                }
-            });
-        });
+
     </script>
 </div>
 
