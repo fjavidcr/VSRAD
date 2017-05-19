@@ -168,28 +168,29 @@ class TecnicoController extends Controller
         $user = \Auth::user();
         $id_proyecto = $request->input('id_proyecto');
         $proyecto = \App\Proyecto::findOrFail($id_proyecto);
-
-        //Guardo el mensaje
-        $mensaje = new \App\Mensaje();
         $texto = $request->input('texto');
-        $texto[0] = strtoupper($texto[0]);
-        $mensaje->texto =  $texto;
+        if($texto != ""){
+            //Guardo el mensaje
+            $mensaje = new \App\Mensaje();
+            $texto[0] = strtoupper($texto[0]);
+            $mensaje->texto =  $texto;
 
-        date_default_timezone_set('Europe/Madrid');
-        $fecha = new DateTime('now');
-        $fecha->format("d-m-Y H:i:s");
-        $mensaje->fecha_creacion = $fecha;
+            date_default_timezone_set('Europe/Madrid');
+            $fecha = new DateTime('now');
+            $fecha->format("d-m-Y H:i:s");
+            $mensaje->fecha_creacion = $fecha;
 
-        //1 hace referencia al tecnico
-        $mensaje->remitente = 1;
-        $mensaje->id_proyecto = $id_proyecto;
-        $mensaje->id_tecnico = $user->id;
-        $mensaje->id_cliente = $proyecto->id_cliente;
-        $cliente = \App\User::findOrFail($proyecto->id_cliente);
-        $mensaje->id_comercial = $cliente->id_comercial;
+            //1 hace referencia al tecnico
+            $mensaje->remitente = 1;
+            $mensaje->id_proyecto = $id_proyecto;
+            $mensaje->id_tecnico = $user->id;
+            $mensaje->id_cliente = $proyecto->id_cliente;
+            $cliente = \App\User::findOrFail($proyecto->id_cliente);
+            $mensaje->id_comercial = $cliente->id_comercial;
 
-        $mensaje->save();
-        $request->session()->flash('alert-success', 'Mensaje enviado.');
+            $mensaje->save();
+            $request->session()->flash('alert-success', 'Mensaje enviado.');
+        }
         return redirect()->route('tecnico.mensajes', $id_proyecto);
     }
 }

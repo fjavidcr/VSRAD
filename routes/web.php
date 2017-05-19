@@ -75,7 +75,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cliente/comprar', 'ClienteController@comprar')->name('cliente.comprar');
         Route::post('/cliente/rechazar', 'ClienteController@rechazar')->name('cliente.rechazar');
         Route::get('/cliente/mensajes/{id}', 'ClienteController@mensajes')->name('cliente.mensajes');
+        Route::get('/mensajes_movil/{id}', 'ClienteController@mensajes_movil')->name('mensajes_movil');
         Route::post('/cliente/enviar_mensaje', 'ClienteController@enviar_mensaje')->name('cliente.enviar_mensaje');
+        Route::post('/enviar_mensaje_movil', 'ClienteController@enviar_mensaje_movil')->name('enviar_mensaje_movil');
+        Route::get('/movil', 'ClienteController@movil')->name('movil');
 
 
     });

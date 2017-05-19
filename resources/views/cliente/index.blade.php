@@ -7,7 +7,9 @@
     <div class="container container-page">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Proyectos de {{ Auth::user()->getName() }}</h3>
+                <div class="page-header">
+                    <h3>Proyectos de {{ Auth::user()->getName() }}</h3>
+                </div>
                 <div  class="btn-group" role="group">
                 <a href="{{ route('cliente.create') }}" type="button" class="btn btn-primary">
                     Nuevo proyecto
@@ -19,7 +21,7 @@
                 </div>
             </div>
         </div>
-
+        <hr>
         <div class="row">
             <div class="col-lg-12">
 

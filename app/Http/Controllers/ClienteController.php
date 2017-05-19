@@ -25,6 +25,18 @@ class ClienteController extends Controller
         return view('cliente.index', compact('proyectos', 'user'));
     }
 
+    public function movil()
+    {
+        $user = \Auth::user();
+        $prots = $user->proyectos;
+        $proyectos = array();
+        foreach ($prots as $p)
+            if($p->oculto == 0)
+                array_push($proyectos, $p);
+
+        return view('cliente.movil', compact('proyectos', 'user'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -262,32 +274,71 @@ class ClienteController extends Controller
         return view('cliente.mensajes', compact('proyecto','mensajes', 'user'));
     }
 
+    public function mensajes_movil($id){
+        $user = \Auth::user();
+        $proyecto = \App\Proyecto::findOrFail($id);
+        $mensajes = $proyecto->mensajes;
+
+        return view('cliente.mensajes_movil', compact('proyecto','mensajes', 'user'));
+    }
+
     public function enviar_mensaje(Request $request)
     {
         $user = \Auth::user();
         $id_proyecto = $request->input('id_proyecto');
         $proyecto = \App\Proyecto::findOrFail($id_proyecto);
-
-        //Guardo el mensaje
-        $mensaje = new \App\Mensaje();
         $texto = $request->input('texto');
-        $texto[0] = strtoupper($texto[0]);
-        $mensaje->texto =  $texto;
+        if($texto != ""){
+            //Guardo el mensaje
+            $mensaje = new \App\Mensaje();
+            $texto[0] = strtoupper($texto[0]);
+            $mensaje->texto =  $texto;
 
-        date_default_timezone_set('Europe/Madrid');
-        $fecha = date("d-m-Y H:i:s");
-        $mensaje->fecha_creacion = $fecha;
+            date_default_timezone_set('Europe/Madrid');
+            $fecha = date("d-m-Y H:i:s");
+            $mensaje->fecha_creacion = $fecha;
 
-        //0 hace referencia al cliente
-        $mensaje->remitente = 0;
-        $mensaje->id_proyecto = $id_proyecto;
+            //0 hace referencia al cliente
+            $mensaje->remitente = 0;
+            $mensaje->id_proyecto = $id_proyecto;
 
-        $mensaje->id_tecnico = $proyecto->id_tecnico;
-        $mensaje->id_cliente = $user->id;
-        $mensaje->id_comercial = $user->id_comercial;
+            $mensaje->id_tecnico = $proyecto->id_tecnico;
+            $mensaje->id_cliente = $user->id;
+            $mensaje->id_comercial = $user->id_comercial;
 
-        $mensaje->save();
-        $request->session()->flash('alert-success', 'Mensaje enviado.');
-        return redirect()->route('cliente.mensajes', $id_proyecto);
+            $mensaje->save();
+            $request->session()->flash('alert-success', 'Mensaje enviado.');
+            return redirect()->route('cliente.mensajes', $id_proyecto);
+        }
+    }
+
+    public function enviar_mensaje_movil(Request $request)
+    {
+        $user = \Auth::user();
+        $id_proyecto = $request->input('id_proyecto');
+        $proyecto = \App\Proyecto::findOrFail($id_proyecto);
+        $texto = $request->input('texto');
+        if($texto != ""){
+            //Guardo el mensaje
+            $mensaje = new \App\Mensaje();
+            $texto[0] = strtoupper($texto[0]);
+            $mensaje->texto =  $texto;
+
+            date_default_timezone_set('Europe/Madrid');
+            $fecha = date("d-m-Y H:i:s");
+            $mensaje->fecha_creacion = $fecha;
+
+            //0 hace referencia al cliente
+            $mensaje->remitente = 0;
+            $mensaje->id_proyecto = $id_proyecto;
+
+            $mensaje->id_tecnico = $proyecto->id_tecnico;
+            $mensaje->id_cliente = $user->id;
+            $mensaje->id_comercial = $user->id_comercial;
+
+            $mensaje->save();
+            $request->session()->flash('alert-success', 'Mensaje enviado.');
+        }
+        return redirect()->route('mensajes_movil', $id_proyecto);
     }
 }
