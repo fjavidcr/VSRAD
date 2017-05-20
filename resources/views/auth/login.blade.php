@@ -4,8 +4,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+            <img id="logo_login" align=center src="logo_ufv.png" alt="Logo UFV">
+            <div class="panel panel-success">
+                <div class="panel-heading">Inicia sesión</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}

@@ -134,7 +134,7 @@ class DirectorComercialController extends Controller
         $users = \App\User::all();
         $clientes = array();
         date_default_timezone_set('Europe/Madrid');
-        $hoy = date("d-m-Y H:i:s");
+        $hoy = date("Y-m-d H:i:s");
 
         foreach ( $users as $u) {
             if ($u->hasRol("cliente") && $u->hasId_comercial($c->id)) {
@@ -235,7 +235,7 @@ class DirectorComercialController extends Controller
         $informe->texto = $contenido;
 
         date_default_timezone_set('Europe/Madrid');
-        $fecha = date("d-m-Y H:i:s");
+        $fecha = date("Y-m-d H:i:s");
         $informe->fecha_creacion = $fecha;
 
         $informe->nombre =  'Informe - ' .$c->getCompleteName();
@@ -274,7 +274,7 @@ class DirectorComercialController extends Controller
     public function informe_todos_comerciales(){
         $comerciales = DB::table('users')->where('rol', '=', 1)->get();
         date_default_timezone_set('Europe/Madrid');
-        $hoy = date("d-m-Y H:i:s");
+        $hoy = date("Y-m-d H:i:s");
         $pdf = \App::make('dompdf.wrapper');
         $cont = 1;
         $contenido =
@@ -372,7 +372,7 @@ class DirectorComercialController extends Controller
         $informe->id_director = $user->id;
         $informe->texto = $contenido;
         date_default_timezone_set('Europe/Madrid');
-        $fecha = date("d-m-Y H:i:s");
+        $fecha = date("Y-m-d H:i:s");
 
         $informe->fecha_creacion = $fecha;
 
@@ -390,7 +390,7 @@ class DirectorComercialController extends Controller
         $c = \App\User::findOrFail($request->input('id_cliente'));
 
         date_default_timezone_set('Europe/Madrid');
-        $hoy = date("d-m-Y H:i:s");
+        $hoy = date("Y-m-d H:i:s");
 
         $pdf = \App::make('dompdf.wrapper');
         $cont = 1;
@@ -461,7 +461,7 @@ class DirectorComercialController extends Controller
         $informe->texto = $contenido;
 
         date_default_timezone_set('Europe/Madrid');
-        $fecha = date("d-m-Y H:i:s");
+        $fecha = date("Y-m-d H:i:s");
         $informe->fecha_creacion = $fecha;
 
         $informe->nombre =  'Informe - ' .$c->getCompleteName();
@@ -475,7 +475,7 @@ class DirectorComercialController extends Controller
     public function informe_todos_clientes(){
         $clientes = DB::table('users')->where('rol', '=', 0)->get();
         date_default_timezone_set('Europe/Madrid');
-        $hoy = date("d-m-Y H:i:s");
+        $hoy = date("Y-m-d H:i:s");
         $pdf = \App::make('dompdf.wrapper');
         $cont = 1;
         $contenido =
@@ -559,7 +559,7 @@ class DirectorComercialController extends Controller
         $informe->id_director = $user->id;
         $informe->texto = $contenido;
         date_default_timezone_set('Europe/Madrid');
-        $fecha = date("d-m-Y H:i:s");
+        $fecha = date("Y-m-d H:i:s");
 
         $informe->fecha_creacion = $fecha;
 

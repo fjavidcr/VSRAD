@@ -59,7 +59,7 @@
         <div class="panel panel-default">
         <div class="panel-heading"><h4><b> Añadir nuevo cliente </b></h4></div>
         <div class="panel-body">
-
+            <div class="col-lg-8">
             @if(count($errors))
                 <div class="alert alert-danger">
                     <ul>
@@ -114,6 +114,22 @@
                     <input id="boton_nuevo_cliente" type="submit" value="Añadir" class="btn btn-success"disabled>
                 </div>
             </form>
+            </div>
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><h4>Contraseña aleatoria </h4></div>
+                        <div class="panel-body">
+                            <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary" onclick="pass_aleatoria()" type="button">Crear</button>
+                                  </span>
+                                <input id="pass_aleatoria" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         </div>
 
@@ -155,6 +171,12 @@
                 alert('La contraseña no coincide o es demasiado corta.');
                 document.getElementById('boton_nuevo_cliente').disabled=true;
             }
+        }
+
+        function pass_aleatoria() {
+            var randomstring = Math.random().toString(36).slice(-10);
+            console.log(randomstring);
+            document.getElementById('pass_aleatoria').value=randomstring;
         }
 
     </script>
