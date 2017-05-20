@@ -103,20 +103,85 @@ class ClienteController extends Controller
         return view('cliente.show', compact('proyecto'));
     }
 
-    public function ver_proyecto(Request $request)
+    public function ver_proyecto($id)
     {
         $user = \Auth::user();
-        $proyecto = \App\Proyecto::findOrFail($request->input('id'));
+        $proyecto = \App\Proyecto::findOrFail($id);
 
         $configuracion = $proyecto->configuracion;
 
-        var_dump($configuracion);
-
         $json = json_decode($configuracion);
 
-        var_dump($json);
+        date_default_timezone_set('Europe/Madrid');
+        $hoy = date("Y-m-d H:i:s");
+        $pdf = \App::make('dompdf.wrapper');
+        $contenido =
 
-        return "";
+            "<head>
+    <meta charset=\"utf-8\">
+    <title>Proyecto: ". $proyecto->nombre ." </title>
+    <link rel=\"stylesheet\" href=\"style.css\" media=\"all\" />
+    <link href=\"/css/app.css\" rel=\"stylesheet\"/>
+  </head>
+  <body>    
+    <main>
+    <div class='row'>
+      <div id=\"logo\">
+        <img src=\"logo_ufv.png\" alt=\"Logo UFV\">
+        <h3>Proyecto: ". $proyecto->nombre . "</h3>
+        <h4>Fecha:  " . $hoy ." </h4>
+      </div>
+      <div id=\"details\" class=\"clearfix\">
+        <div id=\"client\">
+          <h2 class=\"name\"> ". $user->name ."</h2>
+          <a href=\"mailto:\" . $user->email . \" > " . $user->email . "</a>
+        </div>        
+      </div>
+      <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+          <tr>
+            <td class=\"desc\"><h3>Comercial: </h3></td>
+            <td class=\"unit\">" . \App\User::getComercial($user->id_comercial) . "</td>
+        </tr>
+        <tr>
+            <td class=\"desc\"><h3>Coste total y descuento aplicado: (sin IVA) </h3></td>
+            <td class=\"unit\">" . $proyecto->coste . " &#8364; - " . $proyecto->oferta . "%</td>
+        </tr>
+        </table>
+        <h2 class=\"title\"> Productos del proyecto</h2>";
+
+        foreach ($json->nodeDataArray as $p){
+            if($p->id != 0){
+                $path = "img/" . $p->imagen;
+                $contenido .= "
+               
+            <img src=\"". $path ."\" class=\"img-thumbnail imagen_pdf\" alt=\"Imagen producto\">
+            
+            <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"table table-responsive\">
+            <tr>
+                <td class=\"desc\"><h3>Nombre: </h3></td>
+                <td class=\"unit\">" . $p->nombre . "</td>
+                </tr>    
+            <tr>
+                <td class=\"desc\"><h3>Descripción: </h3></td>
+                <td class=\"unit\">" . $p->descripcion . "</td>
+            </tr>
+            <tr>
+                <td class=\"desc\"><h3>Restricciones: </h3></td>
+                <td class=\"unit\">" . $p->restricciones . "</td>
+                </tr>    
+            <tr>
+                <td class=\"desc\"><h3>Coste: (sin IVA) </h3></td>
+                <td class=\"unit\">" . $p->coste . "</td>
+            </tr>
+            </table>
+            </div>
+            ";
+            }
+        }
+
+        $contenido .= "</main></body>";
+        $pdf->loadHTML($contenido);
+        return $pdf->stream();
 
         return view('cliente.show_movil', compact('proyecto', 'user'));
     }

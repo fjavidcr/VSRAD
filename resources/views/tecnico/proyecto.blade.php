@@ -135,7 +135,7 @@
                     // For this sample, automatically show the state of the diagram's model on the page
                     "ModelChanged": function (e) {
                         if (e.isTransactionFinished) {
-                            document.getElementById("nueva_configuracion").textContent = JSON.stringify(myDiagram.model.toJson());
+                            document.getElementById("nueva_configuracion").textContent = myDiagram.model.toJson();
                             //document.getElementById("res-text").textContent = Restricciones;
                             var costeTotal = 0;
 
