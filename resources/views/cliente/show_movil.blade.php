@@ -1,11 +1,97 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ config('app.locale') }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('content')
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'VSRAD') }}</title>
+
+    <!-- Styles -->
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="/js/app.js"></script>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/go-debug.js"></script>
+
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>
+</head>
+<body>
+<div id="app">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+
+                <!-- Collapsed Hamburger -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <!-- Branding Image -->
+                <a class="navbar-brand" href="{{ url('/movil') }}">
+                    {{ config('app.name', 'VSRAD') }}
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <!-- Left Side Of Navbar -->
+                <ul class="nav navbar-nav">
+                    @if (Auth::guest())
+                        <li>  </li>
+                    @elseif (Auth::user()->hasRol("cliente"))
+                        <li><a href="{{ route('movil') }}">Mis proyectos</a></li>
+                    @endif
+                </ul>
+
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    @if (Auth::guest())
+                        <li><a href="{{ route('login') }}">Login</a></li>
+                        {{--<li><a href="{{ route('register') }}">Registrar</a></li>--}}
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                {{ Auth::user()->getCompleteName() }} <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        Salir
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="container container-page">
         <div class="row">
             <div class="col-lg-12">
-                <h2>Editar proyecto</h2>
+                <h2>{{$proyecto->nombre}}</h2>
                 <hr>
                 @if(count($errors))
                     <div class="alert alert-danger">
@@ -16,63 +102,28 @@
                         </ul>
                     </div>
                 @endif
-
-                <form class="form-inline" action="{{ route('cliente.editar') }}" method="post">
-
-                    {{ csrf_field() }}
-                    <input id="id_proyecto" type="hidden" name="id_proyecto" value="{{$proyecto->id}}" class="form-control" required>
-                    <input id="id_plano" type="hidden" name="id_plano" value="{{$proyecto->id_plano}}" class="form-control" required>
-
-                    <div class="form-group">
-                        <label for="nombre">Nombre del proyecto</label>
-                        <input id="nombre" type="text" name="nombre" value="{{ $proyecto->nombre }}" class="form-control" onchange="habilita()" required>
-                    </div>
-                    <hr>
-                    <div class="form-group">
+                <div hidden>
+                    <textarea id="configuracion" name="configuracion" class="form-control" required>{{ $proyecto->configuracion  }}</textarea>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10">
                         <div hidden>
-                            <textarea id="configuracion" name="configuracion" class="form-control" required>{{ $proyecto->configuracion  }}</textarea>
-                        </div>
-                        <div hidden>
-                            <textarea id="nueva_configuracion" name="nueva_configuracion" class="form-control" required></textarea>
+                        <div id="myDiagramDiv" class="canvas-plano canvas-casa-{{$proyecto->id_plano}}" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <div style="width:100%; white-space:nowrap;">
-                                <div class="col-lg-2">
-                                    <h3>Productos</h3>
-                                    <div>
-                                      <div id="productos" style="width: 100%; height: 360px"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-10">
-                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-{{$proyecto->id_plano}}" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
-                                </div>
+                    <div class="col-lg-2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Coste total de los productos</h3>
                             </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Coste total de los productos</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="input-group-addon col-xs-2">€</div>
-                                        <input id="coste" type="text" name="coste" size="6" value="{{$proyecto->coste}}" readonly>
-                                    <footer><h6>Precio sin IVA</h6></footer>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="btn-group-vertical" role="group">
-                                <!---<a class="btn btn-danger boton-clear">Limpiar componentes</a>--->
-                                <input id="boton-guardar-proyecto" type="submit" class="btn btn-success" value="Guardar proyecto">
-
-                                <a class="btn btn-default boton-cambiar-plano">Cambiar plano</a>
-                                <!---<a class="btn btn-default">Limpiar</a>--->
+                            <div class="panel-body">
+                                <div class="input-group-addon col-xs-2">€</div>
+                                    <input id="coste" type="text" name="coste" size="6" value="{{$proyecto->coste}}" readonly>
+                                <footer><h6>Precio sin IVA</h6></footer>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
 
                 <hr>
 
@@ -102,6 +153,7 @@
                 </div>
 
             </div>
+            </div>
         </div>
     </div>
 
@@ -110,13 +162,11 @@
 
         var AllowTopLevel = false;
         var CellSize = new go.Size(30, 30);
-        var cont = 0;
 
         var $$ = go.GraphObject.make;
         var myDiagram =
             $$(go.Diagram, "myDiagramDiv",
                 {
-                    scroll: false,
                     /*fixedBounds: Rect(0,0,669,460),*/
                     /*initialContentAlignment: go.Spot.Center,  // center the content*/
                     grid: $$(go.Panel, "Grid",
@@ -128,31 +178,13 @@
                     "draggingTool.isGridSnapEnabled": false,
                     "draggingTool.gridSnapCellSpot": go.Spot.Center,
                     "resizingTool.isGridSnapEnabled": false,
-                    allowDrop: true,  // handle drag-and-drop from the Palette
+                    allowDrop: false,  // handle drag-and-drop from the Palette
                     // For this sample, automatically show the state of the diagram's model on the page
                     "ModelChanged": function (e) {
-                        if (e.isTransactionFinished) {
-                            document.getElementById("nueva_configuracion").textContent = myDiagram.model.toJson();
-                            //document.getElementById("res-text").textContent = Restricciones;
-                            var costeTotal = 0;
-
-                            var array = JSON.parse(myDiagram.model.toJson());
-                            array = array.nodeDataArray;
-                            //console.log(array);
-
-                            for(var i in array){
-                                if(array[i].key !== "G" ){
-                                    costeTotal += parseFloat(array[i].coste);
-                                    console.log("coste: " + array[i].coste);
-                                }
-                            }
-                            costeTotal = parseFloat(costeTotal).toFixed(2);
-                            document.getElementById("coste").setAttribute("value", costeTotal);
-
-                        }
+                        if (e.isTransactionFinished) {}
                     },
                     "animationManager.isEnabled": true,
-                    "undoManager.isEnabled": true // enable Ctrl-Z to undo and Ctrl-Y to redo
+                    "undoManager.isEnabled": false // enable Ctrl-Z to undo and Ctrl-Y to redo
                 });
 
         function onSelectionChanged(node) {
@@ -198,7 +230,6 @@
                     mouseDragEnter: function (e, node) {
                         e.handled = true;
                         node.findObject("SHAPE").fill = "red";
-                        highlightGroup(node.containingGroup, false);
                     },
                     mouseDragLeave: function (e, node) {
                         node.updateTargetBindings();
@@ -236,6 +267,7 @@
             }
             grp.isHighlighted = false;
         }
+
         var groupFill = "rgba(128,128,128,0)";
         var groupStroke = "white";
         var dropFill = "rgba(128,255,255,0.2)";
@@ -306,65 +338,19 @@
         // start off with four "racks" that are positioned next to each other
         var configuracion = JSON.parse(document.getElementById("configuracion").textContent);
 
-        //console.log("tipo: "+ typeof(configuracion));
-        //console.log("contenido: "+ configuracion);
+        console.log("tipo: "+ typeof(configuracion));
+        console.log("contenido: "+ configuracion);
 
         myDiagram.model = go.Model.fromJson(configuracion);
 
-
-        // initialize the Palette
-        var productos =
-            $$(go.Palette, "productos",
-                { // share the templates with the main Diagram
-                    nodeTemplate: myDiagram.nodeTemplate,
-                    layout: $$(go.GridLayout)
-                });
-
-        var green = '#B2FF59';
-        var blue = '#81D4FA';
-        var gray = 'lightgray';
-
-        // specify the contents of the Palette
-        productos.model = new go.GraphLinksModel([
-                @foreach($pros as $p)
-            { id: {{$p->id}},
-                nombre:"{{$p->nombre}}",
-                descripcion: "{{$p->descripcion}}",
-                restricciones: "{{$p->restricciones}}",
-                coste:{{$p->coste}},
-                imagen: "{{$p->imagen}}",
-                color: gray},
-            @endforeach
-        ]);
-
-        jQuery(".boton-clear").click(function() {
-
-            var confirmBox = confirm("¿Seguro que quieres borrar todo?");
-            if (confirmBox == true)
-                myDiagram.clear();
-        });
+        myDiagram.isReadOnly = true;
 
 
-        var casa_actual = {{$proyecto->id_plano}};
-        jQuery(".boton-cambiar-plano").click(function() {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
-            casa_actual++;
-            if(casa_actual == 6){
-                casa_actual = 1;
-            }
-            jQuery("#myDiagramDiv").addClass("canvas-casa-" + casa_actual);
-            document.getElementById("id_plano").value = casa_actual;
-            console.log("Plano actual: " + casa_actual);
-
-        });
-
-        function habilita() {
-            if(isNaN(document.getElementById('nombre').value))
-                document.getElementById('boton-guardar-proyecto').disabled=false;
-            else
-                document.getElementById('boton-guardar-proyecto').disabled=true;
-        }
 
     </script>
 
-@endsection
+</div>
+
+</body>
+
+</html>

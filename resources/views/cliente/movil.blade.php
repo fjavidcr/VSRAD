@@ -119,11 +119,13 @@
                                 <td>{{ $p->nombre }}</td>
                                 <td><p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p></td>
                                 <td>
-                                    <a class="btn btn-default btn-sm"
-                                       href="{{ route('cliente.show', $p->id) }}">
-                                        <span class="" aria-hidden="true"></span>
-                                        Ver
-                                    </a>
+                                    <form class="form-inline" action="{{ route('ver_proyecto') }}" method="post">
+                                        {{ csrf_field() }}
+                                        <div class="form-group">
+                                            <input type="hidden" name="id" value="{{$p->id}}">
+                                            <input type="submit" class="btn btn-primary btn-sm" value="Ver">
+                                        </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
