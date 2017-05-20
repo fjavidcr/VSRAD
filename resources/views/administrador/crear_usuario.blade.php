@@ -7,7 +7,7 @@
         <div class="page-header">
             <h3>Crear usuario</h3>
         </div>
-
+        <div class="col-lg-8">
     @if(count($errors))
         <div class="alert alert-danger">
             <ul>
@@ -36,7 +36,7 @@
         <div class="form-group">
             <label for="email" class="col-sm-2 control-label">Email</label>
             <div class="col-sm-10">
-                <input id="email" type="text" name="email" required>
+                <input id="email" type="text" size="25" name="email" required>
             </div>
         </div>
         <div class="form-group">
@@ -56,7 +56,7 @@
         <div class="form-group">
             <label for="direccion_fisica" class="col-sm-2 control-label">Dirección física</label>
             <div class="col-sm-10">
-                <input id="direccion_fisica" type="text" name="direccion_fisica" required>
+                <input id="direccion_fisica" type="text" size="45" name="direccion_fisica" required>
             </div>
         </div>
         <div class="form-group">
@@ -87,6 +87,22 @@
             <input id="boton" type="submit" value="Crear" class="btn btn-success" disabled>
         </div>
     </form>
+        </div>
+        <div class="col-lg-3">
+            <div class="row">
+                <div class="panel panel-info">
+                    <div class="panel-heading"><h4>Contraseña aleatoria </h4></div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary" onclick="pass_aleatoria()" type="button">Crear</button>
+                                  </span>
+                            <input id="pass_aleatoria" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -150,6 +166,12 @@
                 alert('La contraseña no coincide o es demasiado corta.');
                 document.getElementById('boton').disabled=true;
             }
+        }
+
+        function pass_aleatoria() {
+            var randomstring = Math.random().toString(36).slice(-10);
+            console.log(randomstring);
+            document.getElementById('pass_aleatoria').value=randomstring;
         }
     </script>
 @endsection

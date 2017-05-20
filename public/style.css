@@ -204,3 +204,8 @@ p.saltodepagina
 {
   page-break-after: always;
 }
+
+.imagen_pdf{
+  width: 180px;
+  height: 180px;
+}
