@@ -8,31 +8,116 @@
 
 .canvas-plano {
     width: 100%;
-    height: 500px;
-    background-color: #eaf9ca;
+    height: 600px;
+    background-color: #c5f9d5;
+    border:  solid  1px #d3e0e9;
 }
 
 .canvas-casa-1 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa1.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa1.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-2 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa2.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa2.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-3 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa3.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa3.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-4 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa4.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa4.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
 }
 
 .canvas-casa-5 {
-    background: #eaf9ca url("../../storage/app/public/img/planos/casa5.png") no-repeat;
-    background-size: cover;
+    background: #eaf9ca url("../img/planos/casa5.png") no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 600px;
+}
+
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+.chat li.left .chat-body
+{
+    margin-left: 60px;
+    margin-right: 40px;
+}
+
+.chat li.right .chat-body
+{
+    margin-left: 40px;
+    margin-right: 60px;
+}
+
+
+.chat li .chat-body p
+{
+    margin: 0;
+    color: #777777;
+}
+
+.panel .slidedown .glyphicon, .chat .glyphicon
+{
+    margin-right: 5px;
+}
+
+.panel-mensajes
+{
+    overflow-y: scroll;
+    height: 500px;
+}
+
+.mensaje_cliente {
+    background: #dfece7 none repeat scroll 0 0;
+    border: 1px solid #dfece7;
+    border-radius: 2px;
+    color: #1f2121;
+}
+
+.mensaje_tecnico {
+    background: #d8da71 none repeat scroll 0 0;
+    border: 1px solid #d8da71;
+    border-radius: 2px;
+    color: #1f2121;
+}
+
+.mensaje_comercial {
+    background: #86ceec none repeat scroll 0 0;
+    border: 1px solid #86ceec;
+    border-radius: 2px;
+    color: #1f2121;
+}
+
+textarea {
+    resize: none;
+}
+
+#logo_login{
+    margin:20px auto;
+    display:block;
 }

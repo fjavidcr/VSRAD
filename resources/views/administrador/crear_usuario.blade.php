@@ -1,56 +1,80 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3>Crear usuario</h3>
+
+    <div class="container container-page">
+
+        <div class="page-header">
+            <h3>Crear usuario</h3>
+        </div>
+        <div class="col-lg-8">
+    @if(count($errors))
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $e)
+                    <li>{{$e}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form class="form-horizontal" action="{{route('administrador.crear_usuario')}}" method="post">
 
         {{csrf_field()}}
         <div class="form-group">
             <label for="nombre" class="col-sm-2 control-label">Nombre</label>
             <div class="col-sm-10">
-                <input id="name" type="text" name="name"required>
+                <input id="name" type="text" name="name" required>
             </div>
         </div>
         <div class="form-group">
             <label for="apellidos" class="col-sm-2 control-label">Apellidos</label>
             <div class="col-sm-10">
-                <input id="apellidos" type="text" name="apellidos"required>
+                <input id="apellidos" type="text" name="apellidos" required>
             </div>
         </div>
         <div class="form-group">
             <label for="email" class="col-sm-2 control-label">Email</label>
             <div class="col-sm-10">
-                <input id="email" type="text" name="email"required>
+                <input id="email" type="text" size="25" name="email" required>
             </div>
         </div>
         <div class="form-group">
             <label for="password" class="col-sm-2 control-label">Contraseña</label>
             <div class="col-sm-10">
-                <input id="password" type="password" name="password"required>
+                <input id="password" type="password" name="password" required>
+                <br>
+                ( Mínimo 8 caracteres. )
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password2" class="col-sm-2 control-label">Confirma contraseña</label>
+            <div class="col-sm-10">
+                <input id="password2" type="password" name="password2" onchange="comprobar_pass()" required>
             </div>
         </div>
         <div class="form-group">
             <label for="direccion_fisica" class="col-sm-2 control-label">Dirección física</label>
             <div class="col-sm-10">
-                <input id="direccion_fisica" type="text" name="direccion_fisica"required>
+                <input id="direccion_fisica" type="text" size="45" name="direccion_fisica" required>
             </div>
         </div>
         <div class="form-group">
             <label for="telefono" class="col-sm-2 control-label">Teléfono</label>
             <div class="col-sm-10">
-                <input id="telefono" type="text" name="telefono"required>
+                <input id="telefono" type="text" name="telefono" required>
             </div>
         </div>
         <div class="form-group">
             <label for="dni" class="col-sm-2 control-label">DNI</label>
             <div class="col-sm-10">
-                <input id="dni" type="text" name="dni" required>
+                <input id="dni" type="text" name="dni" onchange="comprobar()" required>
             </div>
         </div>
         <div class="form-group">
             <label for="rol" class="col-sm-2 control-label">Rol</label>
             <div class="col-sm-10">
-                <select name="rol"required>
+                <select id="rol" name="rol" onload="comprobar_rol()" onchange="comprobar_rol()" required>
                     <option>Seleccione una opción</option>
                     <option value="1">Comercial</option>
                     <option value="2">Técnico</option>
@@ -60,9 +84,26 @@
             </div>
         </div>
         <div class="col-sm-offset-2 col-sm-10">
-            <input type="submit" value="Crear" class="btn btn-success" onclick="comprobar()">
+            <input id="boton" type="submit" value="Crear" class="btn btn-success" disabled>
         </div>
     </form>
+        </div>
+        <div class="col-lg-3">
+            <div class="row">
+                <div class="panel panel-info">
+                    <div class="panel-heading"><h4>Contraseña aleatoria </h4></div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary" onclick="pass_aleatoria()" type="button">Crear</button>
+                                  </span>
+                            <input id="pass_aleatoria" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
 
@@ -71,7 +112,9 @@
             var letr
             var letra
             var expresion_regular_dni
-            var dni = formulario.dni.value;
+            var dni = document.getElementById('dni').value;
+            dni = dni.toUpperCase();
+            console.log(dni);
 
             expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
 
@@ -82,11 +125,53 @@
             letra='TRWAGMYFPDXBNJZSQVHLCKET';
             letra=letra.substring(numero,numero+1);
             if (letra!=letr.toUpperCase()) {
-                alert('DNI erroneo, la letra del DNI no se corresponde');
+                document.getElementById('boton').disabled=true;
+                alert('DNI erroneo');
             }
-            /*}else{
-             alert('DNI erroneo, formato no válido');
-             }*/
+            else
+                document.getElementById('boton').disabled=false;
+        }
+
+        function comprobar_rol() {
+            var value = document.getElementById('rol').value;
+            console.log(value);
+
+            if (value > 0) {
+                document.getElementById('boton').disabled=false;
+            }
+            else
+                document.getElementById('boton').disabled=true;
+        }
+
+        function comprobar_tamano() {
+            var password2 = document.getElementById('password2').value;
+            var password = document.getElementById('password').value;
+
+            if(password.length >= 8 )
+                return true;
+
+            return false;
+        }
+
+        function comprobar_pass() {
+            var password2 = document.getElementById('password2').value;
+            var password = document.getElementById('password').value;
+            console.log('pass 1 '+password);
+            console.log('pass 2 '+password2);
+
+            if ((password == password2) && comprobar_tamano()){
+                comprobar_rol();
+            }
+            else{
+                alert('La contraseña no coincide o es demasiado corta.');
+                document.getElementById('boton').disabled=true;
+            }
+        }
+
+        function pass_aleatoria() {
+            var randomstring = Math.random().toString(36).slice(-10);
+            console.log(randomstring);
+            document.getElementById('pass_aleatoria').value=randomstring;
         }
     </script>
 @endsection

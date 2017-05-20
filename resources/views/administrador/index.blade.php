@@ -9,13 +9,13 @@
             <div class="col-lg-12">
 
                 <h4> Usuarios </h4>
-                    <a class="btn btn-primary btn-xs"
+                    <a class="btn btn-primary btn-sm"
                        href="{{ route('administrador.form_crear_usuario')}}">
                         Crear usuario
                     </a>
                 <table class="table table-responsive table-condensed table-striped">
                     <thead>
-                        <th> #</th>
+                        <th>#</th>
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Dirección</th>
@@ -23,9 +23,10 @@
                         <th>DNI</th>
                         <th>Rol</th>
                     </thead>
+                    <input type="hidden" value="{{ $cont = 0 }}">
                     @foreach($users as $u)
                         <tr @if($u->oculto ==1) class="danger" @endif>
-                            <td>{{ $u->id }}</td>
+                            <td>{{ ++$cont }}</td>
                             <td>{{ $u->name . ' ' . $u->apellidos}}</td>
                             <td>{{ $u->email }} </td>
                             <td>{{ $u->direccion_fisica}} </td>
@@ -39,50 +40,52 @@
                                 </a>
                             </td>
                             <td>
-                                <div class="form-inline">
-                                @if($u->oculto == 0)
-                                    <form action="{{ route('administrador.deshabilitar_usuario') }}" method="post">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="id" value="{{$u->id}}">
-                                        <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
-                                    </form>
-                                @elseif($u->oculto ==1)
+                                @if($u->id != \Auth::user()->id)
+                                    <div class="form-inline">
+                                    @if($u->oculto == 0)
+                                        <form action="{{ route('administrador.deshabilitar_usuario') }}" method="post">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="id" value="{{$u->id}}">
+                                            <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
+                                        </form>
+                                    @elseif($u->oculto ==1)
 
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
-                                        Habilitar
-                                    </button>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">Habilitar Usuario</h4>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal-{{$u->id}}">
+                                            Habilitar
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModal-{{$u->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title" id="myModalLabel">Habilitar Usuario</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
+                                                            {{ csrf_field() }}
+                                                            <input type="hidden" name="id" value="{{$u->id}}">
+                                                            <label for="password" class="control-label">Nueva contraseña  </label>
+                                                            <input type="password" name="password">
+                                                            <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">Para habilitar de nuevo a {{ $u->getName() }} es necesario establecer una nueva contraseña.</div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <form action="{{ route('administrador.habilitar_usuario') }}" method="post">
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="id" value="{{$u->id}}">
-                                                        <label for="password" class="control-label">Nueva contraseña  </label>
-                                                        <input type="password" name="password">
-                                                        <input type="submit" class="btn btn-success btn-xs" value="Habilitar">
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">Para habilitar de nuevo a {{ $u->name .' '. $u->apellidos}} es necesario establecer una nueva contraseña.</div>
                                             </div>
                                         </div>
-                                    </div>
 
+                                    @endif
+                                    </div>
                                 @endif
-                                </div>
                             </td>
                         </tr>
                     @endforeach
                 </table>
 
                 <h4> Productos </h4>
-                    <a class="btn btn-primary btn-xs"
+                    <a class="btn btn-primary btn-sm"
                        href="{{ route('administrador.form_crear_producto')}}">
                         Crear producto
                     </a>
@@ -92,12 +95,13 @@
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Restricciones</th>
-                    <th>Coste</th>
+                    <th>Coste (sin IVA)</th>
                     <th>Imagen</th>
                     </thead>
+                    <input type="hidden" value="{{ $cont = 0 }}">
                     @foreach($productos as $p)
                         <tr @if($p->oculto ==1) class="danger" @endif>
-                            <td>{{ $p->id }}</td>
+                            <td>{{ ++$cont }}</td>
                             <td>{{ $p->nombre }}</td>
                             <td>{{ $p->descripcion }} </td>
                             <td>{{ $p->restricciones}} </td>
@@ -115,7 +119,7 @@
                                     <form action="{{ route('administrador.deshabilitar_producto') }}" method="post">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{$p->id}}">
-                                        <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
+                                        <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($p->oculto ==1)
                                     <form action="{{ route('administrador.habilitar_producto') }}" method="post">
@@ -131,8 +135,8 @@
                 </table>
 
                 <h4> Planos </h4>
-                    <a class="btn btn-primary btn-xs"
-                       href="{{ route('administrador.form_crear_plano')}}">
+                    <a class="btn btn-primary btn-sm"
+                       href="{{ route('administrador.form_crear_plano') }}">
                         Crear plano
                     </a>
                 <table class="table table-responsive table-condensed table-striped">
@@ -141,9 +145,10 @@
                     <th>Nombre</th>
                     <th>Imagen</th>
                     </thead>
+                    <input type="hidden" value="{{ $cont = 0 }}">
                     @foreach($planos as $p)
                         <tr @if($p->oculto ==1) class="danger" @endif>
-                            <td>{{ $p->id }}</td>
+                            <td>{{ ++$cont }}</td>
                             <td>{{ $p->nombre }}</td>
                             <td>{{ $p->imagen }}</td>
                             <td>
@@ -158,7 +163,7 @@
                                     <form action="{{ route('administrador.deshabilitar_plano') }}" method="post">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{$p->id}}">
-                                        <input type="submit" class="btn btn-primary btn-xs" value="Deshabilitar">
+                                        <input type="submit" class="btn btn-warning btn-xs" value="Deshabilitar">
                                     </form>
                                 @elseif($p->oculto ==1)
 

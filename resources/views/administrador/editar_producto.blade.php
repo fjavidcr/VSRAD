@@ -1,7 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3>Editar producto</h3>
+    <div class="container container-page">
+
+        <div class="page-header">
+            <h3>Editar producto</h3>
+        </div>
+
+    @if(count($errors))
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $e)
+                    <li>{{$e}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form class="form-horizontal" enctype="multipart/form-data" action="{{route('administrador.editar_producto')}}" method="post">
 
         {{csrf_field()}}
@@ -9,25 +24,25 @@
         <div class="form-group">
             <label for="nombre" class="col-sm-2 control-label">Nombre</label>
             <div class="col-sm-10">
-                <input id="nombre" type="text" name="nombre" value="{{ $pro->nombre }}">
+                <input id="nombre" type="text" name="nombre" value="{{ $pro->nombre }}" required>
             </div>
         </div>
         <div class="form-group">
             <label for="descripcion" class="col-sm-2 control-label">Descripción</label>
             <div class="col-sm-10">
-                <input id="descripcion" type="text" name="descripcion" value="{{ $pro->descripcion }}">
+                <textarea id="descripcion" type="text" rows="5" cols="50" name="descripcion" required>{{ $pro->descripcion }}</textarea>
             </div>
         </div>
         <div class="form-group">
             <label for="restricciones" class="col-sm-2 control-label">Restricciones</label>
             <div class="col-sm-10">
-                <input id="restricciones" type="text" name="restricciones" value="{{ $pro->restricciones }}">
+                <textarea id="restricciones" type="text" rows="5" cols="50" name="restricciones" required>{{ $pro->restricciones }}</textarea>
             </div>
         </div>
         <div class="form-group">
-            <label for="coste" class="col-sm-2 control-label">Coste</label>
+            <label for="coste" class="col-sm-2 control-label">Coste (sin IVA)</label>
             <div class="col-sm-10">
-                <input type="number" min="0" max="10000" step="0.01" value="{{ $pro->coste }}" name="coste" >
+                <input type="number" min="0" max="10000" step="0.01" value="{{ $pro->coste }}" name="coste" required>
             </div>
         </div>
         <div class="form-group">
@@ -42,4 +57,5 @@
             <input type="submit" value="Editar" class="btn btn-success">
         </div>
     </form>
+    </div>
 @endsection

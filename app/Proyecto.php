@@ -9,11 +9,11 @@ class Proyecto extends Model
     protected $table = "proyectos";
 
     public static $estados = [
-        'no_pendiente', 'pendiente', 'validado', 'no_validado', 'comprado', 'rechazado'
+        'no_pendiente', 'pendiente', 'validado', 'no_validado', 'comprado', 'rechazado', 'solicitud_presupuesto_final', 'presupuesto_final'
     ];
 
     public static $tituloEstados = [
-        'No pendiente', 'Pendiente', 'Validado', 'No validado', 'Comprado', 'Rechazado'
+        'No pendiente', 'Pendiente', 'Validado', 'No validado', 'Comprado', 'Rechazado', 'Solicitud de presupuesto final','Presupuesto final enviado'
     ];
 
     public function getEstado() {
@@ -36,6 +36,12 @@ class Proyecto extends Model
     {
         $cliente = \App\User::findOrFail($this->id_cliente);
         return $cliente;
+    }
+
+    public function puedeEliminar(){
+        if($this->getEstado() == "no_pendiente" || $this->getEstado() == "no_validado" || $this->getEstado() == "rechazado")
+            return true;
+        return false;
     }
 
     //TODO: revisar las relaciones
