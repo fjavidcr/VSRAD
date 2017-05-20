@@ -120,7 +120,7 @@
                                 <td><p class="labelValidado-{{$p->id}}">{{ $p->getTituloEstado() }}</p></td>
                                 <td>
                                     <a class="btn btn-default btn-sm"
-                                       href="{{ route('cliente.show', $p->id) }}">
+                                       href="{{ route('ver_proyecto', $p->id) }}">
                                         <span class="" aria-hidden="true"></span>
                                         Ver
                                     </a>

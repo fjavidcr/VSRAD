@@ -54,7 +54,7 @@ class TecnicoController extends Controller
         //var_dump($fecha_solicitud);
 
         $fecha_solicitud = new DateTime($proyecto->fecha_creacion);
-        $fecha_respuesta = new DateTime(date("d-m-Y H:i:s"));
+        $fecha_respuesta = new DateTime(date("Y-m-d H:i:s"));
 
         $dif = date_diff($fecha_solicitud, $fecha_respuesta);
         $intervalo = $dif->s + $dif->i*60 + $dif->h*60*60 + $dif->d*24*60*60 + $dif->m*30*24*60*60 + $dif->y*365*24*60*60;
@@ -177,7 +177,7 @@ class TecnicoController extends Controller
 
             date_default_timezone_set('Europe/Madrid');
             $fecha = new DateTime('now');
-            $fecha->format("d-m-Y H:i:s");
+            $fecha->format("Y-m-d H:i:s");
             $mensaje->fecha_creacion = $fecha;
 
             //1 hace referencia al tecnico
