@@ -98,10 +98,11 @@ class ClienteController extends Controller
         $user = \Auth::user();
         $proyecto = \App\Proyecto::findOrFail($id);
         $planos = DB::table('planos')->where('oculto', '=', 0)->get();
+        $plano = \App\Plano::findOrFail($proyecto->id_plano);
         /*if ($proyecto->cliente_id != $user->id)
             return redirect()->route('cliente.index');*/
 
-        return view('cliente.show', compact('proyecto', 'planos'));
+        return view('cliente.show', compact('proyecto','plano', 'planos'));
     }
 
     public function ver_proyecto($id)
@@ -198,7 +199,8 @@ class ClienteController extends Controller
         $proyecto = \App\Proyecto::findOrFail($id);
         $pros = DB::table('productos')->where('oculto', '=', 0)->get();
         $planos = DB::table('planos')->where('oculto', '=', 0)->get();
-        return view('cliente.edit', compact('proyecto', 'planos','pros'));
+        $plano = \App\Plano::findOrFail($proyecto->id_plano);
+        return view('cliente.edit', compact('proyecto', 'planos', 'plano','pros'));
     }
 
     /**
