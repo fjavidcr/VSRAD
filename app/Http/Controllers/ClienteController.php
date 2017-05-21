@@ -47,8 +47,9 @@ class ClienteController extends Controller
     {
 
         $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+        $planos = DB::table('planos')->where('oculto', '=', 0)->get();
         $user = \Auth::user();
-        return view('cliente.create', compact('pros', 'user'));
+        return view('cliente.create', compact('pros','planos', 'user'));
     }
 
     /**
@@ -96,11 +97,11 @@ class ClienteController extends Controller
     {
         $user = \Auth::user();
         $proyecto = \App\Proyecto::findOrFail($id);
-
+        $planos = DB::table('planos')->where('oculto', '=', 0)->get();
         /*if ($proyecto->cliente_id != $user->id)
             return redirect()->route('cliente.index');*/
 
-        return view('cliente.show', compact('proyecto'));
+        return view('cliente.show', compact('proyecto', 'planos'));
     }
 
     public function ver_proyecto($id)
@@ -196,7 +197,8 @@ class ClienteController extends Controller
     {
         $proyecto = \App\Proyecto::findOrFail($id);
         $pros = DB::table('productos')->where('oculto', '=', 0)->get();
-        return view('cliente.edit', compact('proyecto', 'pros'));
+        $planos = DB::table('planos')->where('oculto', '=', 0)->get();
+        return view('cliente.edit', compact('proyecto', 'planos','pros'));
     }
 
     /**

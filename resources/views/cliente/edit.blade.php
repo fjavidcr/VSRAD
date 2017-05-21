@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
-                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-{{$proyecto->id_plano}}" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
+                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
                             </div>
                         </div>
@@ -345,16 +345,36 @@
         });
 
 
-        var casa_actual = {{$proyecto->id_plano}};
-        jQuery(".boton-cambiar-plano").click(function() {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
-            casa_actual++;
-            if(casa_actual == 6){
-                casa_actual = 1;
+        var casa_actual = 0;
+
+        var planos = [
+                @foreach($planos as $p)
+            {"id":{{$p->id}} ,"nombre": "{{$p->nombre}}", "imagen": "{{$p->imagen}}"},
+            @endforeach
+        ];
+        console.log(planos);
+
+        var id_plano = {{$proyecto->id_plano}};
+
+        console.log(id_plano);
+
+        for(var i = 0; i< planos.length; i++){
+            if(id_plano == planos[i].id){
+                jQuery("#myDiagramDiv").css('background-image', 'url(' + "/img/" + planos[i].imagen + ')');
+                casa_actual = i;
             }
-            jQuery("#myDiagramDiv").addClass("canvas-casa-" + casa_actual);
-            document.getElementById("id_plano").value = casa_actual;
-            console.log("Plano actual: " + casa_actual);
+        }
+
+        console.log(planos[casa_actual]);
+
+        jQuery(".boton-cambiar-plano").click(function() {
+            casa_actual++;
+            if(casa_actual == planos.length){
+                casa_actual = 0;
+            }
+            jQuery("#myDiagramDiv").css('background-image', 'url(' + "/img/" + planos[casa_actual].imagen + ')');
+            document.getElementById("id_plano").value = planos[casa_actual].id;
+            console.log("Plano actual: " + planos[casa_actual].nombre);
 
         });
 
