@@ -82,14 +82,15 @@ class TecnicoController extends Controller
         $user = \Auth::user();
         $proyecto = \App\Proyecto::findOrFail($id);
         $pros = DB::table('productos')->where('oculto', '=', 0)->get();
-        $mensajes = $proyecto->mensajes;
+        $planos = DB::table('planos')->where('oculto', '=', 0)->get();
+        $plano = \App\Plano::findOrFail($proyecto->id_plano);
 
         if ($proyecto->id_tecnico != $user->id)
         {
             Session::flash('Warning', 'No tienes asginado este proyecto.');
             return redirect()->route('tecnico.index');
         }
-        return view('tecnico.show', compact('proyecto', 'pros'));
+        return view('tecnico.show', compact('proyecto', 'planos','plano','pros'));
     }
 
     /**
@@ -103,13 +104,15 @@ class TecnicoController extends Controller
         $user = \Auth::user();
         $proyecto = \App\Proyecto::findOrFail($id);
         $pros = DB::table('productos')->where('oculto', '=', 0)->get();
+        $planos = DB::table('planos')->where('oculto', '=', 0)->get();
+        $plano = \App\Plano::findOrFail($proyecto->id_plano);
 
         if ($proyecto->id_tecnico != $user->id)
         {
             Session::flash('Warning', 'No tienes asginado este proyecto.');
             return redirect()->route('tecnico.index');
         }
-        return view('tecnico.proyecto', compact('proyecto', 'pros'));
+        return view('tecnico.proyecto', compact('proyecto','planos','plano' , 'pros'));
     }
 
     /**

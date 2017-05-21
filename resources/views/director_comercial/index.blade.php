@@ -90,7 +90,7 @@
                     <div class="col-sm-10">
                         <input id="password" type="password" name="password" required>
                         <br>
-                        ( Mínimo 8 caracteres. Si el campo se deja vacío no se modificará la contraseña. )
+                        ( Mínimo 8 caracteres. )
                     </div>
                 </div>
                 <div class="form-group">
