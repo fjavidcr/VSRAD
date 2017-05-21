@@ -265,6 +265,9 @@
         myDiagram.isReadOnly = true;
 
         var planos = [
+                @if($plano->oculto == 1)
+            {"id":{{$plano->id}} ,"nombre": "{{$plano->nombre}}", "imagen": "{{$plano->imagen}}"},
+                @endif
                 @foreach($planos as $p)
             {"id":{{$p->id}} ,"nombre": "{{$p->nombre}}", "imagen": "{{$p->imagen}}"},
             @endforeach
