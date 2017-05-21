@@ -3,6 +3,7 @@
 @section('content')
     <div class="container container-page">
         <h3> Clientes de {{ Auth::user()->getName() }}</h3>
+        <hr>
         <div class="row">
             <div class="col-lg-12">
 
@@ -11,11 +12,32 @@
                         <b> No tienes clientes asignados.</b>
                     </div>
                 @else
-                    <a id="boton-guardar-proyecto" type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_mensajes">
-                        Mensajes
-                    </a>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Leyenda de colores</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-success">Proyectos con intención de compra positiva.</li>
+                                        <li class="list-group-item list-group-item-info">Proyectos nuevos del cliente.</li>
+                                        <li class="list-group-item list-group-item-warning">Proyectos pendiente de validación sin técnico asignado.</li>
+                                        <li class="list-group-item list-group-item-warning">Proyectos en los que el cliente solicita presupuesto final.</li>
+                                        <li class="list-group-item list-group-item-danger">Proyectos con intención de compra negativa.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2">
+                        <a id="boton-guardar-proyecto" type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_mensajes">
+                            Mensajes
+                        </a>
+                        </div>
+                    </div>
                     @foreach($clientes as $c)
-                        <table class="table table-responsive table-condensed table-striped">
+                        <table class="table table-responsive table-condensed">
 
                             <input type="hidden" value="{{ $existe = 0 }}">
                             @foreach($c->proyectos as $p)
@@ -36,6 +58,7 @@
                                     <th>Estado </th>
                                     <th>Ténico </th>
                                     <th>Oferta </th>
+                                    <th> </th>
                                 </thead>
                                 <input type="hidden" value="{{ $cont = 0 }}">
                                 @foreach($c->proyectos as $p)
@@ -44,6 +67,10 @@
                                                 class="success"
                                             @elseif($p->getEstado() == "rechazado")
                                                 class="danger"
+                                            @elseif($p->getEstado() == "no_pendiente")
+                                                class="info"
+                                            @elseif($p->getEstado() == "solicitud_presupuesto_final")
+                                                class="warning"
                                             @elseif(!isset($p->id_tecnico))
                                                 class="warning"
                                             @endif>
@@ -55,14 +82,14 @@
                                                     <form action="{{route('comercial.asignar_tecnico')}}" method="post">
                                                         {{csrf_field()}}
                                                         <div class="form-inline">
-                                                            <select name="id_tecnico">
+                                                            <select id="id_tecnico" name="id_tecnico" onload="comprobar_tecnico()" onchange="comprobar_tecnico()">
                                                                 <option>Seleccionar un técnico</option>
                                                                 @foreach($tecnicos as $t)
                                                                     <option value="{{$t->id}}">{{$t->getName()}}</option>
                                                                 @endforeach
                                                             </select>
                                                             <input type="hidden" name="id_proyecto" value="{{$p->id}}">
-                                                            <button type="submit" class="btn btn-success btn-xs">Asignar</button>
+                                                            <button id="boton_asignar_tecnico" type="submit" class="btn btn-success btn-xs" disabled>Asignar</button>
                                                         </div>
                                                     </form>
                                                 @else
@@ -82,6 +109,17 @@
                                                 @else
                                                     {{$p->oferta}} %
                                                 @endif
+                                            </td>
+                                            <td>
+                                            @if($p->getEstado()=="solicitud_presupuesto_final")
+                                                <form class="form-inline" action="{{ route('comercial.enviar_presupuesto') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="id" value="{{$p->id}}">
+                                                        <input type="submit" class="btn btn-success btn-sm" value="Enviar presupuesto final">
+                                                    </div>
+                                                </form>
+                                            @endif
                                             </td>
                                         </tr>
                                     @endif
@@ -130,5 +168,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+
+        function comprobar_tecnico() {
+            var value = document.getElementById('id_tecnico').value;
+            console.log(value);
+
+            if (value > 0) {
+                document.getElementById('boton_asignar_tecnico').disabled=false;
+            }
+            else
+                document.getElementById('boton_asignar_tecnico').disabled=true;
+        }
+
+    </script>
 
 @endsection

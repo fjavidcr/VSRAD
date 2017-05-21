@@ -6,7 +6,7 @@
         <div class="page-header">
             <h3>Editar usuario</h3>
         </div>
-
+        <div class="col-lg-8">
         @if(count($errors))
             <div class="alert alert-danger">
                 <ul>
@@ -24,25 +24,25 @@
             <div class="form-group">
                 <label for="nombre" class="col-sm-2 control-label">Nombre</label>
                 <div class="col-sm-10">
-                    <input id="name" type="text" name="name" value="{{ $user->name }}" required>
+                    <input id="name" type="text" name="name" value="{{ $user->name }}" onchange="comprobar()" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="apellidos" class="col-sm-2 control-label">Apellidos</label>
                 <div class="col-sm-10">
-                    <input id="apellidos" type="text" name="apellidos" value="{{ $user->apellidos }}" required>
+                    <input id="apellidos" type="text" name="apellidos" value="{{ $user->apellidos }}" onchange="comprobar()" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="email" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-10">
-                    <input id="email" type="text" name="email" value="{{ $user->email }}" required>
+                    <input id="email" type="text" size="25" name="email" value="{{ $user->email }}" onchange="comprobar()" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">Contraseña</label>
                 <div class="col-sm-10">
-                    <input id="password" type="password" name="password">
+                    <input id="password" type="password" name="password" onchange="comprobar()">
                     <br>
                     ( Mínimo 8 caracteres. Si el campo se deja vacío no se modificará la contraseña. )
                 </div>
@@ -56,13 +56,13 @@
             <div class="form-group">
                 <label for="direccion_fisica" class="col-sm-2 control-label">Dirección física</label>
                 <div class="col-sm-10">
-                    <input id="direccion_fisica" type="text" name="direccion_fisica" value="{{ $user->direccion_fisica }}" required>
+                    <input id="direccion_fisica" type="text" size="45" name="direccion_fisica" value="{{ $user->direccion_fisica }}" onchange="comprobar()" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="telefono" class="col-sm-2 control-label">Teléfono</label>
                 <div class="col-sm-10">
-                    <input id="telefono" type="text" name="telefono" value="{{ $user->telefono }}" required>
+                    <input id="telefono" type="text" name="telefono" value="{{ $user->telefono }}" onchange="comprobar()" required>
                 </div>
             </div>
             <div class="form-group">
@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label for="rol" class="col-sm-2 control-label">Rol</label>
                     <div class="col-sm-10">
-                        <select id="rol" name="rol" onload="comprobar_rol()" onchange="comprobar_rol()">
+                        <select id="rol" name="rol" onload="comprobar_rol()" onchange="comprobar(), comprobar_rol()">
                             <option>Seleccione una opción</option>
                             <option value="1" @if($user->rol == 1) echo selected @endif>Comercial</option>
                             <option value="2" @if($user->rol == 2) echo selected @endif>Técnico</option>
@@ -89,6 +89,22 @@
                 <input id="boton" type="submit" value="Editar" class="btn btn-success" disabled>
             </div>
         </form>
+    </div>
+    <div class="col-lg-3">
+        <div class="row">
+            <div class="panel panel-info">
+                <div class="panel-heading"><h4>Contraseña aleatoria </h4></div>
+                <div class="panel-body">
+                    <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary" onclick="pass_aleatoria()" type="button">Crear</button>
+                                  </span>
+                        <input id="pass_aleatoria" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script>
@@ -157,6 +173,13 @@
                 document.getElementById('boton').disabled=true;
             }
         }
+
+        function pass_aleatoria() {
+            var randomstring = Math.random().toString(36).slice(-10);
+            console.log(randomstring);
+            document.getElementById('pass_aleatoria').value=randomstring;
+        }
+
     </script>
 
 @endsection

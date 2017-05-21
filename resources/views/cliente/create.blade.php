@@ -132,7 +132,7 @@
                             var array = JSON.parse(myDiagram.model.toJson());
                             array = array.nodeDataArray;
 
-                            document.getElementById("configuracion").textContent = JSON.stringify(myDiagram.model.toJson());
+                            document.getElementById("configuracion").textContent = myDiagram.model.toJson();
                             console.log(array);
                             var costeTotal = 0;
 

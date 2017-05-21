@@ -9,7 +9,7 @@
             <div class="col-lg-12">
 
                 <h4> Usuarios </h4>
-                    <a class="btn btn-primary btn-xs"
+                    <a class="btn btn-primary btn-sm"
                        href="{{ route('administrador.form_crear_usuario')}}">
                         Crear usuario
                     </a>
@@ -85,7 +85,7 @@
                 </table>
 
                 <h4> Productos </h4>
-                    <a class="btn btn-primary btn-xs"
+                    <a class="btn btn-primary btn-sm"
                        href="{{ route('administrador.form_crear_producto')}}">
                         Crear producto
                     </a>
@@ -135,7 +135,7 @@
                 </table>
 
                 <h4> Planos </h4>
-                    <a class="btn btn-primary btn-xs"
+                    <a class="btn btn-primary btn-sm"
                        href="{{ route('administrador.form_crear_plano') }}">
                         Crear plano
                     </a>
