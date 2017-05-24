@@ -20,7 +20,7 @@
                 <form class="form-inline" action="{{ route('cliente.store') }}" method="post">
 
                     {{ csrf_field() }}
-                    <input id="id_plano" type="hidden" name="id_plano" value="1" class="form-control" required>
+                    <input id="id_plano" type="hidden" name="id_plano" class="form-control" required>
 
                     <div class="form-group">
                         <label for="nombre">Nombre del proyecto</label>
@@ -43,7 +43,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
-                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa-1" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
+                                    <div id="myDiagramDiv" class="canvas-plano canvas-casa" style="background-color: #f0f9f6; border:  solid  1px #d3e0e9;"></div>
                                 </div>
                             </div>
                         </div>
@@ -104,7 +104,13 @@
     </div>
 
     <script>
+        var planos = [
+                @foreach($planos as $p)
+            {"id":{{$p->id}} ,"nombre": "{{$p->nombre}}", "imagen": "{{$p->imagen}}"},
+                    @endforeach
+        ];
 
+        console.log(planos);
 
         var AllowTopLevel = false;
         var CellSize = new go.Size(30, 30);
@@ -337,16 +343,21 @@
         });
 
 
-        var casa_actual = 1;
+
+        var casa_actual = 0;
+
+        console.log(planos[casa_actual].imagen);
+        jQuery("#myDiagramDiv").css('background-image', 'url(' + "../img/" + planos[casa_actual].imagen + ')');
+        document.getElementById("id_plano").value = planos[casa_actual].id;
+
         jQuery(".boton-cambiar-plano").click(function() {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
             casa_actual++;
-            if(casa_actual == 6){
-                casa_actual = 1;
+            if(casa_actual == planos.length){
+                casa_actual = 0;
             }
-            jQuery("#myDiagramDiv").addClass("canvas-casa-" + casa_actual);
-            document.getElementById("id_plano").value = casa_actual;
-            console.log("Plano actual: " + casa_actual);
+            jQuery("#myDiagramDiv").css('background-image', 'url(' + "../img/" + planos[casa_actual].imagen + ')');
+            document.getElementById("id_plano").value = planos[casa_actual].id;
+            console.log("Plano actual: " + planos[casa_actual].nombre);
 
         });
 

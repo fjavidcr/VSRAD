@@ -47,7 +47,7 @@
                                             <p class="mensaje_tecnico">{{$m->texto}}</p>
                                         </div>
                                     </li>
-                                @elseif($m->remitente == 1)
+                                @elseif($m->remitente == 2)
                                     <li class="right clearfix">
                                         <div class="chat-body clearfix">
                                             <div class="header">

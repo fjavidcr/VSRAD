@@ -62,7 +62,7 @@
         <div class="form-group">
             <label for="telefono" class="col-sm-2 control-label">Teléfono</label>
             <div class="col-sm-10">
-                <input id="telefono" type="text" name="telefono" required>
+                <input id="telefono" type="tel" pattern="[0-9]{9}" name="telefono" required>
             </div>
         </div>
         <div class="form-group">
@@ -126,7 +126,7 @@
             letra=letra.substring(numero,numero+1);
             if (letra!=letr.toUpperCase()) {
                 document.getElementById('boton').disabled=true;
-                alert('DNI erroneo');
+                alert('DNI erróneo');
             }
             else
                 document.getElementById('boton').disabled=false;

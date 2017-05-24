@@ -109,7 +109,7 @@
                                                                     <div class="form-group">
                                                                         <label for="telefono" class="col-sm-3  control-label">Teléfono</label>
                                                                         <div class="col-sm-9">
-                                                                            <input id="telefono" type="tel" name="telefono" value="{{ $user->telefono }}" required>
+                                                                            <input id="telefono" type="tel" pattern="[0-9]{9}" name="telefono" value="{{ $user->telefono }}" required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
@@ -253,7 +253,7 @@
             letra=letra.substring(numero,numero+1);
             if (letra!=letr.toUpperCase()) {
                 document.getElementById('enviar').disabled=true;
-                alert('DNI erroneo');
+                alert('DNI erróneo');
             }
             else{
                 document.getElementById('enviar').disabled=false;
